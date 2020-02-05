@@ -1,9 +1,11 @@
 {
+  "plugins": ["react", "prettier"],
   "extends": [
     "eslint:recommended",
+    "react-app",
     "airbnb",
-    "prettier",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "prettier"
   ],
   "globals": {
     "window": true,
@@ -22,7 +24,6 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": ["react", "prettier"],
   "rules": {
     "jsx-a11y/label-has-associated-control": 0,
     "class-methods-use-this": 1,
@@ -38,7 +39,6 @@
       {
         "extensions": [".js", ".jsx"]
       }
-    ],
-    "prettier/prettier": "error"
+    ]
   }
 }
