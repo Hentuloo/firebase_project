@@ -1,11 +1,10 @@
 {
-  "plugins": ["react", "prettier"],
   "extends": [
     "eslint:recommended",
-    "react-app",
     "airbnb",
-    "plugin:react/recommended",
-    "prettier"
+    "prettier",
+    "prettier/react",
+    "plugin:react/recommended"
   ],
   "globals": {
     "window": true,
@@ -24,7 +23,9 @@
       "experimentalObjectRestSpread": true
     }
   },
+  "plugins": ["react"],
   "rules": {
+    "import/prefer-default-export": 0,
     "jsx-a11y/label-has-associated-control": 0,
     "class-methods-use-this": 1,
     "jsx-a11y/no-noninteractive-element-to-interactive-role": 1,
