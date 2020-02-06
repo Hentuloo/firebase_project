@@ -24,7 +24,6 @@ const LoginPage = () => {
           { email, password },
           { displayName },
         );
-        setAuthRequest(false);
       }
     } catch (err) {
       if (err.code === 'auth/popup-closed-by-user')

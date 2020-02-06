@@ -9,6 +9,9 @@ export const getUserProfile = async uid => {
   return { uid, ...userSnap.data() };
 };
 
+export const subscribeUserProfile = (uid, callback) =>
+  getUserRef(uid).onSnapshot(callback);
+
 export const createUserProfileDocument = async (
   uid,
   additionalProps,

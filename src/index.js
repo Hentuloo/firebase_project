@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import store from 'store/store';
 import { Provider as ReduxProvider } from 'react-redux';
-import { listenAuthChanges } from 'store/actions/auth';
+import { listenAuthChanges } from 'store/actions/user';
 import App from './App';
 
 store.dispatch(listenAuthChanges());

@@ -1,4 +1,8 @@
-import { USER_LOGGED, USER_NOT_LOGGED } from '../actions/types';
+import {
+  USER_LOGGED,
+  USER_NOT_LOGGED,
+  UPDATE_PROFILE,
+} from '../actions/types';
 
 const init = {
   loggedRequest: true,
@@ -10,9 +14,11 @@ const init = {
 export default (state = init, action) => {
   switch (action.type) {
     case USER_LOGGED:
-      return { ...state, ...action.payload, loggedRequest: false };
+      return { ...state, uid: action.payload, loggedRequest: false };
     case USER_NOT_LOGGED:
       return { ...init, loggedRequest: false };
+    case UPDATE_PROFILE:
+      return { ...state, ...action.payload };
     default:
       return state;
   }
