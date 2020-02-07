@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import store from 'store/store';
 import { Provider as ReduxProvider } from 'react-redux';
 import { listenAuthChanges } from 'store/actions/user';
-import App from './App';
+import Root from './pages/Root';
 
 store.dispatch(listenAuthChanges());
 
 ReactDOM.render(
   <ReduxProvider store={store}>
-    <App />
+    <Root />
   </ReduxProvider>,
   document.getElementById('root'),
 );
