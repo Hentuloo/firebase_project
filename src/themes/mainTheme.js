@@ -3,7 +3,7 @@ export default {
     blue: ['#065fd4'],
     white: ['rgb(255, 255, 255)'],
     black: ['rgb(0,0,0)'],
-    gray: ['rgb(119, 119, 119)'],
+    gray: ['rgb(220, 220, 220)', 'rgb(119, 119, 119)'],
   },
   mediaQuery: {
     xs: '@media (min-width: 0px)',

@@ -27,5 +27,13 @@ export const createUserProfileDocument = async (
     throw new Error(err);
   }
 };
+export const updateUserDoc = async (uid, newFields) => {
+  try {
+    const userRef = await getUserRef(uid);
+    await userRef.update(newFields);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
 
 export default firestore;

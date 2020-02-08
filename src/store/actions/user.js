@@ -10,7 +10,11 @@ import {
 export const listenUserProfile = (uid, dispatch) => {
   const onSnapChange = snapshot => {
     if (snapshot.exists) {
-      dispatch({ type: UPDATE_PROFILE, payload: snapshot.data() });
+      const { displayName, photoURL } = snapshot.data();
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: { uid, displayName, photoURL },
+      });
     }
   };
   return subscribeUserProfile(uid, onSnapChange);

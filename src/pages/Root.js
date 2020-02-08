@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import LoginPage from 'pages/LoginPage/LoginPage';
 
-import UserSettingsPage from 'pages/UserSettingsPage/UserSettingsPage';
+import SettingsPage from 'pages/SettingsPage/SettingsPage';
 import MainPage from 'pages/MainPage';
 
 import { withUser, redirectWhenUserLogged } from 'hoc/withUser';
@@ -18,7 +18,7 @@ function Root() {
         <Route exact path="/" component={withUser(MainPage)} />
         <Route
           path="/user-details"
-          component={withUser(UserSettingsPage)}
+          component={withUser(SettingsPage)}
         />
         <Route
           path="/login"

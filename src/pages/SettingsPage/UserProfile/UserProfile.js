@@ -2,16 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { logout } from 'fb/auth';
 
 import { ClearButton } from 'components/atoms';
-import { Modal } from 'components/compoud';
+
+import UserProfileSettings from './UserProfileSettings';
 
 const Wrapper = styled.div`
   display: grid;
-  width: 400px;
+  width: 94%;
+  max-width: 400px;
   grid-template-columns: 60px 1fr 60px;
   grid-template-rows: 30px 30px;
   grid-column-gap: 15px;
+  grid-row-gap: 5px;
   margin: 0px auto;
 `;
 const DisplayName = styled.h2`
@@ -25,11 +29,26 @@ const Image = styled.img`
   max-width: 100%;
   border-radius: 50%;
 `;
+const Button = styled(ClearButton)`
+  grid-column: 1/-1;
+  font-size: ${({ theme }) => theme.fs.xs};
+  font-weight: 600;
+  color: ${({ theme }) => theme.color.blue[0]};
+  text-align: left;
+`;
 
-const UserDetails = ({ className }) => {
+const UserProfile = ({ className }) => {
   const { displayName, photoURL } = useSelector(state => state.user);
 
-  const handleSubmitChange = () => {};
+  const handleLogout = e => {
+    e.preventDefault();
+    logout();
+  };
+
+  const handleDeleteAccount = e => {
+    e.preventDefault();
+    // logout();
+  };
 
   return (
     <Wrapper className={className}>
@@ -42,26 +61,18 @@ const UserDetails = ({ className }) => {
           />
         </ImageWrapper>
       )}
-      <Modal.Wrapper onSubmit={handleSubmitChange}>
-        <Modal.Toggler
-          render={toggle => (
-            <ClearButton title="Edytuj profil" onClick={toggle}>
-              <span className="sr-only">Edytuj profil</span>
-              <i className="fa fa-pencil" aria-hidden="true" />
-            </ClearButton>
-          )}
-        />
-        <Modal.Content>STH</Modal.Content>
-      </Modal.Wrapper>
+      <UserProfileSettings />
+      <Button onClick={handleDeleteAccount}>Usuń konto</Button>
+      <Button onClick={handleLogout}>Wyloguj się</Button>
     </Wrapper>
   );
 };
 
-UserDetails.propTypes = {
+UserProfile.propTypes = {
   className: PropTypes.string,
 };
-UserDetails.defaultProps = {
+UserProfile.defaultProps = {
   className: '',
 };
 
-export default UserDetails;
+export default UserProfile;

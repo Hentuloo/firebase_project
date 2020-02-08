@@ -35,6 +35,7 @@ export const ChildrensStyles = styled.div`
 export const ControllersStyles = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-right: 5%;
 `;
 
 export const ButtonStyles = styled.button`
