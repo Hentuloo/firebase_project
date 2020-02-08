@@ -24,8 +24,7 @@ export const createUserProfileDocument = async (
     await userRef.set(additionalProps);
     return userRef;
   } catch (err) {
-    console.log(err);
-    return null;
+    throw new Error(err);
   }
 };
 

@@ -24,20 +24,24 @@ const LoginPage = () => {
           { email, password },
           { displayName },
         );
+        setAuthRequest(false);
       }
     } catch (err) {
-      if (err.code === 'auth/popup-closed-by-user')
-        return setAuthRequest(false);
+      if (err.code === 'auth/popup-closed-by-user') return;
+      setAuthRequest(false);
       setErrorMessage(err.message);
     }
-    return null;
   };
 
   const handleLoginWithGoogle = async e => {
     e.preventDefault();
-    setAuthRequest(true);
-    await loginWithGoogle();
-    setAuthRequest(false);
+    try {
+      setAuthRequest(true);
+      await loginWithGoogle();
+      setAuthRequest(false);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
   };
 
   return (

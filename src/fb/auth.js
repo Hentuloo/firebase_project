@@ -15,9 +15,8 @@ export const loginWithEmail = async (email, password) => {
   try {
     return await auth().signInWithEmailAndPassword(email, password);
   } catch (err) {
-    console.log(err);
+    throw new Error(err);
   }
-  return null;
 };
 
 export const createAccountWithEmail = async (
@@ -35,9 +34,8 @@ export const createAccountWithEmail = async (
     });
     return userRef;
   } catch (err) {
-    console.log(err);
+    throw new Error(err);
   }
-  return null;
 };
 
 export const loginWithGoogle = async (additionalProps = {}) => {
@@ -53,7 +51,6 @@ export const loginWithGoogle = async (additionalProps = {}) => {
     });
     return userRef;
   } catch (err) {
-    console.log(err);
+    throw new Error(err);
   }
-  return null;
 };
