@@ -4,7 +4,6 @@ import { logout } from 'fb/auth';
 import WithMenuTemplate from 'templates/WithMenuTemplate';
 
 import UserDetails from './UserDetails';
-import Controllers from './Controllers';
 
 const Wrapper = styled.div`
   display: grid;
@@ -33,7 +32,6 @@ const UserSettingsPage = () => {
     <WithMenuTemplate>
       <Wrapper>
         <StyledUserDetails />
-        <Controllers />
         <ActionLink href="/logout" onClick={handleLogout}>
           Wyloguj się!
         </ActionLink>

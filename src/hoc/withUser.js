@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import LoginPage from 'pages/LoginPage/LoginPage';
 
 export const withUser = WrapperedComponent => {
   return props => {
@@ -9,7 +8,7 @@ export const withUser = WrapperedComponent => {
 
     if (loggedRequest) return <WrapperedComponent {...props} />;
     if (uid) return <WrapperedComponent {...props} />;
-    return <LoginPage />;
+    return <Redirect to="/login" />;
   };
 };
 
