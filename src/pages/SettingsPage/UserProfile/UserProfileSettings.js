@@ -49,7 +49,7 @@ const UserUpdateSettings = () => {
 
         // upload to storage
         const photoUrl = await uploadFilePromise(
-          userPhotoRef,
+          userPhotoRef(uid),
           firstImage,
           progress => {
             setRequestProgress(progress.toFixed(2));

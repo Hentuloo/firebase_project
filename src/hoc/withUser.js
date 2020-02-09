@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Constants } from 'config/Constants';
 
 export const withUser = WrapperedComponent => {
   return props => {
@@ -8,7 +9,7 @@ export const withUser = WrapperedComponent => {
 
     if (loggedRequest) return <WrapperedComponent {...props} />;
     if (uid) return <WrapperedComponent {...props} />;
-    return <Redirect to="/login" />;
+    return <Redirect to={Constants.paths.login.path} />;
   };
 };
 
@@ -18,6 +19,6 @@ export const redirectWhenUserLogged = WrapperedComponent => {
 
     if (loggedRequest) return null;
     if (!uid) return <WrapperedComponent {...props} />;
-    return <Redirect to="/" />;
+    return <Redirect to={Constants.paths.root.path} />;
   };
 };

@@ -10,18 +10,23 @@ import SettingsPage from 'pages/SettingsPage/SettingsPage';
 import MainPage from 'pages/MainPage';
 
 import { withUser, redirectWhenUserLogged } from 'hoc/withUser';
+import { Constants } from 'config/Constants';
 
 function Root() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={withUser(MainPage)} />
         <Route
-          path="/user-details"
+          exact
+          path={Constants.paths.root.path}
+          component={withUser(MainPage)}
+        />
+        <Route
+          path={Constants.paths.settings.path}
           component={withUser(SettingsPage)}
         />
         <Route
-          path="/login"
+          path={Constants.paths.login.path}
           component={redirectWhenUserLogged(LoginPage)}
         />
       </Switch>

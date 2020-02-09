@@ -2,7 +2,8 @@ import firebase from './index';
 
 export const storageRef = firebase.storage().ref();
 
-export const userPhotoRef = storageRef.child('images/avatar.jpg');
+export const userPhotoRef = uid =>
+  storageRef.child(`${uid}/avatar.jpg`);
 
 export const uploadFilePromise = (ref, file, onChange) => {
   return new Promise((resolve, reject) => {
