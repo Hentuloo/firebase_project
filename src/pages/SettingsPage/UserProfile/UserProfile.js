@@ -33,7 +33,7 @@ const Button = styled(ClearButton)`
   grid-column: 1/-1;
   font-size: ${({ theme }) => theme.fs.xs};
   font-weight: 600;
-  color: ${({ theme }) => theme.color.blue[0]};
+  color: ${({ theme }) => theme.color.brand[3]};
   text-align: left;
 `;
 

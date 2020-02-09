@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { uploadFilePromise, userPhotoRef } from 'fb/storage';
 import { updateUserDoc } from 'fb/firestore';
 
-import { ClearButton, TextInput } from 'components/atoms';
+import { ClearButton, TextInput, LoadingBar } from 'components/atoms';
 import { Modal } from 'components/compoud';
 import { validImageFile } from 'config/utils';
 
@@ -62,7 +62,10 @@ const UserUpdateSettings = () => {
       if (inputValue !== '') {
         nweFields.displayName = inputValue;
       }
-      await updateUserDoc(uid, nweFields);
+      if (Object.keys(nweFields).length > 0) {
+        await updateUserDoc(uid, nweFields);
+      }
+
       setIsRequest(false);
     } catch (err) {
       setErrorMessage(err.message);
@@ -83,6 +86,10 @@ const UserUpdateSettings = () => {
       />
       <Modal.Content>
         <StyledModalContent>
+          <LoadingBar
+            progress={requestProgress}
+            role="presentation"
+          />
           <Label>
             <span>Zmień swoją nazwę:</span>
             <TextInput
