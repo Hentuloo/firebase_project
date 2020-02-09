@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { updateUserPhoto } from 'fb/storage';
+import { uploadFilePromise, userPhotoRef } from 'fb/storage';
 import { updateUserDoc } from 'fb/firestore';
 
 import { ClearButton, TextInput } from 'components/atoms';
@@ -20,6 +20,8 @@ const Label = styled.label`
 `;
 
 const UserUpdateSettings = () => {
+  const [isRequest, setIsRequest] = useState(false);
+  const [requestProgress, setRequestProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const imageRef = useRef(null);
@@ -32,16 +34,39 @@ const UserUpdateSettings = () => {
   };
 
   const handleSubmitChange = async () => {
+    if (isRequest) return null;
+    setErrorMessage(null);
+    const nweFields = {};
     const firstImage = imageRef.current.files[0];
-    const { ok, message } = validImageFile(firstImage);
 
-    if (!ok) return setErrorMessage(message);
     try {
-      const photoSnap = await updateUserPhoto(firstImage);
-      const url = await photoSnap.ref.getDownloadURL();
-      await updateUserDoc(uid, { photoURL: url });
+      setIsRequest(true);
+      setRequestProgress(0);
+      if (firstImage) {
+        // valid file
+        const { ok, message } = validImageFile(firstImage);
+        if (!ok) throw new Error(message);
+
+        // upload to storage
+        const photoUrl = await uploadFilePromise(
+          userPhotoRef,
+          firstImage,
+          progress => {
+            setRequestProgress(progress.toFixed(2));
+          },
+        );
+
+        nweFields.photoURL = photoUrl;
+      }
+
+      if (inputValue !== '') {
+        nweFields.displayName = inputValue;
+      }
+      await updateUserDoc(uid, nweFields);
+      setIsRequest(false);
     } catch (err) {
       setErrorMessage(err.message);
+      setIsRequest(false);
     }
     return null;
   };
@@ -69,10 +94,11 @@ const UserUpdateSettings = () => {
             />
           </Label>
           <Label>
-            <span>Prześlij inne zdjęcie:</span>
+            <span>Prześlij inny avatar:</span>
             <input ref={imageRef} type="file" name="avatarPhoto" />
           </Label>
-          <p>{errorMessage}</p>
+          {errorMessage && <p>{errorMessage}</p>}
+          {isRequest && <p>Ładowanie {requestProgress}%</p>}
         </StyledModalContent>
       </Modal.Content>
     </Modal.Wrapper>
