@@ -12,5 +12,9 @@ export const Constants = {
       path: '/logowanie',
       name: 'Logowanie',
     },
+    room: {
+      path: '/room',
+      name: 'Logowanie',
+    },
   },
 };

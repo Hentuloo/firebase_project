@@ -1,5 +1,5 @@
-import firebase from './index';
-import { createUserProfileDocument } from './firestore';
+import firebase from '../index';
+import { createUserProfileDocument } from './userProfile';
 
 // eslint-disable-next-line prefer-destructuring
 const auth = firebase.auth;

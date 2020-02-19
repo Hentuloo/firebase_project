@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { uploadFilePromise, userPhotoRef } from 'fb/storage';
-import { updateUserDoc } from 'fb/firestore';
+import { updateUserDoc } from 'fb/controllers/userProfile';
 
 import { ClearButton, TextInput, LoadingBar } from 'components/atoms';
 import { Modal } from 'components/compoud';

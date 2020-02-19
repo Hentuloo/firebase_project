@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { logout } from 'fb/auth';
+import { logout } from 'fb/controllers/auth';
 
 import { ClearButton } from 'components/atoms';
 

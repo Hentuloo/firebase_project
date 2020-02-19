@@ -1,11 +1,7 @@
-import { subscribeAuthChanges } from 'fb/auth';
+import { subscribeAuthChanges } from 'fb/controllers/auth';
 
-import { subscribeUserProfile } from 'fb/firestore';
-import {
-  USER_LOGGED,
-  USER_NOT_LOGGED,
-  UPDATE_PROFILE,
-} from './types';
+import { subscribeUserProfile } from 'fb/controllers/userProfile';
+import { USER_NOT_LOGGED, UPDATE_PROFILE } from './types';
 
 export const listenUserProfile = (uid, dispatch) => {
   const onSnapChange = snapshot => {
@@ -24,10 +20,6 @@ export const listenAuthChanges = () => dispatch => {
   let unSubscribeUserProfile = null;
   subscribeAuthChanges(async user => {
     if (user) {
-      dispatch({
-        type: USER_LOGGED,
-        payload: user,
-      });
       unSubscribeUserProfile = listenUserProfile(user.uid, dispatch);
     } else {
       dispatch({

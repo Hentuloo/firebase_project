@@ -3,7 +3,7 @@ import {
   loginWithEmail,
   createAccountWithEmail,
   loginWithGoogle,
-} from 'fb/auth';
+} from 'fb/controllers/auth';
 import Form from './Form';
 
 const LoginPage = () => {
