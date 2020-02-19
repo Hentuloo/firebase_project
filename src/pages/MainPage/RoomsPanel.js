@@ -6,9 +6,9 @@ const RoomsPanel = () => {
   const rooms = useSelector(store => store.rooms.avaiableRooms);
 
   useEffect(() => {
-    const unSubscribe = listenRooms();
+    const unSubAvaiableRooms = listenRooms();
     return () => {
-      unSubscribe();
+      unSubAvaiableRooms();
     };
   }, []);
 
@@ -16,9 +16,9 @@ const RoomsPanel = () => {
     <div>
       <h2>Dostępne pokoje:</h2>
       <ul>
-        {rooms.map(({ id, title }) => (
-          <li key={id}>{title}</li>
-        ))}
+        {rooms.length &&
+          rooms.map(({ id, title }) => <li key={id}>{title}</li>)}
+        {rooms.length === 0 && 'nie ma pokoi'}
       </ul>
     </div>
   );

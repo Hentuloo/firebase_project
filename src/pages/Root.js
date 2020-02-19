@@ -11,6 +11,7 @@ import MainPage from 'pages/MainPage/MainPage';
 import RoomPage from 'pages/RoomPage/RoomPage';
 
 import { withUser, redirectWhenUserLogged } from 'hoc/withUser';
+import { saveRoomPath } from 'hoc/saveRoomPath';
 import { Constants } from 'config/Constants';
 
 function Root() {
@@ -28,7 +29,7 @@ function Root() {
         />
         <Route
           path={`${Constants.paths.room.path}/:roomId`}
-          component={withUser(RoomPage)}
+          component={withUser(saveRoomPath(RoomPage))}
         />
         <Route
           path={Constants.paths.login.path}

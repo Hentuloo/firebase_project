@@ -1,11 +1,13 @@
 import React, { useReducer } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { createNewRoom } from 'fb/controllers/rooms';
 import { useHistory } from 'react-router-dom';
 import { Constants } from 'config/Constants';
+import { joinRoom } from 'store/actions/rooms';
 
 const Dashboard = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { uid } = useSelector(store => store.user);
 
   const [inputsValue, setInputValue] = useReducer(
@@ -24,18 +26,15 @@ const Dashboard = () => {
 
   const handleCreateRoom = async e => {
     e.preventDefault();
-    const { roomName, roomPasword } = inputsValue;
+    const { roomName } = inputsValue;
     try {
-      const newRoomRef = await createNewRoom(
-        uid,
-        roomName,
-        roomPasword,
-      );
+      // Without password
+      const newRoomRef = await createNewRoom(uid, roomName);
       const roomId = newRoomRef.id;
+      dispatch(joinRoom(roomId));
       history.push(`${Constants.paths.room.path}/${roomId}`);
     } catch (err) {
-      console.log('err');
-      console.log(err);
+      throw new Error(err);
     }
   };
 
