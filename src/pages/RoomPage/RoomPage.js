@@ -1,47 +1,50 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
-// import { listenActiveRoom } from 'fb/controllers/rooms';
+import { useDispatch } from 'react-redux';
+import { deleteActiveRoomData } from 'store/actions/rooms';
+import { listenActiveRoom } from 'fb/controllers/rooms';
+import { useRedirect } from 'hooks/useRedirect';
+import { Constants } from 'config/Constants';
+
+import RoomSettings from './RoomSettings';
 
 const Wrapper = styled.div`
   display: grid;
 `;
 
 const RoomPage = () => {
-  // const activeRoom = useSelector(store => store.rooms.activeRoom);
+  const redirect = useRedirect();
+  const dispatch = useDispatch();
   const { roomId } = useParams();
-  const [copyStatus, setCopyStatus] = useState(null);
+
+  const [isRoomLoaded, setRoomLoaded] = useState(false);
 
   useEffect(() => {
     // Try to join to this room
-    // const unSubActiveRoom = listenActiveRoom(roomId);
+    let unSubActiveRoom = () => null;
+    const joinToRoom = async () => {
+      try {
+        unSubActiveRoom = await listenActiveRoom(roomId);
+        setRoomLoaded(true);
+      } catch (e) {
+        if (e.message === 'dont exist') {
+          dispatch(deleteActiveRoomData());
+          redirect(Constants.paths.root.path);
+        }
+      }
+    };
+
+    joinToRoom();
     return () => {
-      // unSubActiveRoom();
+      unSubActiveRoom();
     };
   }, []);
 
-  const handleCopyLinkToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopyStatus(true);
-    } catch (err) {
-      setCopyStatus(false);
-    }
-  };
-
-  const copyStatusMessage = useMemo(() => {
-    if (copyStatus !== null) {
-      return copyStatus ? 'skopiowane' : 'nieskopiowane';
-    }
-    return null;
-  }, [copyStatus]);
+  if (!isRoomLoaded) return <span>Tu się ładuje</span>;
   return (
     <Wrapper>
-      <p>Jesteś w pokoju {roomId}</p>
-      <button type="button" onClick={handleCopyLinkToClipboard}>
-        Skopiuj link do pokoju {copyStatusMessage}
-      </button>
+      <RoomSettings />
     </Wrapper>
   );
 };

@@ -1,12 +1,12 @@
 import React, { useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createNewRoom } from 'fb/controllers/rooms';
-import { useHistory } from 'react-router-dom';
+import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
 import { joinRoom } from 'store/actions/rooms';
 
 const Dashboard = () => {
-  const history = useHistory();
+  const redirect = useRedirect();
   const dispatch = useDispatch();
   const { uid } = useSelector(store => store.user);
 
@@ -32,7 +32,7 @@ const Dashboard = () => {
       const newRoomRef = await createNewRoom(uid, roomName);
       const roomId = newRoomRef.id;
       dispatch(joinRoom(roomId));
-      history.push(`${Constants.paths.room.path}/${roomId}`);
+      redirect(`${Constants.paths.room.path}/${roomId}`);
     } catch (err) {
       throw new Error(err);
     }

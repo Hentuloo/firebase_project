@@ -20,9 +20,14 @@ export const createNewRoom = (uid, title) => {
     .add({ creator: uid, title, users: [] });
 };
 
-export const listenActiveRoom = roomId => {
-  return firestore.doc(`rooms/${roomId}`).onSnapshot(roomSnap => {
-    store.dispatch(updateActiveRoom(roomSnap.data()));
+export const listenActiveRoom = async roomId => {
+  const roomRef = firestore.doc(`rooms/${roomId}`);
+  const roomSnap = await roomRef.get();
+  if (!roomSnap.exists) {
+    throw new Error('dont exist');
+  }
+  return roomRef.onSnapshot(roomSnapshot => {
+    store.dispatch(updateActiveRoom(roomSnapshot.data()));
     return null;
   });
 };

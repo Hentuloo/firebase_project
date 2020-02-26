@@ -11,3 +11,6 @@ export const validImageFile = ({ size, type }) => {
   }
   return { ok: true };
 };
+
+export const copyToClipBoard = message =>
+  navigator.clipboard.writeText(message);
