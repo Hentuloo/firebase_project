@@ -4,6 +4,7 @@ import {
 } from 'store/actions/rooms';
 import store from 'store/store';
 import { firestore } from '../firestore';
+import firebase from '../index';
 import { collectionWithId } from '../utils';
 
 export const listenRooms = () => {
@@ -20,13 +21,22 @@ export const createNewRoom = (uid, title) => {
     .add({ creator: uid, title, users: [] });
 };
 
-export const listenActiveRoom = async roomId => {
-  const roomRef = firestore.doc(`rooms/${roomId}`);
-  const roomSnap = await roomRef.get();
-  if (!roomSnap.exists) {
-    throw new Error('dont exist');
-  }
-  return roomRef.onSnapshot(roomSnapshot => {
+export const joinToOpenRoom = async roomId => {
+  const joinFunc = firebase
+    .functions()
+    .httpsCallable('joinToOpenRoom');
+  const res = await joinFunc({ roomId });
+  return res;
+};
+export const leaveRoom = async roomId => {
+  const laveFunc = firebase
+    .functions()
+    .httpsCallable('leaveFromOpenRoom');
+  await laveFunc({ roomId });
+};
+
+export const listenRoom = roomId => {
+  return firestore.doc(`rooms/${roomId}`).onSnapshot(roomSnapshot => {
     store.dispatch(updateActiveRoom(roomSnapshot.data()));
     return null;
   });

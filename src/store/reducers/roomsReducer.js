@@ -8,7 +8,9 @@ import {
 const init = {
   avaiableRooms: [],
   activeRoomId: 'sth',
-  activeRoom: {},
+  activeRoom: {
+    users: [],
+  },
 };
 
 export default (state = init, action) => {
