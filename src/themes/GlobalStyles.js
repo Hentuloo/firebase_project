@@ -11,8 +11,8 @@ body {
     padding: 0px;
     overflow-x: hidden;
    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    font-size: 1.2rem;
+    font-weight: 300;
+    font-size: ${({ theme }) => theme.fs.xs};
     color:  ${({ theme }) => theme.color.black[0]};  
 
     ${({ theme }) => theme.mediaQuery.md}{

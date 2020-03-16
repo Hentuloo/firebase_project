@@ -11,7 +11,6 @@ import logoSVG from 'assets/svg/logo.svg';
 import textMockSVG from 'assets/svg/svgText.svg';
 import carsRaceSVG from 'assets/svg/road/carsRaceFirst.svg';
 import leavesSVG from 'assets/svg/leaves.svg';
-import radialSVG from 'assets/svg/radial.svg';
 import arrowSVG from 'assets/svg/arrow-white.svg';
 
 const Wrapper = styled.section`
@@ -86,13 +85,6 @@ const LeavesImage = styled.img`
   align-self: flex-end;
   opacity: 0.3;
 `;
-const RadialImage = styled.img`
-  position: absolute;
-  max-width: 100%;
-  bottom: 0%;
-  left: 0%;
-  transform: translate(0%, 50%);
-`;
 
 const IntroSection = () => {
   return (
@@ -111,8 +103,7 @@ const IntroSection = () => {
       <TextMockImage src={textMockSVG} />
       <RaceImage src={carsRaceSVG} />
       <LeavesImage src={leavesSVG} />
-      <RadialImage src={radialSVG} />
-      <ArrowButton>
+      <ArrowButton title="Przejdź dalej">
         <span className="sr-only">Przejdź dalej</span>
         <ArrowSVG src={arrowSVG} />
       </ArrowButton>
