@@ -7,4 +7,19 @@ const getUserProfile = async uid => {
   return { uid, ...userSnap.data() };
 };
 
-module.exports = { getUserRef, getUserProfile };
+const deleteRoomWhenEmpty = async roomId => {
+  const roomSnap = await admin
+    .firestore()
+    .doc(`rooms/${roomId}`)
+    .get();
+  const { users } = roomSnap.data();
+  if (users.length === 0) {
+    await admin
+      .firestore()
+      .doc(`rooms/${roomId}`)
+      .delete();
+  }
+  return { ok: true };
+};
+
+module.exports = { getUserRef, getUserProfile, deleteRoomWhenEmpty };

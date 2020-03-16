@@ -22,7 +22,13 @@ export default (state = init, action) => {
     case UPDATE_ACTIVE_ROOM:
       return { ...state, activeRoom: action.payload };
     case DELETE_ACTIVE_ROOM_DATA:
-      return { ...state, activeRoomId: null, activeRoom: {} };
+      return {
+        ...state,
+        activeRoomId: null,
+        activeRoom: {
+          users: [],
+        },
+      };
     default:
       return state;
   }

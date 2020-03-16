@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
 
@@ -12,16 +12,18 @@ import {
   leaveRoom,
 } from 'fb/controllers/rooms';
 
-import RoomSettings from './RoomSettings';
+import RoomDetailsBar from './RoomDetailsBar/RoomDetailsBar';
 
 const Wrapper = styled.div`
   display: grid;
+  grid-template-columns: 400px auto;
 `;
 // sprawdź czy usuwa document pokoju
 const RoomPage = () => {
   const redirect = useRedirect();
   const dispatch = useDispatch();
   const { roomId } = useParams();
+  const { users } = useSelector(store => store.rooms.activeRoom);
   const [isRoomLoaded, setRoomLoaded] = useState(false);
 
   useEffect(() => {
@@ -57,10 +59,11 @@ const RoomPage = () => {
     };
   }, []);
 
-  if (!isRoomLoaded) return <span>Tu się ładuje</span>;
+  if (!isRoomLoaded || !users.length)
+    return <span>Tu się ładuje</span>;
   return (
     <Wrapper>
-      <RoomSettings />
+      <RoomDetailsBar />
     </Wrapper>
   );
 };

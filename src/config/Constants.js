@@ -1,3 +1,5 @@
+import defaultProfilePicture from 'assets/defaultProfilePicture.svg';
+
 export const Constants = {
   paths: {
     root: {
@@ -16,5 +18,8 @@ export const Constants = {
       path: '/room',
       name: 'Logowanie',
     },
+  },
+  default: {
+    profilePicture: defaultProfilePicture,
   },
 };

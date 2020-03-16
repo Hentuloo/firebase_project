@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 const { requiredField, requiredAuth } = require('../utils');
-const { getUserProfile } = require('../fbUtils');
+const { getUserProfile, deleteRoomWhenEmpty } = require('../fbUtils');
 
 const { arrayUnion } = admin.firestore.FieldValue;
 
@@ -15,8 +15,6 @@ const joinToOpenRoom = async (data, context) => {
 
   try {
     const resp = await getUserProfile(uid);
-    console.log('resp');
-    console.log(resp);
     const { displayName, photoURL } = resp;
     await admin
       .firestore()
@@ -51,18 +49,15 @@ const leaveFromOpenRoom = async (data, context) => {
       .doc(`rooms/${roomId}`)
       .get();
     const { users } = roomSnap.data();
+
     if (users.length === 1) {
-      await admin
-        .firestore()
-        .doc(`rooms/${roomId}`)
-        .delete();
-      return { ok: true };
+      setTimeout(() => deleteRoomWhenEmpty(roomId), 60000);
     }
 
     await admin
       .firestore()
       .doc(`rooms/${roomId}`)
-      .set({
+      .update({
         users: users.filter(user => user.uid !== uid),
       });
 
