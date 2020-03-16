@@ -11,7 +11,7 @@ body {
     padding: 0px;
     overflow-x: hidden;
    font-family: 'Open Sans', sans-serif;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 1.2rem;
     color:  ${({ theme }) => theme.color.black[0]};  
 
