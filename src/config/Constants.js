@@ -1,4 +1,4 @@
-import defaultProfilePicture from 'assets/defaultProfilePicture.svg';
+import defaultProfilePicture from 'assets/svg/defaultProfilePicture.svg';
 
 export const Constants = {
   paths: {
@@ -6,8 +6,12 @@ export const Constants = {
       path: '/',
       name: 'Strona główna',
     },
+    dashboard: {
+      path: '/app/',
+      name: 'Strona główna',
+    },
     settings: {
-      path: '/ustawienia',
+      path: '/app/ustawienia',
       name: 'Ustawienia',
     },
     login: {
@@ -15,8 +19,8 @@ export const Constants = {
       name: 'Logowanie',
     },
     room: {
-      path: '/room',
-      name: 'Logowanie',
+      path: '/app/room',
+      name: 'Pokój',
     },
   },
   default: {
