@@ -8,13 +8,33 @@ import {
   TipBold,
 } from 'components/atoms';
 
-import raceSVG from 'assets/svg/ilustrations/startRace.svg';
+import chartSVG from 'assets/svg/ilustrations/drawChart.svg';
 
 const Wrapper = styled.section`
   margin-top: 60px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    max-width: 1000px;
+    margin: 100px 5vw 0px auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: 100px 170px;
+  }
 `;
-const RaceImage = styled.img`
+const StatisticImage = styled.img`
   display: none;
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: 90%;
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    margin-left: auto;
+    display: block;
+  }
+`;
+const StyledTextGroup = styled(TextGroup)`
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 1 / 2;
+    grid-row: 2 / -1;
+  }
 `;
 const StyledTextGroupHeader = styled(TextGroupHeader)`
   &::after {
@@ -25,8 +45,8 @@ const StyledTextGroupHeader = styled(TextGroupHeader)`
 const MultiplayerSection = () => {
   return (
     <Wrapper>
-      <RaceImage src={raceSVG} />
-      <TextGroup>
+      <StatisticImage src={chartSVG} />
+      <StyledTextGroup>
         <StyledTextGroupHeader>Opcja TRENING</StyledTextGroupHeader>
         <p>
           Rozpocznij “Własny trenning” i poprawiaj swojego skilla wraz
@@ -39,7 +59,7 @@ const MultiplayerSection = () => {
             gdy uzna że jesteś gotowy
           </p>
         </TipSection>
-      </TextGroup>
+      </StyledTextGroup>
     </Wrapper>
   );
 };

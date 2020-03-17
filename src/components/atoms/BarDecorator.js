@@ -6,6 +6,7 @@ export const BarDecorator = css`
     position: absolute;
     content: '';
     width: 60%;
+    max-width: 120px;
     height: 45%;
     bottom: -5%;
     left: 50%;

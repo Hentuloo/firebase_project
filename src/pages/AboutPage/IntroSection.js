@@ -21,11 +21,24 @@ const Wrapper = styled.section`
   grid-template-columns: 80px 150px 1fr;
   grid-template-rows: 90px 130px 1fr 100px;
   overflow: hidden;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-template-columns: 100px 80px 150px 40px 1fr 200px;
+    grid-template-rows: 140px 160px 1fr 100px;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    grid-template-columns: 100px 80px 190px 40px 1fr 120px 200px;
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    grid-template-columns: 170px 120px 220px 40px 1fr 120px 200px;
+  }
 `;
 const LogoWrapper = styled.div`
   width: 85%;
   padding: 10px 0px 10px 10px;
   margin: 0px auto;
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    padding: 20px 0px 20px 30px;
+  }
 `;
 const LogoImage = styled.img`
   max-width: 100%;
@@ -35,6 +48,15 @@ const HeaderText = styled.p`
   grid-column: 2 / span 1;
   grid-row: 2 / span 1;
   font-size: ${({ theme }) => theme.fs.large};
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 3 / span 1;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    font-size: 3.2em;
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    font-size: 4.2em;
+  }
   span {
     display: block;
   }
@@ -53,6 +75,9 @@ const ArrowButton = styled(RoundButton)`
 const ArrowSVG = styled.img`
   margin: 0px auto;
   height: 19px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    height: 34px;
+  }
 `;
 const ButtonWrapper = styled.div`
   display: grid;
@@ -61,22 +86,45 @@ const ButtonWrapper = styled.div`
   justify-items: center;
   align-items: center;
   z-index: 10;
+  font-size: ${({ theme }) => theme.fs.xs};
+  ${({ theme }) => theme.mediaQuery.md} {
+    font-size: ${({ theme }) => theme.fs.m};
+    align-items: flex-start;
+  }
 `;
 
 const TextMockImage = styled.img`
   display: none;
-  max-width: 80vw;
-  grid-column: 1 / -1;
-  grid-row: -1 / -3;
-  z-index: -2;
-  opacity: 0.05;
-  margin: 0px 10vw;
+  ${({ theme }) => theme.mediaQuery.md} {
+    display: block;
+    max-width: 80vw;
+    grid-column: 5 / -1;
+    grid-row: 2 / span 1;
+    z-index: -2;
+    opacity: 0.2;
+    margin: 0px auto;
+    transform: translate(0%, -75%);
+    width: 42vw;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    max-width: 600px;
+    transform: translate(0%, -40%);
+  }
 `;
 const RaceImage = styled.img`
   max-width: 120vw;
   grid-column: -1 / -3;
   grid-row: 1 / 2;
-  transform: translate(8%, 38%);
+  margin-left: auto;
+  transform: translate(0%, 22%) rotate(-35deg);
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: 1000px;
+    transform: translate(10%, -5%) rotate(0deg);
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    grid-column: 5 / -1;
+    transform: translate(15%, 4%) rotate(0deg);
+  }
 `;
 const LeavesImage = styled.img`
   max-width: 110vw;
@@ -84,9 +132,26 @@ const LeavesImage = styled.img`
   grid-row: -1 / -3;
   align-self: flex-end;
   opacity: 0.3;
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: 550px;
+    margin-left: 40px;
+    margin-bottom: 40px;
+    opacity: 1;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    width: 650px;
+  }
 `;
 
 const IntroSection = () => {
+  const handleScrollPage = e => {
+    e.preventDefault();
+    window.scrollTo({
+      top: window.innerHeight - 90,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <Wrapper>
       <LogoWrapper>
@@ -103,7 +168,7 @@ const IntroSection = () => {
       <TextMockImage src={textMockSVG} />
       <RaceImage src={carsRaceSVG} />
       <LeavesImage src={leavesSVG} />
-      <ArrowButton title="Przejdź dalej">
+      <ArrowButton title="Przejdź dalej" onClick={handleScrollPage}>
         <span className="sr-only">Przejdź dalej</span>
         <ArrowSVG src={arrowSVG} />
       </ArrowButton>

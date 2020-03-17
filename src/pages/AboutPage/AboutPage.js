@@ -22,6 +22,9 @@ const RadialImage = styled.img`
   left: 0%;
   transform: translate(0%, -50%);
   z-index: -1;
+  ${({ theme }) => theme.mediaQuery.lg} {
+    width: 500px;
+  }
 `;
 
 const LineImageStyle = css`
@@ -30,16 +33,28 @@ const LineImageStyle = css`
   left: 0%;
   transform: translate(-30%, -50%);
   z-index: -2;
+  pointer-events: none;
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: 110%;
+    transform: translate(10%, -50%) rotate(20deg);
+  }
 `;
 const LineImage = styled.img`
   ${LineImageStyle}
   top: 185vh;
+  ${({ theme }) => theme.mediaQuery.md} {
+    top: 59%;
+    left: 2%;
+  }
 `;
 const GrayLineImage = styled.img`
   ${LineImageStyle}
   top: 245vh;
   transform: translate(-30%, -50%) rotate(-10deg);
   filter: grayscale(1);
+  ${({ theme }) => theme.mediaQuery.md} {
+    display: none;
+  }
 `;
 
 const AboutPage = () => {

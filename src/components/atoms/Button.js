@@ -5,9 +5,13 @@ export const ClearButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
   font-size: ${({ theme }) => theme.fs.m};
-  font-weight: 300;
   color: ${({ theme }) => theme.color.black[0]};
+  ${({ theme }) => theme.mediaQuery.md} {
+    font-weight: 300;
+  }
 `;
 
 export const ButtonWithBar = styled(ClearButton)`

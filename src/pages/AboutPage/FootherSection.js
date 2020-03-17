@@ -10,12 +10,31 @@ const Wrapper = styled.footer`
   grid-auto-flow: column;
   margin-top: 80px;
   margin-bottom: 30px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-template-columns: 1fr 40% 1fr;
+    margin-top: 300px;
+  }
+`;
+const LinksWrapper = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 2 / span 1;
+  }
 `;
 const FootherLineImage = styled.img`
   position: absolute;
   width: 120%;
   top: 0%;
   transform: translate(-10%, -50%) rotate(43deg);
+  z-index: -5;
+  pointer-events: none;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 1/-1;
+    width: 105%;
+    transform: translate(0%, -44%) rotate(43deg);
+    filter: grayscale(1);
+  }
 `;
 const LinkText = styled.a`
   ${BarDecorator};
@@ -34,9 +53,11 @@ const FootherSection = () => {
   return (
     <Wrapper>
       <FootherLineImage src={lineSVG} />
-      <LinkText>Regulamin</LinkText>
-      <LinkText as="span">Copyrigths@Kamil Chędkowski</LinkText>
-      <LinkText>Developer</LinkText>
+      <LinksWrapper>
+        <LinkText>Regulamin</LinkText>
+        <LinkText as="span">Copyrigths@Kamil Chędkowski</LinkText>
+        <LinkText>Developer</LinkText>
+      </LinksWrapper>
     </Wrapper>
   );
 };
