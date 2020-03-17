@@ -45,7 +45,10 @@ const LevelsSection = () => {
           <GroupImageWrapper>
             <GroupImage src={level1} />
           </GroupImageWrapper>
-          <GroupTitle>Adept</GroupTitle>
+          <GroupTitle>
+            Adept: dla osób które podczas codziennej pracy zmuszeni są
+            patrzeć na klawiaturę.
+          </GroupTitle>
           <GroupDescription>
             ~<TipBold>40</TipBold>słów/minute
           </GroupDescription>
@@ -54,18 +57,26 @@ const LevelsSection = () => {
           <GroupImageWrapper>
             <GroupImage src={level2} />
           </GroupImageWrapper>
-          <GroupTitle>Adept</GroupTitle>
+          <GroupTitle>
+            Średniozawannsowany: dla osób które nie muszą patrzeć na
+            klawiaturę, ale często się mylą i czasem potrzebują
+            zastanowienia.
+          </GroupTitle>
           <GroupDescription>
-            ~<TipBold>40</TipBold>słów/minute
+            ~<TipBold>80</TipBold>słów/minute
           </GroupDescription>
         </GroupItem>
         <GroupItem>
           <GroupImageWrapper>
             <GroupImage src={level3} />
           </GroupImageWrapper>
-          <GroupTitle>Adept</GroupTitle>
+          <GroupTitle>
+            Mistrz: dla osób które chcą przejść jeszcze poziom wyżej,
+            czyli by sztuka szybkiego pisania stała się miejscem
+            rywalizacji!
+          </GroupTitle>
           <GroupDescription>
-            ~<TipBold>40</TipBold>słów/minute
+            ~<TipBold>120</TipBold>słów/minute
           </GroupDescription>
         </GroupItem>
       </GroupWrapper>

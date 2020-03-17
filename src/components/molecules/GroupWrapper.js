@@ -9,7 +9,7 @@ export const GroupWrapper = styled.div`
   ${({ theme }) => theme.mediaQuery.md} {
     grid-auto-flow: column;
     grid-template-columns: repeat(3, minmax(17%, 190px));
-    grid-template-rows: 250px;
+    grid-template-rows: 300px;
     justify-content: space-evenly;
   }
   &::before {
@@ -17,10 +17,10 @@ export const GroupWrapper = styled.div`
     position: absolute;
     content: '';
     width: 90%;
-    height: 50%;
+    height: 40%;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -95%);
+    transform: translate(-50%, -120%);
     background-color: ${({ theme }) => theme.color.white[0]};
     border-radius: 45px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
@@ -54,7 +54,7 @@ export const GroupItem = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 3px solid ${({ theme }) => theme.color.brand[1]};
+    border: 3px solid ${({ theme }) => theme.color.brand[2]};
     padding: 20px 0px 20px;
     box-sizing: content-box;
     border-radius: 45px;
@@ -84,6 +84,7 @@ export const GroupImage = styled.img`
 export const GroupTitle = styled.h4`
   position: relative;
   grid-column: 2 / span 1;
+  margin: 0px 15px;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-column: 1 / span 1;
     grid-row: 3 / span 1;
@@ -96,6 +97,7 @@ export const GroupDescription = styled.p`
   grid-auto-flow: column;
   justify-content: center;
   align-items: end;
+  margin: 20px 0px 0px;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-column: 1 / span 1;
     grid-row: 4 / span 1;
