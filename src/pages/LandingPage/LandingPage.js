@@ -46,6 +46,9 @@ const LineImage = styled.img`
     top: 59%;
     left: 2%;
   }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    top: 54%;
+  }
 `;
 const GrayLineImage = styled.img`
   ${LineImageStyle}

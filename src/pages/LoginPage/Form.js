@@ -108,6 +108,7 @@ const Form = ({
   hasAccount,
   setHasAccount,
   loginWithGoogle,
+  authRequest,
 }) => {
   const [inputValues, setInputValues] = useReducer(
     (prevState, newState) => ({ ...prevState, ...newState }),
@@ -171,6 +172,7 @@ const Form = ({
           <span className="sr-only">Zaloguj się z google</span>
           <span>Google</span> <GoogleIcon src={googleIconSVG} />
         </GoogleButton>
+        {authRequest === true && <span>Ładuje...</span>}
         <LeavesImage src={leavesSVG} />
       </Wrapper>
       <StyledButtonWithBar
@@ -184,6 +186,8 @@ const Form = ({
 };
 
 Form.propTypes = {
+  authRequest: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+    .isRequired,
   onSubmit: PropTypes.func.isRequired,
   hasAccount: PropTypes.bool.isRequired,
   setHasAccount: PropTypes.func.isRequired,

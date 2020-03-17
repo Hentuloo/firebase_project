@@ -18,7 +18,7 @@ export default (state = init, action) => {
     case USER_NOT_LOGGED:
       return { ...init, loggedRequest: false };
     case UPDATE_PROFILE:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload, loggedRequest: false };
     default:
       return state;
   }

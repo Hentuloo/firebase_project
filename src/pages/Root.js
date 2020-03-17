@@ -25,6 +25,11 @@ function Root() {
           component={withUser(MainPage, LandingPage)}
         />
         <Route
+          exact
+          path={Constants.paths.dashboard.path}
+          component={withUser(MainPage)}
+        />
+        <Route
           path={Constants.paths.settings.path}
           component={withUser(SettingsPage)}
         />

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
 import {
   loginWithEmail,
   createAccountWithEmail,
@@ -9,8 +11,15 @@ import {
 import logoSVG from 'assets/svg/logo.svg';
 import backgroundImage from 'assets/svg/road/corner1.svg';
 
+import { Constants } from 'config/Constants';
+import { GoogleLoading } from 'components/atoms';
 import Form from './Form';
 
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+`;
 const LogoWrapper = styled.div`
   position: fixed;
   left: 3%;
@@ -50,6 +59,22 @@ const BackGroundImage = styled.img`
     transform: translate(30%, -15%) rotate(0deg);
   }
 `;
+const StyledAuthLoading = styled(GoogleLoading)`
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  transform: translate(-50%, -50%);
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: auto;
+    left: 5%;
+    top: 5%;
+    transform: translate(0%, 0%);
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    transform: translate(10%, 10%);
+  }
+`;
 
 const LoginPage = () => {
   const [hasAccount, setHasAccount] = useState(true);
@@ -81,7 +106,7 @@ const LoginPage = () => {
   const handleLoginWithGoogle = async e => {
     e.preventDefault();
     try {
-      setAuthRequest(true);
+      setAuthRequest('google');
       await loginWithGoogle();
       setAuthRequest(false);
     } catch (err) {
@@ -90,22 +115,29 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      {authRequest && 'jest teraz logowanie'}
-      <LogoWrapper>
-        <LogoImage src={logoSVG} />
-      </LogoWrapper>
-      <Form
-        onSubmit={onSubmit}
-        authRequest={authRequest}
-        setAuthRequest={setAuthRequest}
-        setHasAccount={setHasAccount}
-        hasAccount={hasAccount}
-        loginWithGoogle={handleLoginWithGoogle}
+    <Wrapper>
+      <StyledAuthLoading
+        active={authRequest === 'google' && !errorMessage}
       />
+      <Link to={Constants.paths.root.path}>
+        <span className="sr-only">Przejdź do strony głównej</span>
+        <LogoWrapper>
+          <LogoImage src={logoSVG} />
+        </LogoWrapper>
+      </Link>
+      {authRequest !== 'google' && (
+        <Form
+          onSubmit={onSubmit}
+          authRequest={authRequest}
+          setAuthRequest={setAuthRequest}
+          setHasAccount={setHasAccount}
+          hasAccount={hasAccount}
+          loginWithGoogle={handleLoginWithGoogle}
+        />
+      )}
       {errorMessage && <p>{errorMessage}</p>}
       <BackGroundImage src={backgroundImage} />
-    </>
+    </Wrapper>
   );
 };
 

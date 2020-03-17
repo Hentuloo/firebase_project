@@ -20,9 +20,9 @@ const Wrapper = styled.section`
   position: relative;
   display: grid;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   grid-template-columns: 80px 150px 1fr;
-  grid-template-rows: 90px 130px 1fr 100px;
+  grid-template-rows: 90px 130px 1fr 170px;
   overflow: hidden;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-template-columns: 100px 80px 150px 40px 1fr 200px;
@@ -70,10 +70,13 @@ const WithBar = styled.span`
 const ArrowButton = styled(RoundButton)`
   position: absolute;
   right: 100%;
-  bottom: 4%;
+  bottom: 10%;
   padding: 14px 20px 10px 80px;
   transform: translate(60%, 0%);
   z-index: 10;
+  ${({ theme }) => theme.mediaQuery.md} {
+    bottom: 4%;
+  }
 `;
 const ArrowSVG = styled.img`
   margin: 0px auto;
