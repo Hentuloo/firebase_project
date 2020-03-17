@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import {
   ButtonWithBar,
@@ -12,6 +13,8 @@ import textMockSVG from 'assets/svg/svgText.svg';
 import carsRaceSVG from 'assets/svg/road/carsRaceFirst.svg';
 import leavesSVG from 'assets/svg/leaves.svg';
 import arrowSVG from 'assets/svg/arrow-white.svg';
+
+import { Constants } from 'config/Constants';
 
 const Wrapper = styled.section`
   position: relative;
@@ -79,7 +82,7 @@ const ArrowSVG = styled.img`
     height: 34px;
   }
 `;
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled(Link)`
   display: grid;
   grid-column: -1 / -3;
   grid-row: -1 / -2;
@@ -87,6 +90,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
   z-index: 10;
   font-size: ${({ theme }) => theme.fs.xs};
+  text-decoration: none;
   ${({ theme }) => theme.mediaQuery.md} {
     font-size: ${({ theme }) => theme.fs.m};
     align-items: flex-start;
@@ -162,8 +166,8 @@ const IntroSection = () => {
         <span>Rywalizuj</span>
         <WithBar>Ucz się!</WithBar>
       </HeaderText>
-      <ButtonWrapper>
-        <ButtonWithBar>Nowe konto</ButtonWithBar>
+      <ButtonWrapper to={Constants.paths.login.path}>
+        <ButtonWithBar as="span">Nowe konto</ButtonWithBar>
       </ButtonWrapper>
       <TextMockImage src={textMockSVG} />
       <RaceImage src={carsRaceSVG} />

@@ -23,7 +23,7 @@ const Wrapper = styled.section`
   }
 `;
 const StyledHeader = styled(TextGroupHeader)`
-  font-size: ${({ theme }) => theme.fs.large};
+  font-size: ${({ theme }) => theme.fs.xxxl};
   text-align: center;
   ${({ theme }) => theme.mediaQuery.md} {
     display: grid;

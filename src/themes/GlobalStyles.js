@@ -12,7 +12,7 @@ body {
     overflow-x: hidden;
    font-family: 'Open Sans', sans-serif;
     font-weight: 300;
-    font-size: ${({ theme }) => theme.fs.xs};
+    font-size: ${({ theme }) => theme.fs.s};
     color:  ${({ theme }) => theme.color.black[0]};  
 
     ${({ theme }) => theme.mediaQuery.md}{

@@ -34,7 +34,6 @@ export const GroupWrapper = styled.div`
 export const GroupItem = styled.div`
   position: relative;
   display: grid;
-  height: 100px;
   grid-template-columns: 100px 1fr;
   grid-template-rows: auto 1fr;
   grid-column-gap: 30px;

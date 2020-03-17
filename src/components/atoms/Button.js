@@ -21,3 +21,12 @@ export const RoundButton = styled(ClearButton)`
   border-radius: 40px;
   border: ${({ theme }) => theme.color.brand[1]} 2px solid;
 `;
+
+export const FilledButton = styled(ClearButton)`
+  margin: 0px auto;
+  padding: 8px 8px 8px 14px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.color.white[0]};
+  border-radius: 32px;
+  background-color: ${({ theme }) => theme.color.brand[1]};
+`;

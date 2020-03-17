@@ -57,7 +57,7 @@ const GrayLineImage = styled.img`
   }
 `;
 
-const AboutPage = () => {
+const LandingPage = () => {
   return (
     <Wrapper>
       <IntroSection />
@@ -72,4 +72,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default LandingPage;

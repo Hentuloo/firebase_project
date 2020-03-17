@@ -9,7 +9,7 @@ import LoginPage from 'pages/LoginPage/LoginPage';
 import SettingsPage from 'pages/SettingsPage/SettingsPage';
 import MainPage from 'pages/MainPage/MainPage';
 import RoomPage from 'pages/RoomPage/RoomPage';
-import AboutPage from 'pages/AboutPage/AboutPage';
+import LandingPage from 'pages/LandingPage/LandingPage';
 
 import { withUser, redirectWhenUserLogged } from 'hoc/withUser';
 import { saveRoomPath } from 'hoc/saveRoomPath';
@@ -22,7 +22,7 @@ function Root() {
         <Route
           exact
           path={Constants.paths.root.path}
-          component={withUser(MainPage, AboutPage)}
+          component={withUser(MainPage, LandingPage)}
         />
         <Route
           path={Constants.paths.settings.path}
