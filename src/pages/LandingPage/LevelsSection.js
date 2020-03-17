@@ -21,6 +21,10 @@ const Wrapper = styled.section`
     max-width: 1350px;
     margin: 120px auto 0px;
   }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    margin: 190px auto 0px;
+    max-width: 1550px;
+  }
 `;
 const StyledHeader = styled(TextGroupHeader)`
   font-size: ${({ theme }) => theme.fs.xxxl};

@@ -18,6 +18,9 @@ body {
     ${({ theme }) => theme.mediaQuery.md}{
          font-size: 1.4rem;
     }
+    ${({ theme }) => theme.mediaQuery.vlg}{
+         font-size: 1.8rem;
+    }
 }
 *,
 *::after,

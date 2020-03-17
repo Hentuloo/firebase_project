@@ -17,6 +17,16 @@ const LogoWrapper = styled.div`
   top: 0.5%;
   width: 50px;
   margin: 0px auto;
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: 80px;
+    left: auto;
+    top: auto;
+    bottom: 2%;
+    right: 2%;
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    width: 100px;
+  }
 `;
 const LogoImage = styled.img`
   max-width: 100%;
@@ -29,6 +39,16 @@ const BackGroundImage = styled.img`
   transform: translate(44%, -25%) rotate(-25deg);
   z-index: -5;
   opacity: 0.2;
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: 100vw;
+    max-width: 1200px;
+    transform: translate(20%, -15%) rotate(-10deg);
+    opacity: 1;
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    max-width: 1500px;
+    transform: translate(30%, -15%) rotate(0deg);
+  }
 `;
 
 const LoginPage = () => {

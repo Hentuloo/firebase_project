@@ -28,5 +28,5 @@ export const FilledButton = styled(ClearButton)`
   font-weight: 600;
   color: ${({ theme }) => theme.color.white[0]};
   border-radius: 32px;
-  background-color: ${({ theme }) => theme.color.brand[1]};
+  background-color: ${({ theme }) => theme.color.brand[3]};
 `;

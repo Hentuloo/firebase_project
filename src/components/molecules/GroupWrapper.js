@@ -12,6 +12,10 @@ export const GroupWrapper = styled.div`
     grid-template-rows: 300px;
     justify-content: space-evenly;
   }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    grid-template-columns: repeat(3, minmax(17%, 220px));
+    grid-template-rows: 370px;
+  }
   &::before {
     display: none;
     position: absolute;
@@ -27,6 +31,10 @@ export const GroupWrapper = styled.div`
     z-index: -1;
     ${({ theme }) => theme.mediaQuery.md} {
       display: block;
+    }
+    ${({ theme }) => theme.mediaQuery.vlg} {
+      height: 30%;
+      transform: translate(-50%, -160%);
     }
   }
 `;

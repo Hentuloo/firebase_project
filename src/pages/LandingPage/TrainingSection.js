@@ -19,6 +19,9 @@ const Wrapper = styled.section`
     grid-template-columns: auto auto;
     grid-template-rows: 100px 170px;
   }
+  ${({ theme }) => theme.mediaQuery.md} {
+    margin: 150px 5vw 0px auto;
+  }
 `;
 const StatisticImage = styled.img`
   display: none;

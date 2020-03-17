@@ -9,6 +9,8 @@ import {
   ButtonWithBar,
 } from 'components/atoms';
 import { Card } from 'components/molecules';
+import leavesSVG from 'assets/svg/leaves.svg';
+import googleIconSVG from 'assets/svg/googleIcon.svg';
 
 const Label = styled.label``;
 const Wrapper = styled(Card)`
@@ -19,6 +21,18 @@ const Wrapper = styled(Card)`
   margin: 70px auto 0px;
   padding: 10px 0px 30px;
   text-align: center;
+  ${({ theme }) => theme.mediaQuery.md} {
+      max-width: 350px;
+    margin: 70px 140px 0px;
+    &::before{
+      width:60%;
+    }
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    max-width: 450px;
+     margin: 120px 200px 0px;
+  }
+
   ${Label}:nth-of-type(1) ${Input} {
     width: 96%;
   }
@@ -27,9 +41,15 @@ const Wrapper = styled(Card)`
   }
   ${FilledButton}:nth-of-type(1) {
     width: 65%;
+    ${({ theme }) => theme.mediaQuery.md} {
+      width: 55%;
+    }
   }
   ${FilledButton}:nth-of-type(2) {
     width: 50%;
+     ${({ theme }) => theme.mediaQuery.md} {
+      width: 40%;
+    }
   }
 `;
 const Title = styled.h2`
@@ -42,13 +62,45 @@ const Title = styled.h2`
   }
 `;
 const StyledButtonWithBar = styled(ButtonWithBar)`
+  display: block;
   width: 100%;
   margin: 15px auto;
   font-weight: 300;
+  max-width: 300px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    max-width: 350px;
+    margin: 15px 140px;
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    max-width: 450px;
+    margin: 15px 200px;
+  }
+
   &::after {
     width: 70px;
     transform: translate(-120%, 0%);
   }
+`;
+const GoogleButton = styled(FilledButton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LeavesImage = styled.img`
+  display: none;
+  ${({ theme }) => theme.mediaQuery.md} {
+    display: block;
+    width: 180%;
+    position: absolute;
+    transform: translate(-25%, -10%) rotate(90deg);
+    z-index: -5;
+    opacity: 0.3;
+  }
+`;
+const GoogleIcon = styled.img`
+  width: 26px;
+  margin-left: 8px;
 `;
 
 const Form = ({
@@ -105,7 +157,7 @@ const Form = ({
         <Label>
           <span className="sr-only">Podaj hasło:</span>
           <Input
-            type="text"
+            type="password"
             name="password"
             value={inputValues.password}
             onChange={changeInput}
@@ -115,10 +167,11 @@ const Form = ({
         <FilledButton type="submit">
           {hasAccount ? 'Zaloguj się' : 'Zarejestruj się'}
         </FilledButton>
-        <FilledButton type="button" onClick={loginWithGoogle}>
+        <GoogleButton type="button" onClick={loginWithGoogle}>
           <span className="sr-only">Zaloguj się z google</span>
-          Google ik
-        </FilledButton>
+          <span>Google</span> <GoogleIcon src={googleIconSVG} />
+        </GoogleButton>
+        <LeavesImage src={leavesSVG} />
       </Wrapper>
       <StyledButtonWithBar
         type="button"

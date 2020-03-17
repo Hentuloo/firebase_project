@@ -32,7 +32,7 @@ const Wrapper = styled.section`
     grid-template-columns: 100px 80px 190px 40px 1fr 120px 200px;
   }
   ${({ theme }) => theme.mediaQuery.vlg} {
-    grid-template-columns: 170px 120px 220px 40px 1fr 120px 200px;
+    grid-template-columns: 170px 120px 280px 40px 1fr 120px 200px;
   }
 `;
 const LogoWrapper = styled.div`
