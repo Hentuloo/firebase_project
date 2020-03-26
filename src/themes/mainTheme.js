@@ -20,6 +20,7 @@ export default {
     md: '@media (min-width: 768px)',
     lg: '@media (min-width: 1024px)',
     vlg: '@media (min-width: 1494px)',
+    mobileKeyboard: ` @media screen and (min-device-aspect-ratio: 1/1) and (min-aspect-ratio: 1/1) and (max-width: 768px)`,
   },
   fs: {
     mini: '0.5em',

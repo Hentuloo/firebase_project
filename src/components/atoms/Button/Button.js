@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BarDecorator } from './BarDecorator';
+import { BarDecorator } from 'components/atoms';
 
 export const ClearButton = styled.button`
   border: none;

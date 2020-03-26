@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Card = styled.div`
+export const CardBackgroud = css`
   position: relative;
   &::before {
     position: absolute;
@@ -16,4 +16,7 @@ export const Card = styled.div`
     background-color: ${({ theme }) => theme.color.white[0]};
     z-index: -1;
   }
+`;
+export const Card = styled.div`
+  ${CardBackgroud}
 `;

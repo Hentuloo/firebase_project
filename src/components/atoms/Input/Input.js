@@ -1,6 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Input = styled.input`
+const withBorder = css`
+  max-width: 100%;
   padding: 10px 8px 10px 14px;
   border: 2px solid ${({ theme }) => theme.color.brand[1]};
   border-radius: 32px;
@@ -10,6 +11,10 @@ export const Input = styled.input`
   &:focus {
     outline: none;
   }
+`;
+
+export const Input = styled.input`
+  ${withBorder}
 `;
 export const TextInput = styled.input`
   padding: 5px 8px 5px 10px;

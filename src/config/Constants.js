@@ -10,17 +10,22 @@ export const Constants = {
       path: '/app/',
       name: 'Strona główna',
     },
-    settings: {
-      path: '/app/ustawienia',
-      name: 'Ustawienia',
-    },
+
     login: {
       path: '/logowanie',
       name: 'Logowanie',
     },
+    settings: {
+      path: '/app/ustawienia',
+      name: 'Ustawienia',
+    },
     room: {
       path: '/app/room',
       name: 'Pokój',
+    },
+    singleDashboard: {
+      path: '/app/single',
+      name: 'Tryb pojedyńczy',
     },
   },
   default: {

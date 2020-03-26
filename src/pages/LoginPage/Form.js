@@ -148,7 +148,7 @@ const Form = ({
         <Label>
           <span className="sr-only">Podaj email:</span>
           <Input
-            type="text"
+            type="email"
             name="email"
             value={inputValues.email}
             onChange={changeInput}

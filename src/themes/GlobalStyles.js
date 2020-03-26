@@ -53,4 +53,20 @@ ul {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+.hide__mobile{
+    display:none;
+    ${({ theme }) => theme.mediaQuery.md} {
+        display:block;
+    }
+}
+.hide__deskop{
+    display:block;
+    ${({ theme }) => theme.mediaQuery.md} {
+        display:none;
+    }
+}
+    
+
+
 `;
