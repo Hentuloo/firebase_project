@@ -6,10 +6,11 @@ import { listenRooms } from 'fb/controllers/rooms';
 import { Card } from 'components/molecules';
 import {
   InputWithFA,
-  RoomButton,
   BarDecorator,
   FilledButton,
 } from 'components/atoms';
+
+import ButtonsGroup from './ButtonsGroup';
 
 const Wrapper = styled(Card)`
   grid-column: 1/-1;
@@ -67,32 +68,8 @@ const Controller = css`
 const StyledFilledLink = styled(FilledButton)`
   ${Controller}
 `;
-const StyledRoomButton = styled(RoomButton)`
-  width: 100%;
-  height: 90%;
-  margin: 6px auto;
-`;
 
-const ButtonsWrapper = styled.div`
-  width: 85%;
-  max-height: 150px;
-  overflow-y: scroll;
-  ${({ theme }) => theme.mediaQuery.md} {
-    overflow-y: initial;
-    ${({ paginationStart }) =>
-      paginationStart &&
-      css`
-        ${`${StyledRoomButton}:nth-child(-n+${paginationStart})`} {
-          display: none;
-        }
-        ${`${StyledRoomButton}:nth-child(n+${Number(paginationStart) +
-          4})`} {
-          display: none;
-        }
-      `}
-  }
-`;
-const RoomsPanel = () => {
+export const RoomsPanel = () => {
   const rooms = useSelector(store => store.rooms.avaiableRooms);
 
   useEffect(() => {
@@ -118,27 +95,7 @@ const RoomsPanel = () => {
       <SmallerTitle>
         {rooms.length === 0 ? 'Nie ma pokoi' : 'Otwarte'}
       </SmallerTitle>
-      <ButtonsWrapper paginationStart="3">
-        <StyledRoomButton number={2}> 1 Siema</StyledRoomButton>
-        <StyledRoomButton number={1}>
-          2 zajebisty pokój
-        </StyledRoomButton>
-        <StyledRoomButton number={1}> 3 Inny pokój</StyledRoomButton>
-        <StyledRoomButton number={2}>4 Siema</StyledRoomButton>
-        <StyledRoomButton number={1}>
-          5 zajebisty pokój
-        </StyledRoomButton>
-        <StyledRoomButton number={1}>6 Inny pokój</StyledRoomButton>
-      </ButtonsWrapper>
-      <SmallerTitle>Prywatne</SmallerTitle>
-      <ButtonsWrapper>
-        <StyledRoomButton withKey>
-          Trochę dłuższy tytuł opkoju
-        </StyledRoomButton>
-        <StyledRoomButton withKey>black magic</StyledRoomButton>
-      </ButtonsWrapper>
+      <ButtonsGroup />
     </Wrapper>
   );
 };
-
-export default RoomsPanel;

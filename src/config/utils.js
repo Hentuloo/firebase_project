@@ -14,3 +14,11 @@ export const validImageFile = ({ size, type }) => {
 
 export const copyToClipBoard = message =>
   navigator.clipboard.writeText(message);
+
+export const chunkArray = (array, chunkCount) => {
+  const chunks = [];
+  while (array.length) {
+    chunks.push(array.splice(0, chunkCount));
+  }
+  return chunks;
+};

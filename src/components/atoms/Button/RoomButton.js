@@ -50,15 +50,12 @@ export const LockIcon = styled.span`
   right: 14px;
 `;
 
-export const RoomButton = ({
-  number,
-  children,
-  withKey,
-  ...props
-}) => {
+export const RoomButton = ({ title, number, withKey, ...props }) => {
   return (
-    <Wrapper {...props}>
-      <ButtonText>{children}</ButtonText>
+    <Wrapper {...props} title={title}>
+      <ButtonText>
+        {title.length < 18 ? title : `${title.slice(0, 16)}...`}
+      </ButtonText>
       <ArrowIcon className="fa fa-arrow-right" aria-hidden="true" />
       {number && <NumberIcon>{number}</NumberIcon>}
       {withKey && (
@@ -68,7 +65,7 @@ export const RoomButton = ({
   );
 };
 RoomButton.propTypes = {
-  children: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
   number: PropTypes.number,
   withKey: PropTypes.bool,
 };

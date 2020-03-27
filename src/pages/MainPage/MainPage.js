@@ -8,7 +8,7 @@ import WithMenuTemplate from 'templates/WithMenuTemplate';
 import { CircleImage } from 'components/atoms';
 import { useSelector } from 'react-redux';
 import { Constants } from 'config/Constants';
-import RoomsPanel from './RoomsPanel';
+import { RoomsPanel } from 'components/organisms';
 // import Dashboard from './Dashboard';
 
 const Wrapper = styled.div`
