@@ -6,7 +6,7 @@ import { logout } from 'fb/controllers/auth';
 
 import { ClearButton } from 'components/atoms';
 
-import UserProfileSettings from './UserProfileSettings';
+// import UserProfileSettings from './UserProfileSettings';
 
 const Wrapper = styled.div`
   display: grid;
@@ -60,7 +60,7 @@ const UserProfile = ({ className }) => {
           />
         </ImageWrapper>
       )}
-      <UserProfileSettings />
+      {/* <UserProfileSettings /> */}
       <Button onClick={handleDeleteAccount}>Usuń konto</Button>
       <Button onClick={handleLogout}>Wyloguj się</Button>
     </Wrapper>

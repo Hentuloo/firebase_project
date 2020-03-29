@@ -24,6 +24,7 @@ const Wrapper = styled(Card)`
   padding: 10px 5px 10px 0px;
   margin: 30px auto;
   ${({ theme }) => theme.mediaQuery.md} {
+    max-width: 340px;
     grid-column: 1 / span 1;
     grid-row: 2 / span 1;
     margin: 0px auto;
@@ -31,6 +32,10 @@ const Wrapper = styled(Card)`
 
   &::before {
     width: 130px;
+    height: 97%;
+    ${({ theme }) => theme.mediaQuery.md} {
+      width: 160px;
+    }
   }
 `;
 

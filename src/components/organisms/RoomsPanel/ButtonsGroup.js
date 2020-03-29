@@ -14,6 +14,9 @@ const GroupWrapper = styled.div`
   ${({ theme }) => theme.mediaQuery.md} {
     height: 180px;
   }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    height: 205px;
+  }
 `;
 const StyledRoomButton = styled(RoomButton)`
   width: 100%;

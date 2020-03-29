@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Constants } from 'config/Constants';
 
 import { BarDecorator, ClearButton } from 'components/atoms';
@@ -27,15 +27,10 @@ const Wrapper = styled.ul`
   }
 `;
 const ListElement = styled.li`
-  ${BarDecorator}
   display: grid;
   text-align: center;
   ${({ theme }) => theme.mediaQuery.mobileKeyboard} {
     display: none !important;
-  }
-  &::after {
-    width: 40px;
-    left: 50%;
   }
 `;
 const LinkElementStyles = css`
@@ -44,22 +39,48 @@ const LinkElementStyles = css`
   font-size: ${({ theme }) => theme.fs.xs};
   font-weight: 600;
 `;
-const LinkElement = styled(Link)`
+const LinkElementBar = css`
+  ${BarDecorator}
+
+  &::after {
+    width: 40px;
+    left: 50%;
+    opacity: 0.3;
+  }
+  &.active {
+    &::after {
+      opacity: 1;
+    }
+  }
+`;
+const LinkElement = styled(NavLink)`
   ${LinkElementStyles}
+   ${BarDecorator}
+  ${LinkElementBar}
 `;
 const StyledButton = styled(ClearButton)`
   ${LinkElementStyles}
+  ${BarDecorator}
+  ${LinkElementBar}
 `;
 const List = () => {
   return (
     <Wrapper>
       <ListElement>
-        <LinkElement to={Constants.paths.root.path}>
+        <LinkElement
+          exact
+          activeClassName="active"
+          to={Constants.paths.root.path}
+        >
           {Constants.paths.root.name}
         </LinkElement>
       </ListElement>
       <ListElement className="hide__mobile">
-        <LinkElement to={Constants.paths.settings.path}>
+        <LinkElement
+          exact
+          activeClassName="active"
+          to={Constants.paths.settings.path}
+        >
           {Constants.paths.settings.name}
         </LinkElement>
       </ListElement>
