@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Constants } from 'config/Constants';
-import { CircleImage } from 'components/atoms';
+import { ProfileImage } from 'components/atoms';
 
 const Wrapper = styled.div`
   display: grid;
@@ -35,7 +35,7 @@ const UserInfo = () => {
     <Wrapper>
       <CircleLink to={Constants.paths.settings.path}>
         <span className="sr-only">Przejdź do ustawień</span>
-        <CircleImage src={photoURL} />
+        <ProfileImage src={photoURL} />
       </CircleLink>
       <TextGroup>
         <Name>{displayName}</Name>

@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import WithMenuTemplate from 'templates/WithMenuTemplate';
 
 // import { useStoredRoom } from 'hooks/useStoredRoom';
-import { CircleImage } from 'components/atoms';
-import { useSelector } from 'react-redux';
+import { ProfileImage } from 'components/atoms';
 import { Constants } from 'config/Constants';
 import { RoomsPanel, SummaryPanel } from 'components/organisms';
 // import Dashboard from './Dashboard';
+
 import cornerSVG from 'assets/svg/road/corner2.svg';
 
 const Wrapper = styled.div`
@@ -43,7 +43,6 @@ const BackgroundImage = styled.img`
 `;
 
 const MainPage = () => {
-  const { photoURL } = useSelector(store => store.user);
   // const [isActiveRoomId, redirect] = useStoredRoom();
 
   return (
@@ -51,7 +50,7 @@ const MainPage = () => {
       <Wrapper>
         <CircleLink to={Constants.paths.settings.path}>
           <span className="sr-only">Przejdź do ustawień</span>
-          <CircleImage src={photoURL} />
+          <ProfileImage />
         </CircleLink>
         <RoomsPanel />
         <SummaryPanel />

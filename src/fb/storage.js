@@ -7,22 +7,27 @@ export const userPhotoRef = uid =>
 
 export const uploadFilePromise = (ref, file, onChange) => {
   return new Promise((resolve, reject) => {
-    ref.put(file).on(
-      'state_changed',
-      snapshot => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        onChange(progress);
-      },
-      err => reject(err),
-      async () => {
-        try {
-          const url = await ref.getDownloadURL();
-          resolve(url);
-        } catch (err) {
-          reject(err);
-        }
-      },
-    );
+    ref
+      .put(file, {
+        cacheControl: 'public,max-age=3000',
+        contentType: 'image/jpeg',
+      })
+      .on(
+        'state_changed',
+        snapshot => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          onChange(progress);
+        },
+        err => reject(err),
+        async () => {
+          try {
+            const url = await ref.getDownloadURL();
+            resolve(url);
+          } catch (err) {
+            reject(err);
+          }
+        },
+      );
   });
 };
