@@ -15,3 +15,10 @@ export const BarDecorator = css`
     transform: translate(-50%, 0%);
   }
 `;
+
+export const BarDecoratorForLink = css`
+  font-weight: 600;
+  font-size: ${({ theme }) => theme.fs.m};
+  color: ${({ theme }) => theme.color.black[0]};
+  ${BarDecorator};
+`;

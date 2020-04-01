@@ -13,6 +13,7 @@ import backgroundImage from 'assets/svg/road/corner1.svg';
 
 import { Constants } from 'config/Constants';
 import { GoogleLoading } from 'components/atoms';
+import { useRedirect } from 'hooks/useRedirect';
 import Form from './Form';
 
 const Wrapper = styled.div`
@@ -80,7 +81,7 @@ const LoginPage = () => {
   const [hasAccount, setHasAccount] = useState(true);
   const [authRequest, setAuthRequest] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const redirect = useRedirect();
   const onSubmit = async ({ email, password, displayName }) => {
     setErrorMessage(null);
     try {
@@ -94,7 +95,8 @@ const LoginPage = () => {
           { email, password },
           { displayName },
         );
-        setAuthRequest(false);
+        redirect(Constants.paths.registered.path);
+        // setAuthRequest(false);
       }
     } catch (err) {
       if (err.code === 'auth/popup-closed-by-user') return;
@@ -108,6 +110,8 @@ const LoginPage = () => {
     try {
       setAuthRequest('google');
       await loginWithGoogle();
+      if (!hasAccount)
+        return redirect(Constants.paths.registered.path);
       setAuthRequest(false);
     } catch (err) {
       setErrorMessage(err.message);

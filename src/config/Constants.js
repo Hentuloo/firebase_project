@@ -10,10 +10,13 @@ export const Constants = {
       path: '/app/',
       name: 'Strona główna',
     },
-
     login: {
       path: '/logowanie',
       name: 'Logowanie',
+    },
+    registered: {
+      path: '/hello',
+      name: 'Powitanie',
     },
     settings: {
       path: '/app/ustawienia',

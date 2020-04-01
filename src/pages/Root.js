@@ -10,6 +10,7 @@ import SettingsPage from 'pages/SettingsPage/SettingsPage';
 import MainPage from 'pages/MainPage/MainPage';
 import RoomPage from 'pages/RoomPage/RoomPage';
 import LandingPage from 'pages/LandingPage/LandingPage';
+import RegisteredPage from 'pages/RegisteredPage/RegisteredPage';
 
 import { withUser, redirectWhenUserLogged } from 'hoc/withUser';
 import { saveRoomPath } from 'hoc/saveRoomPath';
@@ -41,6 +42,11 @@ function Root() {
           path={Constants.paths.login.path}
           component={redirectWhenUserLogged(LoginPage)}
         />
+        <Route
+          path={Constants.paths.registered.path}
+          component={withUser(RegisteredPage)}
+        />
+        <Route component={withUser(MainPage, LandingPage)} />
       </Switch>
     </Router>
   );
