@@ -11,8 +11,10 @@ import {
 import { Card } from 'components/molecules';
 import leavesSVG from 'assets/svg/leaves.svg';
 import googleIconSVG from 'assets/svg/googleIcon.svg';
+import { usePerspectiveAnimation } from 'hooks/usePerspectiveAnimation';
 
 const Label = styled.label``;
+
 const Wrapper = styled(Card)`
   display: grid;
   width: 94%;
@@ -90,10 +92,12 @@ const GoogleButton = styled(FilledButton)`
 const LeavesImage = styled.img`
   display: none;
   ${({ theme }) => theme.mediaQuery.md} {
+    position: fixed;
     display: block;
-    width: 180%;
-    position: absolute;
-    transform: translate(-25%, -10%) rotate(90deg);
+    width: 850px;
+    top: 0px;
+    left: 0px;
+    transform: translate(-10%, -15%) rotate(90deg);
     z-index: -5;
     opacity: 0.3;
   }
@@ -110,6 +114,8 @@ const Form = ({
   loginWithGoogle,
   authRequest,
 }) => {
+  const ref = usePerspectiveAnimation();
+
   const [inputValues, setInputValues] = useReducer(
     (prevState, newState) => ({ ...prevState, ...newState }),
     {
@@ -131,7 +137,7 @@ const Form = ({
 
   return (
     <>
-      <Wrapper as="form" onSubmit={handleSubmitForm}>
+      <Wrapper ref={ref} as="form" onSubmit={handleSubmitForm}>
         <Title>{hasAccount ? 'Logowanie' : 'Nowe konto'}</Title>
         {hasAccount === false && (
           <Label>
@@ -173,8 +179,8 @@ const Form = ({
           <span>Google</span> <GoogleIcon src={googleIconSVG} />
         </GoogleButton>
         {authRequest === true && <span>Ładuje...</span>}
-        <LeavesImage src={leavesSVG} />
       </Wrapper>
+      <LeavesImage src={leavesSVG} />
       <StyledButtonWithBar
         type="button"
         onClick={() => setHasAccount(!hasAccount)}
