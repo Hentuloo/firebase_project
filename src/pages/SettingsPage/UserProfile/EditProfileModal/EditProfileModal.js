@@ -20,20 +20,24 @@ import { submitForm } from './actions';
 
 const Wrapper = styled(Modal)``;
 const FormWrapper = styled.form`
-  min-height: 250px;
   display: grid;
+  min-height: 250px;
   grid-row-gap: 7px;
   justify-content: space-around;
   padding: 30px 30px 10px;
 `;
 const SendFileButton = styled(FilledButton)`
   font-size: ${({ theme }) => theme.fs.xxs};
+  max-width: 60vw;
 `;
 const Label = styled.label`
   display: grid;
-  grid-auto-flow: column;
+
   grid-column-gap: 7px;
   align-items: center;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-auto-flow: column;
+  }
 `;
 
 const initState = {

@@ -19,20 +19,30 @@ const Wrapper = styled.div`
   width: 94%;
   max-width: 450px;
   grid-template-columns: 60px 1fr 60px;
-  grid-template-rows: 30px 30px;
+  grid-template-rows: 30px auto auto;
   grid-row-gap: 10px;
   grid-column-gap: 7px;
   margin: 13px auto;
-  padding: 17px 30px;
+  padding: 17px 15px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-template-columns: 60px 1fr 60px;
+    grid-template-rows: 30px 30px;
+    padding: 17px 30px;
+  }
   ${({ theme }) => theme.mediaQuery.vlg} {
     max-width: 500px;
     grid-row-gap: 20px;
   }
 `;
 const DisplayName = styled.h2`
-  grid-column: 2/3;
-  grid-row: 1/3;
+  grid-column: 1/-1;
+  grid-row: 3/4;
   text-align: center;
+  font-size: ${({ theme }) => theme.fs.s};
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 2/3;
+    grid-row: 1/3;
+  }
 `;
 const StyledProfileImage = styled(ProfileImage)`
   grid-column: 1/2;
@@ -47,13 +57,15 @@ const ButtonsWrapper = styled.div`
   grid-column: 1/-1;
   justify-content: space-around;
   align-content: center;
-  margin-top: 20px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    margin-top: 20px;
+  }
 `;
 const Button = styled(ClearButton)`
   font-size: ${({ theme }) => theme.fs.xs};
   font-weight: 600;
   color: ${({ theme }) => theme.color.brand[3]};
-  text-align: left;
+  text-align: center;
 `;
 const StyledButtonEdit = styled(ButtonEdit)`
   grid-column: 3/4;
