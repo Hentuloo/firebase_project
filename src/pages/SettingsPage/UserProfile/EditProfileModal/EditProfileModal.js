@@ -32,7 +32,6 @@ const SendFileButton = styled(FilledButton)`
 `;
 const Label = styled.label`
   display: grid;
-
   grid-column-gap: 7px;
   align-items: center;
   ${({ theme }) => theme.mediaQuery.md} {

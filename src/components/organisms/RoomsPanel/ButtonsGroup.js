@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 `;
 const GroupWrapper = styled.div`
   width: 100%;
-  height: 173px;
+  height: 172px;
   overflow-y: hidden;
   ${({ theme }) => theme.mediaQuery.md} {
     height: 180px;
