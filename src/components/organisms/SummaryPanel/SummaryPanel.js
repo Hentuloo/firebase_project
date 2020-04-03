@@ -5,12 +5,12 @@ import { FilledButton } from 'components/atoms';
 import {
   RangImage,
   ProggressChart,
-  stickyWrapper,
+  stickyModal,
 } from 'components/molecules';
 import UserInfo from './UserInfo';
 
 const Wrapper = styled.div`
-  ${stickyWrapper}
+  ${stickyModal}
   display: grid;
   width: 80%;
   max-width: 500px;

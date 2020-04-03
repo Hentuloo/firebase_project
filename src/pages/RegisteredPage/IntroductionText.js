@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import smileSVG from 'assets/svg/smile.svg';
 
-import { stickyWrapper } from 'components/molecules';
+import { stickyModal } from 'components/molecules';
 import { CircleImage, BarDecorator } from 'components/atoms';
 
 const Wrapper = styled.div`
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
     grid-template-rows: auto auto;
   }
 
-  ${stickyWrapper}
+  ${stickyModal}
   &::before {
     top: 0%;
     left: 0%;

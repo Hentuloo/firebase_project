@@ -78,7 +78,7 @@ const StyledAuthLoading = styled(GoogleLoading)`
 `;
 
 const LoginPage = () => {
-  const [hasAccount, setHasAccount] = useState(true);
+  const [hasAccount, setHasAccount] = useState(false);
   const [authRequest, setAuthRequest] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const redirect = useRedirect();

@@ -25,6 +25,13 @@ const Wrapper = styled.section`
     margin: 190px auto 0px;
     max-width: 1550px;
   }
+  ${GroupImage} {
+    max-width: 66%;
+    ${({ theme }) => theme.mediaQuery.md} {
+      top: 4%;
+      max-width: 54%;
+    }
+  }
 `;
 const StyledHeader = styled(TextGroupHeader)`
   font-size: ${({ theme }) => theme.fs.xxxl};

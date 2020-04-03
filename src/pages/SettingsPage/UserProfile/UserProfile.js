@@ -9,12 +9,12 @@ import {
   ButtonEdit,
   ProfileImage,
 } from 'components/atoms';
-import { stickyWrapper } from 'components/molecules';
+import { stickyModal } from 'components/molecules';
 
 import EditProfileModal from './EditProfileModal/EditProfileModal';
 
 const Wrapper = styled.div`
-  ${stickyWrapper}
+  ${stickyModal}
   display: grid;
   width: 94%;
   max-width: 450px;
@@ -50,7 +50,7 @@ const StyledProfileImage = styled(ProfileImage)`
 `;
 
 const ButtonsWrapper = styled.div`
-  ${stickyWrapper}
+  ${stickyModal}
   min-height: 35px;
   grid-auto-flow: column;
   display: grid;

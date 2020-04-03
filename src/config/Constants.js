@@ -26,8 +26,8 @@ export const Constants = {
       path: '/app/room',
       name: 'Pokój',
     },
-    singleDashboard: {
-      path: '/app/single',
+    solo: {
+      path: '/app/training',
       name: 'Tryb pojedyńczy',
     },
   },

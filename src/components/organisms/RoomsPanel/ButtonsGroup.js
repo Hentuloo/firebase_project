@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { RoomButton, ClearButton } from 'components/atoms';
+import { RoomButton } from 'components/atoms';
 import { useCollapseAnimation } from 'hooks/useCollapseAnimation';
+import { PaginationArrows } from 'components/molecules';
 
 const Wrapper = styled.div`
   width: 85%;
@@ -22,11 +23,6 @@ const StyledRoomButton = styled(RoomButton)`
   width: 100%;
   margin: 6px auto;
 `;
-const ArrowsWrapper = styled.div`
-  margin: 10px auto;
-  text-align: center;
-`;
-const ArrowButton = styled(ClearButton)``;
 
 const ButtonsGroup = () => {
   const [ref, nextStep, prevStep] = useCollapseAnimation({
@@ -59,16 +55,10 @@ const ButtonsGroup = () => {
         <StyledRoomButton number={2} title="1 Siasdf dasf asdema" />
         <StyledRoomButton number={2} title="1 asdfadfs asdfadfs" />
       </GroupWrapper>
-      <ArrowsWrapper>
-        <ArrowButton onClick={() => nextStep()}>
-          <span className="sr-only">przewiń pokoje do dołu</span>
-          <span className="fa fa-arrow-down" aria-hidden="true" />
-        </ArrowButton>
-        <ArrowButton onClick={() => prevStep()}>
-          <span className="sr-only">przewiń pokoje do góry</span>
-          <span className="fa fa-arrow-up" aria-hidden="true" />
-        </ArrowButton>
-      </ArrowsWrapper>
+      <PaginationArrows
+        next={() => nextStep()}
+        prev={() => prevStep()}
+      />
     </Wrapper>
   );
 };

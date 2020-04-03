@@ -16,9 +16,10 @@ export const copyToClipBoard = message =>
   navigator.clipboard.writeText(message);
 
 export const chunkArray = (array, chunkCount) => {
+  const copyOfArray = [...array];
   const chunks = [];
-  while (array.length) {
-    chunks.push(array.splice(0, chunkCount));
+  while (copyOfArray.length) {
+    chunks.push(copyOfArray.splice(0, chunkCount));
   }
   return chunks;
 };

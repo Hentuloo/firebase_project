@@ -17,9 +17,10 @@ const withShadow = css`
     z-index: -1;
   }
 `;
-export const stickyWrapper = css`
+
+export const stickyModal = css`
   width: 94%;
-  min-height: 80px;
+  min-height: 10px;
   margin: 0px auto;
   border-radius: 40px;
   ${withShadow}

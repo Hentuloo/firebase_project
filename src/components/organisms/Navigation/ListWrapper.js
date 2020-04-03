@@ -85,8 +85,8 @@ const List = () => {
         </LinkElement>
       </ListElement>
       <ListElement className="hide__deskop">
-        <LinkElement to={Constants.paths.singleDashboard.path}>
-          {Constants.paths.singleDashboard.name}
+        <LinkElement to={Constants.paths.solo.path}>
+          {Constants.paths.solo.name}
         </LinkElement>
       </ListElement>
       <ListElement>

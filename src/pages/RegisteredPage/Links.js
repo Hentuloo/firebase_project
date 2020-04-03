@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { stickyWrapper } from 'components/molecules';
+import { stickyModal } from 'components/molecules';
 import { Link } from 'react-router-dom';
 import { BarDecoratorForLink } from 'components/atoms';
 
@@ -32,7 +32,7 @@ const LinkWithImage = styled(Link)`
     align-self: center;
   }
 
-  ${stickyWrapper}
+  ${stickyModal}
   &::before {
     height: 100%;
   }
