@@ -7,6 +7,8 @@ import {
   ProggressChart,
   stickyModal,
 } from 'components/molecules';
+import { Constants } from 'config/Constants';
+import { Link } from 'react-router-dom';
 import UserInfo from './UserInfo';
 
 const Wrapper = styled.div`
@@ -23,8 +25,10 @@ const Wrapper = styled.div`
     grid-row: 2/-1;
   }
 `;
-const StyledFilledButton = styled(FilledButton)`
+const LinkButton = styled(FilledButton)`
   width: 80%;
+  text-align: center;
+  text-decoration: none;
 `;
 const ButtonWithRangImage = styled.div`
   display: grid;
@@ -38,7 +42,9 @@ export const SummaryPanel = () => {
     <Wrapper>
       <UserInfo />
       <ButtonWithRangImage>
-        <StyledFilledButton>Tryb pojedyńczy</StyledFilledButton>
+        <LinkButton as={Link} to={Constants.paths.solo.path}>
+          Tryb pojedyńczy
+        </LinkButton>
         <RangImage />
       </ButtonWithRangImage>
       <ProggressChart />

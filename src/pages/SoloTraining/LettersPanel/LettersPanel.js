@@ -9,9 +9,16 @@ import PharsesExamples from './PharsesExamples';
 import NewPharse from './NewPharse';
 
 const Wrapper = styled.div`
-  ${stickyModal};
-  padding: 15px 20px;
   display: grid;
+  max-width: 300px;
+  grid-row: 3 / span 1;
+  padding: 15px 20px;
+  ${stickyModal};
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 1;
+    align-self: center;
+  }
 `;
 const InnerWrapper = styled.div`
   display: grid;

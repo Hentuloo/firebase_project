@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -40,38 +40,35 @@ const LettersGroupWithLevels = ({ lettersArray, toggleLetter }) => {
   return chunkedArray.map((letters, index) => {
     if (index === 2) {
       return (
-        <>
-          <ImageComponent key={letters[1].id} src={firstLevel} />
+        <Fragment key={letters[0].id}>
+          <ImageComponent src={firstLevel} />
           <StyledMomomizedGroup
-            key={letters[0].id}
             onClick={toggleLetter}
             lettersArray={letters}
           />
-        </>
+        </Fragment>
       );
     }
     if (index === 5) {
       return (
-        <>
-          <ImageComponent key={letters[1].id} src={secondLevel} />
+        <Fragment key={letters[0].id}>
+          <ImageComponent src={secondLevel} />
           <StyledMomomizedGroup
-            key={letters[0].id}
             onClick={toggleLetter}
             lettersArray={letters}
           />
-        </>
+        </Fragment>
       );
     }
     if (index === 8) {
       return (
-        <>
-          <ImageComponent key={letters[1].id} src={ThirdLevel} />
+        <Fragment key={letters[0].id}>
+          <ImageComponent src={ThirdLevel} />
           <StyledMomomizedGroup
-            key={letters[0].id}
             onClick={toggleLetter}
             lettersArray={letters}
           />
-        </>
+        </Fragment>
       );
     }
     return (
