@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
 import { stickyModal } from 'components/molecules';
@@ -27,8 +28,7 @@ const InnerWrapper = styled.div`
   position: relative;
 `;
 
-export const TypingInput = () => {
-  const text = 'fajny jest ten nowy input dobrze się to pisze';
+export const TypingInput = ({ text, render }) => {
   const ArrayedSourceText = useMemo(() => text.split(' '), [text]);
   const {
     ref,
@@ -40,27 +40,34 @@ export const TypingInput = () => {
     // setText,
   } = useInputSpeedTest(text);
 
-  //   useEffect(() => {
-  //   setText(text);
-  // }, []);
-
   return (
-    <Wrapper>
-      <div>Kontrolki</div>
-      <InnerWrapper>
-        <PanelWithTextToWrite
-          todo={text.slice(inputValue.length)}
-          doneGood={goodText}
-          doneWrong={wrongText}
-        />
-        <InputComponent
-          ref={ref}
-          ArrayedSourceText={ArrayedSourceText}
-          inputValue={inputValue}
-          inputWordsInArray={wordsInArray}
-          letterWasAdded={letterWasAdded}
-        />
-      </InnerWrapper>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <div>Kontrolki</div>
+        <InnerWrapper>
+          <PanelWithTextToWrite
+            todo={text.slice(inputValue.length)}
+            doneGood={goodText}
+            doneWrong={wrongText}
+          />
+          <InputComponent
+            ref={ref}
+            ArrayedSourceText={ArrayedSourceText}
+            inputValue={inputValue}
+            inputWordsInArray={wordsInArray}
+            letterWasAdded={letterWasAdded}
+          />
+        </InnerWrapper>
+      </Wrapper>
+      {render && render(inputValue.length)}
+    </>
   );
+};
+
+TypingInput.propTypes = {
+  text: PropTypes.string.isRequired,
+  render: PropTypes.func,
+};
+TypingInput.defaultProps = {
+  render: null,
 };

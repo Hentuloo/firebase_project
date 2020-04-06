@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import styled from 'styled-components';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
@@ -45,18 +45,24 @@ const reducer = (state, action) => {
   }
   return state;
 };
-
+const initialState = Object.keys(letters).map(letter => ({
+  ...letters[letter],
+  letter,
+}));
 const SoloTraining = () => {
-  const [lettersArray, dispatch] = useReducer(reducer, letters);
-  const [activeFinger, setActiveFinger] = useState(null);
+  const [lettersArray, dispatch] = useReducer(reducer, initialState);
 
-  const [cursor, setCursor] = useState(0);
-  const text = 'siema23 sdfasdf as fsdaasd ';
+  const text = 'fajny jest ten nowy input dobrze się to pisze';
 
   const handleToggleLetter = (e, id) => {
-    setActiveFinger(lettersArray[id - 1].finger);
     dispatch({ type: types.TOGGLE_LETTER, payload: id });
   };
+
+  const activeFinger = useCallback(cursor => {
+    const word = text.charAt(cursor);
+    if (word === ' ') return 5;
+    return letters[word] ? letters[word].finger : 5;
+  }, []);
 
   return (
     <WithMenuTemplate>
@@ -68,10 +74,10 @@ const SoloTraining = () => {
         <WrapperWithInput>
           <TypingInput
             text={text}
-            cursor={cursor}
-            setCursor={setCursor}
+            render={cursor => (
+              <Hands activeFinger={activeFinger(cursor)} />
+            )}
           />
-          <Hands activeFinger={activeFinger} />
         </WrapperWithInput>
       </Wrapper>
     </WithMenuTemplate>

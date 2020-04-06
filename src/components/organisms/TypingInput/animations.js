@@ -31,9 +31,9 @@ export const newPointAnim = el => {
   const tl = gsap.timeline();
 
   tl.set(el, { y: '-=50', opacity: 0, scale: 0.4 });
-  tl.to(el, { duration: 0.4, y: '-=25', opacity: 1, scale: 1 }).to(
+  tl.to(el, { duration: 0.5, y: '-=25', opacity: 1, scale: 1 }).to(
     el,
-    { duration: 0.3, y: '-=25', opacity: 0, scale: 0 },
+    { duration: 0.4, y: '-=25', opacity: 0, scale: 0 },
     '-=0.05',
   );
 

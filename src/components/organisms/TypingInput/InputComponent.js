@@ -86,6 +86,7 @@ const InputComponent = forwardRef(
         <Input
           ref={ref}
           value={inputValue}
+          onChange={e => e.preventDefault()}
           type="text"
           spellcheck="false"
         />

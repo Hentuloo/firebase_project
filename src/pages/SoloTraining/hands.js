@@ -1,8 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import gsap from 'gsap';
+import { usePrevious } from 'hooks/usePrevious';
 
 const WrapperSVG = styled.svg`
   max-width: 100%;
@@ -13,7 +19,22 @@ const WrapperSVG = styled.svg`
 
 const Hands = ({ activeFinger }) => {
   const ref = useRef(null);
+  const prevActiveFinger = usePrevious(activeFinger);
   const [fingersNodeIds, setFingersNodesIds] = useState([]);
+
+  const setAsActive = useCallback((active, prevActive, nodes) => {
+    console.log(prevActive);
+    if (prevActive) {
+      gsap.set(`#${nodes[prevActive - 1]} > path`, {
+        duration: 0.1,
+        fill: '#4F4F4F',
+      });
+    }
+    gsap.set(`#${nodes[active - 1]} > path`, {
+      duration: 0.1,
+      fill: 'green',
+    });
+  }, []);
 
   useEffect(() => {
     const hands = [
@@ -28,16 +49,15 @@ const Hands = ({ activeFinger }) => {
     }, []);
 
     const allFingers = [...leftHand, ...rightHand];
+
+    setAsActive(activeFinger, null, allFingers);
     setFingersNodesIds(allFingers);
   }, []);
 
   useEffect(() => {
     if (ref.current === null || fingersNodeIds.length === 0) return;
 
-    gsap.set(`#${fingersNodeIds[activeFinger - 1]} > path`, {
-      duration: 0.1,
-      fill: 'green',
-    });
+    setAsActive(activeFinger, prevActiveFinger, fingersNodeIds);
   }, [activeFinger]);
 
   return (

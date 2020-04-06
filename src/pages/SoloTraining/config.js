@@ -1,218 +1,182 @@
-export const letters = [
-  {
+export const letters = {
+  a: {
     id: 1,
-    letter: 'a',
     active: true,
     finger: 1,
   },
-  {
+  i: {
     id: 2,
-    letter: 'i',
     active: true,
     finger: 8,
   },
-  {
+  e: {
     id: 3,
-    letter: 'e',
     active: true,
     finger: 3,
   },
-  {
+  z: {
     id: 4,
-    letter: 'z',
     active: true,
     finger: 1,
   },
-  {
+  o: {
     id: 5,
-    letter: 'o',
     active: false,
     finger: 9,
   },
-  {
+  n: {
     id: 6,
-    letter: 'n',
     active: false,
     finger: 7,
   },
-  {
+  r: {
     id: 7,
-    letter: 'r',
     active: false,
     finger: 4,
   },
-  {
+  y: {
     id: 8,
-    letter: 'y',
     active: false,
     finger: 7,
   },
-  {
+  s: {
     id: 9,
-    letter: 's',
     active: false,
     finger: 2,
   },
-  {
+  w: {
     id: 10,
-    letter: 'w',
     active: false,
     finger: 2,
   },
-  {
+  c: {
     id: 11,
-    letter: 'c',
     active: false,
     finger: 3,
   },
-  {
+  k: {
     id: 12,
-    letter: 'k',
     active: false,
     finger: 8,
   },
-  {
+  t: {
     id: 13,
-    letter: 't',
     active: false,
     finger: 4,
   },
-  {
+  p: {
     id: 14,
-    letter: 'p',
     active: false,
     finger: 10,
   },
-  {
+  d: {
     id: 15,
-    letter: 'd',
     active: false,
     finger: 3,
   },
-  {
+  m: {
     id: 16,
-    letter: 'm',
     active: false,
     finger: 7,
   },
-  {
+  u: {
     id: 17,
-    letter: 'u',
     active: false,
     finger: 7,
   },
-  {
+  l: {
     id: 18,
-    letter: 'l',
     active: false,
     finger: 9,
   },
-  {
+  ł: {
     id: 19,
-    letter: 'ł',
     active: false,
     finger: 9,
   },
-  {
+  ć: {
     id: 20,
-    letter: 'ć',
     active: false,
     finger: 3,
   },
-  {
+  j: {
     id: 21,
-    letter: 'j',
     active: false,
     finger: 7,
   },
-  {
+  b: {
     id: 22,
-    letter: 'b',
     active: false,
     finger: 4,
   },
-  {
+  g: {
     id: 23,
-    letter: 'g',
     active: false,
     finger: 4,
   },
-  {
+  ś: {
     id: 24,
-    letter: 'ś',
     active: false,
     finger: 2,
   },
-  {
+  ę: {
     id: 25,
-    letter: 'ę',
     active: false,
     finger: 3,
   },
-  {
+  h: {
     id: 26,
-    letter: 'h',
     active: false,
     finger: 7,
   },
-  {
+  ą: {
     id: 27,
-    letter: 'ą',
     active: false,
     finger: 1,
   },
-  {
+  ó: {
     id: 28,
-    letter: 'ó',
     active: false,
     finger: 9,
   },
-  {
+  ż: {
     id: 29,
-    letter: 'ż',
     active: false,
     finger: 1,
   },
-  {
+  f: {
     id: 30,
-    letter: 'f',
     active: false,
     finger: 4,
   },
-  {
+  ń: {
     id: 31,
-    letter: 'ń',
     active: false,
     finger: 7,
   },
-  {
+  ź: {
     id: 32,
-    letter: 'ź',
     active: false,
     finger: 1,
   },
-  {
+  ',': {
     id: 33,
-    letter: ',',
     active: false,
     finger: 8,
   },
-  {
+  '.': {
     id: 34,
-    letter: '.',
     active: false,
     finger: 9,
   },
-  {
+  '?': {
     id: 35,
-    letter: '?',
     active: false,
     finger: 10,
   },
-  {
+  '!': {
     id: 36,
-    letter: '!',
     active: false,
     finger: 1,
   },
-];
+};
