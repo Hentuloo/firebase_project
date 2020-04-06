@@ -2,10 +2,10 @@ import React, { useReducer, useState } from 'react';
 import styled from 'styled-components';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
+import { TypingInput } from 'components/organisms';
 import LettersPanel from './LettersPanel/LettersPanel';
 import { letters } from './config';
 import Hands from './hands';
-import Input from './Input';
 
 const types = {
   TOGGLE_LETTER: 'TOGGLE_LETTER',
@@ -66,7 +66,11 @@ const SoloTraining = () => {
           toggleLetter={handleToggleLetter}
         />
         <WrapperWithInput>
-          <Input text={text} cursor={cursor} setCursor={setCursor} />
+          <TypingInput
+            text={text}
+            cursor={cursor}
+            setCursor={setCursor}
+          />
           <Hands activeFinger={activeFinger} />
         </WrapperWithInput>
       </Wrapper>

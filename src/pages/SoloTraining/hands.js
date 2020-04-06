@@ -187,7 +187,10 @@ const Hands = ({ activeFinger }) => {
   );
 };
 Hands.propTypes = {
-  activeFinger: PropTypes.number.isRequired,
+  activeFinger: PropTypes.number,
+};
+Hands.defaultProps = {
+  activeFinger: 6,
 };
 
 export default Hands;
