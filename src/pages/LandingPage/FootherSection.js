@@ -39,7 +39,7 @@ const FootherLineImage = styled.img`
 const LinkText = styled.a`
   ${BarDecorator};
   font-size: ${({ theme }) => theme.fs.xxs};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fw[1]};
   text-align: center;
 
   &::after {

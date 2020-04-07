@@ -35,4 +35,5 @@ export default {
     xxxl: '2.3em',
     large: '2.8em',
   },
+  fw: [400, 600],
 };

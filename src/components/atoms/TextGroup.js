@@ -26,6 +26,6 @@ export const TipSection = styled.div`
 `;
 export const TipBold = styled.span`
   text-transform: uppercase;
-  font-weight: 800;
+  ${({ theme }) => theme.fw[1]}
   color: ${({ theme }) => theme.color.brand[1]};
 `;

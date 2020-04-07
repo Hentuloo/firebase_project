@@ -63,7 +63,7 @@ const StyledInput = styled(InputWithFA)`
   margin: 6px auto;
   padding-top: 12px;
   padding-bottom: 8px;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fw[1]};
 `;
 const Controller = css`
   width: 100%;

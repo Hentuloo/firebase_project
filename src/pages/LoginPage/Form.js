@@ -55,8 +55,8 @@ const Wrapper = styled(Card)`
   }
 `;
 const Title = styled.h2`
-  font-weight: 600;
   margin: 5px 0px 12px;
+  font-weight: ${({ theme }) => theme.fw[1]};
   ${BarDecorator}
   &::after {
     width: 10%;
@@ -67,7 +67,7 @@ const StyledButtonWithBar = styled(ButtonWithBar)`
   display: block;
   width: 100%;
   margin: 15px auto;
-  font-weight: 300;
+  font-weight: ${({ theme }) => theme.fw[0]};
   max-width: 300px;
   ${({ theme }) => theme.mediaQuery.md} {
     max-width: 350px;

@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   grid-auto-flow: column;
 `;
 const StyledClearButton = styled(ClearButton)`
-  font-weight: 600 !important;
+  font-weight: ${({ theme }) => theme.fw[1]} !important;
   ${({ active }) =>
     active &&
     css`

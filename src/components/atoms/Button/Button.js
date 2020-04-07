@@ -6,7 +6,7 @@ export const ClearButton = styled.button`
   background-color: transparent;
   cursor: pointer;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fw[1]};
   font-size: ${({ theme }) => theme.fs.m};
   color: ${({ theme }) => theme.color.black[0]};
   ${({ theme }) => theme.mediaQuery.md} {
@@ -25,8 +25,8 @@ export const RoundButton = styled(ClearButton)`
 export const FilledButton = styled(ClearButton)`
   margin: 0px auto;
   padding: 8px 8px 8px 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.color.white[0]};
   border-radius: 32px;
+  font-weight: ${({ theme }) => theme.fw[0]};
+  color: ${({ theme }) => theme.color.white[0]};
   background-color: ${({ theme }) => theme.color.brand[3]};
 `;

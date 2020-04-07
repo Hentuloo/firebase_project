@@ -63,7 +63,7 @@ const ButtonsWrapper = styled.div`
 `;
 const Button = styled(ClearButton)`
   font-size: ${({ theme }) => theme.fs.xs};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fw[1]};
   color: ${({ theme }) => theme.color.brand[3]};
   text-align: center;
 `;

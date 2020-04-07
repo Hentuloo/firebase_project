@@ -24,7 +24,7 @@ const Input = styled.input`
   border: none;
   outline: none;
   font-size: 1em;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fw[1]};
   color: transparent;
   background-color: transparent;
   caret-color: ${({ theme }) => theme.color.black[0]};

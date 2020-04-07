@@ -37,7 +37,7 @@ const LinkElementStyles = css`
   text-decoration: none;
   color: ${({ theme }) => theme.color.brand[1]};
   font-size: ${({ theme }) => theme.fs.xs};
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.fw[0]};
 `;
 const LinkElementBar = css`
   ${BarDecorator}
