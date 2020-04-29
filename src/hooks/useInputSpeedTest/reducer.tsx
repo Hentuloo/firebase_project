@@ -13,6 +13,7 @@ export type StateType = {
   cursor: number;
   text: string;
   gameStatus: typingStatus;
+  timeSteps: number;
 };
 
 export const reducer = (
@@ -22,6 +23,19 @@ export const reducer = (
   switch (action.type) {
     case types.SET_GENERAL_TEXT:
       return { ...state, text: action.payload };
+    case types.SET_TIME_STEPS:
+      return { ...state, timeSteps: action.payload };
+    case types.SUBTRACT_TIME_STEPS: {
+      const newTimeStep = state.timeSteps - 1;
+      if (newTimeStep === 0) {
+        return {
+          ...state,
+          timeSteps: 0,
+          gameStatus: typingStatus.END,
+        };
+      }
+      return { ...state, timeSteps: newTimeStep };
+    }
 
     case types.INPUT_NEW_LETTER: {
       if (state.gameStatus === typingStatus.END) return state;

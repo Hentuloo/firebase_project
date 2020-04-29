@@ -36,7 +36,6 @@ const InputText = styled.div`
   top: 50%;
   right: 50%;
   grid-auto-flow: column;
-
   transform: translate(0%, -50%);
   white-space: pre;
 `;

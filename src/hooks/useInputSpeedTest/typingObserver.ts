@@ -21,7 +21,6 @@ interface TypingNewLetter {
 
 export const typingObserver = (
   inputElement: HTMLInputElement,
-  text: string,
   dispatch: React.Dispatch<Action>,
 ) => {
   const input$ = fromEvent(inputElement, 'input');

@@ -44,6 +44,7 @@ export const TypingInput: FC<TypingInput> = ({
     wrongText,
     wordsInArray,
     letterWasAdded,
+    timeSteps,
     // setText,
   } = useInputSpeedTest(text);
 
@@ -51,6 +52,7 @@ export const TypingInput: FC<TypingInput> = ({
     <>
       <Wrapper>
         <div>Kontrolki</div>
+        {(((-timeSteps + 30) / 30) * 100).toFixed(2)}
         <InnerWrapper>
           <PanelWithTextToWrite
             todo={text.slice(inputValue.length)}

@@ -1,10 +1,18 @@
 import { TypingObserverActions } from './typingObserver';
-import { SetGeneralTextAction } from './actions';
+import { TimeObserverAction } from './timeObserver';
+import { ActionCreatorsBasicTypse } from './actions';
 
 export enum types {
   INPUT_BACKSPACE,
   INPUT_NEW_LETTER,
   SET_GENERAL_TEXT,
+  SET_TIME_STEPS,
+  SUBTRACT_TIME_STEPS,
+}
+
+export enum typingMood {
+  TIME,
+  TEXT,
 }
 
 export enum typingStatus {
@@ -13,4 +21,7 @@ export enum typingStatus {
   END,
 }
 
-export type Action = TypingObserverActions | SetGeneralTextAction;
+export type Action =
+  | TypingObserverActions
+  | ActionCreatorsBasicTypse
+  | TimeObserverAction;

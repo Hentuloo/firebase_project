@@ -1,10 +1,12 @@
 import { useEffect, useRef, useReducer } from 'react';
 
+import { Subscription } from 'rxjs';
 import { reducer } from './reducer';
-import { setNewTextAction } from './actions';
+import { setNewTextAction, setTimeStepsAction } from './actions';
 
 import { typingObserver } from './typingObserver';
 import { typingStatus } from './types';
+import { timeObserver } from './timeObserver';
 
 const initValue = {
   inputValue: '',
@@ -15,6 +17,7 @@ const initValue = {
   cursor: 0,
   text: '',
   gameStatus: typingStatus.BEGINING,
+  timeSteps: 30,
 };
 
 export const useInputSpeedTest = (text = '') => {
@@ -26,13 +29,24 @@ export const useInputSpeedTest = (text = '') => {
   });
 
   useEffect(() => {
+    // typing listener
     const el = ref.current;
     if (!el) return;
 
-    // typing listener
-    const sub = typingObserver(el, text, dispatch);
+    const sub = typingObserver(el, dispatch);
     return () => sub.unsubscribe();
   }, [text]);
+
+  useEffect(() => {
+    // time listener
+    let timeSub: undefined | Subscription;
+    if (state.gameStatus === typingStatus.TYPING) {
+      timeSub = timeObserver(100, dispatch);
+    }
+    return () => {
+      if (timeSub) timeSub.unsubscribe();
+    };
+  }, [state.gameStatus]);
 
   const setInputFocus = () => {
     const input = ref.current;
@@ -43,11 +57,16 @@ export const useInputSpeedTest = (text = '') => {
   const setText = (pharse: string) =>
     dispatch(setNewTextAction(pharse));
 
+  const setTimeSteps = (time: number) => {
+    dispatch(setTimeStepsAction(time));
+  };
+
   return {
     ...state,
     ref,
     setInputFocus,
     setText,
     text,
+    setTimeSteps,
   };
 };
