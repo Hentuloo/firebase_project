@@ -1,9 +1,10 @@
 import { useEffect, useRef, useReducer } from 'react';
-import { fromEvent } from 'rxjs';
 
 import { reducer } from './reducer';
-import { types, Action } from './types';
-import { inputTypingObserver } from './actions';
+import { setNewTextAction } from './actions';
+
+import { typingObserver } from './typingObserver';
+import { typingStatus } from './types';
 
 const initValue = {
   inputValue: '',
@@ -13,11 +14,7 @@ const initValue = {
   wrongText: '',
   cursor: 0,
   text: '',
-};
-
-export type SetGeneralTextAction = {
-  type: types.SET_GENERAL_TEXT;
-  payload: string;
+  gameStatus: typingStatus.BEGINING,
 };
 
 export const useInputSpeedTest = (text = '') => {
@@ -31,26 +28,20 @@ export const useInputSpeedTest = (text = '') => {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // listener
-    const inputTypingSub = inputTypingObserver(
-      fromEvent(el, 'input'),
-    ).subscribe(e => dispatch(e as Action));
 
-    return () => {
-      inputTypingSub.unsubscribe();
-    };
-  }, []);
+    // typing listener
+    const sub = typingObserver(el, text, dispatch);
+    return () => sub.unsubscribe();
+  }, [text]);
 
   const setInputFocus = () => {
     const input = ref.current;
     if (!input) return;
     input.focus();
   };
+
   const setText = (pharse: string) =>
-    dispatch({
-      type: types.SET_GENERAL_TEXT,
-      payload: pharse,
-    } as SetGeneralTextAction);
+    dispatch(setNewTextAction(pharse));
 
   return {
     ...state,

@@ -1,16 +1,16 @@
-import { TypingBackspace, TypingNewLetter } from './actions';
-import { SetGeneralTextAction } from './useInputSpeedTest';
+import { TypingObserverActions } from './typingObserver';
+import { SetGeneralTextAction } from './actions';
 
 export enum types {
   INPUT_BACKSPACE,
   INPUT_NEW_LETTER,
   SET_GENERAL_TEXT,
 }
-export interface InputObserverResponse {
-  letter: string;
-  inputValue: string;
+
+export enum typingStatus {
+  BEGINING,
+  TYPING,
+  END,
 }
-export type Action =
-  | TypingBackspace
-  | TypingNewLetter
-  | SetGeneralTextAction;
+
+export type Action = TypingObserverActions | SetGeneralTextAction;

@@ -65,11 +65,13 @@ const SoloTraining = () => {
     dispatch({ type: types.TOGGLE_LETTER, payload: id });
   };
 
-  const activeFinger = useCallback(cursor => {
+  const activeFinger = useCallback((cursor: number) => {
     const word = text.charAt(cursor);
     if (word === ' ') return 5;
+
     // @ts-ignore
-    return letters[word] ? letters[word].finger : 5;
+    const fingerIndex = letters[word] ? letters[word].finger : 5;
+    return fingerIndex;
   }, []);
 
   return (

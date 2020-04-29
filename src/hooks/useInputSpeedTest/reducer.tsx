@@ -1,9 +1,8 @@
 import {
-  checkNewInputValue,
-  addLetterToLastWord,
   removeLeterFromLastWord,
+  getStatePieceWithNewLetter,
 } from './utils';
-import { types, Action } from './types';
+import { types, Action, typingStatus } from './types';
 
 export type StateType = {
   inputValue: string;
@@ -13,6 +12,7 @@ export type StateType = {
   wrongText: string;
   cursor: number;
   text: string;
+  gameStatus: typingStatus;
 };
 
 export const reducer = (
@@ -22,29 +22,27 @@ export const reducer = (
   switch (action.type) {
     case types.SET_GENERAL_TEXT:
       return { ...state, text: action.payload };
+
     case types.INPUT_NEW_LETTER: {
-      const { inputValue, letter: newLetter } = action.payload;
-      const [newGoodChar, newWrongChar] = checkNewInputValue(
-        state.text,
-        inputValue,
-        newLetter,
-      );
-      const wordsInArray = addLetterToLastWord(
-        state.wordsInArray,
-        newLetter,
-      );
+      if (state.gameStatus === typingStatus.END) return state;
+      const {
+        payload,
+        payload: { inputValue },
+      } = action;
+
+      const isLastLetter = inputValue.length === state.text.length;
 
       return {
         ...state,
-        inputValue,
-        wordsInArray,
-        letterWasAdded: true,
-        wrongText: state.wrongText + newWrongChar,
-        goodText: state.goodText + newGoodChar,
+        ...getStatePieceWithNewLetter(state, payload),
+        gameStatus: isLastLetter
+          ? typingStatus.END
+          : typingStatus.TYPING,
       };
     }
 
     case types.INPUT_BACKSPACE: {
+      if (state.gameStatus === typingStatus.END) return state;
       return {
         ...state,
         wordsInArray: removeLeterFromLastWord(state.wordsInArray),
@@ -54,6 +52,7 @@ export const reducer = (
         goodText: state.goodText.slice(0, -1),
       };
     }
+
     default:
       return state;
   }

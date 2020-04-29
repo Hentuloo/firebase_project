@@ -27,11 +27,11 @@ const InnerWrapper = styled.div`
   ${stickyModal}
   position: relative;
 `;
+
 interface TypingInput {
   text: string;
   render?: (length: number) => any;
 }
-
 export const TypingInput: FC<TypingInput> = ({
   text,
   render = null,

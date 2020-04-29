@@ -1,3 +1,5 @@
+import { StateType } from './reducer';
+
 export const checkNewInputValue = (
   correctText: string,
   inputValue: string,
@@ -14,7 +16,7 @@ export const checkNewInputValue = (
   return [' ', isSpace ? '_' : letterInCorrectText];
 };
 
-export const addLetterToLastWord = (
+export const addLetterToLastWordInArray = (
   array: Array<string>,
   letter: string,
 ) => {
@@ -38,4 +40,30 @@ export const removeLeterFromLastWord = (
     ];
   }
   return [...array.slice(0, -1), array.slice(-1)[0].slice(0, -1)];
+};
+
+export const getStatePieceWithNewLetter = (
+  state: StateType,
+  values: {
+    inputValue: string;
+    letter: string;
+  },
+) => {
+  const { inputValue, letter: newLetter } = values;
+  const [newGoodChar, newWrongChar] = checkNewInputValue(
+    state.text,
+    inputValue,
+    newLetter,
+  );
+  const wordsInArray = addLetterToLastWordInArray(
+    state.wordsInArray,
+    newLetter,
+  );
+  return {
+    inputValue,
+    wordsInArray,
+    letterWasAdded: true,
+    wrongText: state.wrongText + newWrongChar,
+    goodText: state.goodText + newGoodChar,
+  };
 };
