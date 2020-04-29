@@ -2,10 +2,13 @@ import React, { useReducer, useCallback } from 'react';
 import styled from 'styled-components';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
-import { TypingInput } from 'components/organisms';
-import LettersPanel from './LettersPanel/LettersPanel';
-import { letters } from './config';
-import Hands from './hands';
+import {
+  TypingInput,
+  LettersPanel,
+  Hands,
+} from 'components/organisms';
+
+import { letters } from 'config/soloTrainingConfig';
 
 const types = {
   TOGGLE_LETTER: 'TOGGLE_LETTER',

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { PaginationArrows, stickyModal } from 'components/molecules';
 import { useCollapseAnimation } from 'hooks/useCollapseAnimation';
@@ -31,7 +30,7 @@ interface LettersPanelProps {
   lettersArray: string[];
   toggleLetter: (e: any, id: number) => any;
 }
-const LettersPanel = ({
+export const LettersPanel = ({
   lettersArray,
   toggleLetter,
 }: LettersPanelProps) => {
@@ -62,15 +61,3 @@ const LettersPanel = ({
     </Wrapper>
   );
 };
-LettersPanel.propTypes = {
-  lettersArray: PropTypes.arrayOf(
-    PropTypes.shape({
-      letter: PropTypes.string,
-      active: PropTypes.bool,
-      id: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  toggleLetter: PropTypes.func.isRequired,
-};
-
-export default LettersPanel;

@@ -20,7 +20,7 @@ const WrapperSVG = styled.svg`
 interface HandsProps {
   activeFinger: number;
 }
-const Hands: FC<HandsProps> = ({ activeFinger = 6 }) => {
+export const Hands: FC<HandsProps> = ({ activeFinger = 6 }) => {
   const wrapper = useRef<SVGSVGElement>(null);
   const prevActiveFinger = usePrevious(activeFinger);
   const [fingersNodeIds, setFingersNodesIds] = useState<any[]>([]);
@@ -203,5 +203,3 @@ const Hands: FC<HandsProps> = ({ activeFinger = 6 }) => {
     </WrapperSVG>
   );
 };
-
-export default Hands;
