@@ -14,10 +14,15 @@ const initValue = {
   letterWasAdded: true,
   goodText: '',
   wrongText: '',
+  wrongLength: 0,
+  goodLength: 0,
   cursor: 0,
   text: '',
   gameStatus: typingStatus.BEGINING,
+  initialTimeSteps: 30,
   timeSteps: 30,
+  accuracy: 100,
+  speed: 0,
 };
 export const useInputSpeedTest = (text = '') => {
   const ref = useRef<HTMLInputElement>(null);

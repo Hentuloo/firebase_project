@@ -23,7 +23,6 @@ interface HandsProps {
   cursor: number;
 }
 export const Hands: FC<HandsProps> = ({ text, cursor }) => {
-  console.log(cursor);
   const wrapper = useRef<SVGSVGElement>(null);
   const prevActiveFinger = usePrevious(
     getFingerIdByCursor(text, cursor),

@@ -10,7 +10,7 @@ body {
     margin: 0px;
     padding: 0px;
     overflow-x: hidden;
-   font-family: 'Open Sans', sans-serif;
+   font-family: ${({ theme }) => theme.ff[0]};
     font-weight: 300;
     font-size: ${({ theme }) => theme.fs.s};
     color:  ${({ theme }) => theme.color.black[0]};  

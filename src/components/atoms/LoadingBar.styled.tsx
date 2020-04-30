@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 interface LoadingBarProps {
   progress?: number;
   green?: boolean;
+  duration?: number;
+  easing?: string;
 }
 
 export const LoadingBar = styled.div<LoadingBarProps>`
@@ -21,7 +23,9 @@ export const LoadingBar = styled.div<LoadingBarProps>`
     top: 0%;
     left: 0%;
     background-color: ${({ theme }) => theme.color.gray[0]};
-    transition: transform 0.5s ease;
+    transition: transform
+      ${({ duration }) => (duration ? `${duration}s` : '0.5s')}
+      ${({ easing }) => easing || 'ease'};
   }
 
   ${({ green }) =>

@@ -12,8 +12,8 @@ export const checkNewInputValue = (
   const isLetterOk = letterInCorrectText === newLetter;
   const isSpace = letterInCorrectText === ' ';
 
-  if (isLetterOk) return [letterInCorrectText, ' '];
-  return [' ', isSpace ? '_' : letterInCorrectText];
+  if (isLetterOk) return [letterInCorrectText, ' ', false];
+  return [' ', isSpace ? '_' : letterInCorrectText, true];
 };
 
 export const addLetterToLastWordInArray = (
@@ -50,21 +50,25 @@ export const getStatePieceWithNewLetter = (
   },
 ) => {
   const { inputValue, letter: newLetter } = values;
-  const [newGoodChar, newWrongChar] = checkNewInputValue(
+  const [newGoodChar, newWrongChar, isWrong] = checkNewInputValue(
     state.text,
     inputValue,
     newLetter,
   );
+
   const wordsInArray = addLetterToLastWordInArray(
     state.wordsInArray,
     newLetter,
   );
+
   return {
     inputValue,
     wordsInArray,
     letterWasAdded: true,
+    cursor: inputValue.length,
     wrongText: state.wrongText + newWrongChar,
     goodText: state.goodText + newGoodChar,
-    cursor: inputValue.length,
+    wrongLength: state.wrongLength + (isWrong ? 1 : 0),
+    goodLength: state.goodLength + (isWrong ? 0 : 1),
   };
 };

@@ -10,10 +10,15 @@ export type StateType = {
   letterWasAdded: boolean;
   goodText: string;
   wrongText: string;
+  wrongLength: number;
+  goodLength: number;
   cursor: number;
   text: string;
   gameStatus: typingStatus;
   timeSteps: number;
+  initialTimeSteps: number;
+  accuracy: number;
+  speed: number;
 };
 
 export const reducer = (
@@ -27,14 +32,25 @@ export const reducer = (
       return { ...state, timeSteps: action.payload };
     case types.SUBTRACT_TIME_STEPS: {
       const newTimeStep = state.timeSteps - 1;
-      if (newTimeStep === 0) {
-        return {
-          ...state,
-          timeSteps: 0,
-          gameStatus: typingStatus.END,
-        };
-      }
-      return { ...state, timeSteps: newTimeStep };
+      const gameTime = state.initialTimeSteps - newTimeStep;
+
+      // Calculate new accurancy and speed
+      const writtenWords = state.wordsInArray.length;
+      const accuracy = Number(
+        (100 - (state.wrongLength / state.cursor) * 100).toFixed(2),
+      );
+      const speed = Number(
+        (writtenWords / (gameTime / 60)).toFixed(2),
+      );
+
+      return {
+        ...state,
+        accuracy,
+        speed,
+        timeSteps: newTimeStep,
+        gameStatus:
+          newTimeStep === 0 ? typingStatus.END : state.gameStatus,
+      };
     }
 
     case types.INPUT_NEW_LETTER: {

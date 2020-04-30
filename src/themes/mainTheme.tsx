@@ -22,6 +22,7 @@ export default {
     vlg: '@media (min-width: 1494px)',
     mobileKeyboard: ` @media screen and (min-device-aspect-ratio: 1/1) and (min-aspect-ratio: 1/1) and (max-width: 768px)`,
   },
+  ff: ["'Open Sans', sans-serif", "'PT Mono', monospace"],
   fs: {
     mini: '0.5em',
     xxxs: '0.7em',

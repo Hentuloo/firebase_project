@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   position: relative;
   display: grid;
   height: 100%;
-  grid-template-rows: 1fr 200px 40px;
+  grid-template-rows: 1fr 200px 50px;
   justify-content: center;
   align-self: center;
 `;
@@ -19,7 +19,7 @@ const StyledLoadingBar = styled(LoadingBar)`
   width: 80%;
   height: 10px;
   max-width: 550px;
-  bottom: 0%;
+  bottom: 1%;
   left: 50%;
   transform: translate(-50%, 0%);
 `;
@@ -41,6 +41,8 @@ const TypingControllers: React.SFC<TypingControllersProps> = ({
             <Hands text={text} cursor={cursor} />
             <StyledLoadingBar
               green
+              easing="linear"
+              duration={1}
               progress={Number(((timeSteps / 30) * 100).toFixed(2))}
             />
           </>

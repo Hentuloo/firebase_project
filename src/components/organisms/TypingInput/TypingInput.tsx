@@ -10,17 +10,22 @@ import {
 
 import PanelWithTextToWrite from './PanelWithTextToWrite';
 import InputComponent from './InputComponent';
+import { Counters } from './Counters';
 
 const inputFont = css`
-  font-family: 'PT Mono', monospace;
+  font-family: ${({ theme }) => theme.ff[1]};
   font-size: ${({ theme }) => theme.fs.m};
 `;
 
 const Wrapper = styled.div`
   position: relative;
   display: grid;
-  grid-template-rows: 40px 135px auto;
+  grid-template-rows: 60px 135px auto;
+  grid-row-gap: 15px;
   ${inputFont}
+  ${({ theme }) => theme.mediaQuery.lg} {
+    grid-row-gap: 35px;
+  }
 `;
 const InnerWrapper = styled.div`
   display: grid;
@@ -50,13 +55,13 @@ export const TypingInput: FC<TypingInput> = ({
     wrongText,
     wordsInArray,
     letterWasAdded,
+    accuracy,
+    speed,
   } = inputState;
-
   return (
     <>
       <Wrapper className={className}>
-        <div>Kontrolki</div>
-
+        <Counters accuracy={accuracy} speed={speed} />
         <InnerWrapper>
           <PanelWithTextToWrite
             todo={text.slice(inputValue.length)}

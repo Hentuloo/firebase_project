@@ -5,3 +5,4 @@ export * from './BarDecorator.styled';
 export * from './TextGroup.styled';
 export * from './GoogleLoading';
 export * from './CircleImage';
+export * from './StatusLabel';
