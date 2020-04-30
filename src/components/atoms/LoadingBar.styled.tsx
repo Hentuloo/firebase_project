@@ -2,15 +2,17 @@ import styled, { css } from 'styled-components';
 
 interface LoadingBarProps {
   progress?: number;
+  green?: boolean;
 }
 
 export const LoadingBar = styled.div<LoadingBarProps>`
   position: relative;
-  height: 4px;
+  height: 5px;
   width: 100%;
   background: ${({ theme }) => theme.color.gradients[0]};
-  border-radius: 20px;
+  border-radius: 40px;
   overflow: hidden;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   &::after {
     content: '';
     position: absolute;
@@ -21,6 +23,13 @@ export const LoadingBar = styled.div<LoadingBarProps>`
     background-color: ${({ theme }) => theme.color.gray[0]};
     transition: transform 0.5s ease;
   }
+
+  ${({ green }) =>
+    green &&
+    css`
+      background: ${({ theme }) => theme.color.brand[0]};
+    `}
+
   ${({ progress }) =>
     progress &&
     css`

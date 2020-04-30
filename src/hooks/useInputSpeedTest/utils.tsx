@@ -65,5 +65,6 @@ export const getStatePieceWithNewLetter = (
     letterWasAdded: true,
     wrongText: state.wrongText + newWrongChar,
     goodText: state.goodText + newGoodChar,
+    cursor: inputValue.length,
   };
 };

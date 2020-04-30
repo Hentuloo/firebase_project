@@ -3,7 +3,10 @@ import React, { useMemo, FC } from 'react';
 import styled, { css } from 'styled-components';
 
 import { stickyModal } from 'components/molecules';
-import { useInputSpeedTest } from 'hooks/useInputSpeedTest/useInputSpeedTest';
+import {
+  useInputSpeedTest,
+  UseInputSpeedTestReturnApi,
+} from 'hooks/useInputSpeedTest/useInputSpeedTest';
 
 import PanelWithTextToWrite from './PanelWithTextToWrite';
 import InputComponent from './InputComponent';
@@ -30,13 +33,16 @@ const InnerWrapper = styled.div`
 
 interface TypingInput {
   text: string;
-  render?: (length: number) => any;
+  className?: string;
+  render?: (inputState: UseInputSpeedTestReturnApi) => any;
 }
 export const TypingInput: FC<TypingInput> = ({
   text,
+  className = '',
   render = null,
 }) => {
   const ArrayedSourceText = useMemo(() => text.split(' '), [text]);
+  const inputState = useInputSpeedTest(text);
   const {
     ref,
     inputValue,
@@ -44,15 +50,13 @@ export const TypingInput: FC<TypingInput> = ({
     wrongText,
     wordsInArray,
     letterWasAdded,
-    timeSteps,
-    // setText,
-  } = useInputSpeedTest(text);
+  } = inputState;
 
   return (
     <>
-      <Wrapper>
+      <Wrapper className={className}>
         <div>Kontrolki</div>
-        {(((-timeSteps + 30) / 30) * 100).toFixed(2)}
+
         <InnerWrapper>
           <PanelWithTextToWrite
             todo={text.slice(inputValue.length)}
@@ -68,7 +72,7 @@ export const TypingInput: FC<TypingInput> = ({
           />
         </InnerWrapper>
       </Wrapper>
-      {render && render(inputValue.length)}
+      {render && render(inputState)}
     </>
   );
 };

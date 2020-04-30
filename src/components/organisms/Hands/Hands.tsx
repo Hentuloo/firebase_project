@@ -9,7 +9,8 @@ import React, {
 import styled from 'styled-components';
 import gsap from 'gsap';
 import { usePrevious } from 'hooks/usePrevious';
-import { getSeparateFingers } from './utils';
+
+import { getSeparateFingers, getFingerIdByCursor } from './utils';
 
 const WrapperSVG = styled.svg`
   max-width: 100%;
@@ -18,11 +19,15 @@ const WrapperSVG = styled.svg`
   }
 `;
 interface HandsProps {
-  activeFinger: number;
+  text: string;
+  cursor: number;
 }
-export const Hands: FC<HandsProps> = ({ activeFinger = 6 }) => {
+export const Hands: FC<HandsProps> = ({ text, cursor }) => {
+  console.log(cursor);
   const wrapper = useRef<SVGSVGElement>(null);
-  const prevActiveFinger = usePrevious(activeFinger);
+  const prevActiveFinger = usePrevious(
+    getFingerIdByCursor(text, cursor),
+  );
   const [fingersNodeIds, setFingersNodesIds] = useState<any[]>([]);
 
   const setAsActive = useCallback((active, prevActive, nodes) => {
@@ -46,16 +51,19 @@ export const Hands: FC<HandsProps> = ({ activeFinger = 6 }) => {
     const [leftHand, rightHand] = getSeparateFingers(hands);
     const allFingers = [...leftHand, ...rightHand];
 
-    setAsActive(activeFinger, null, allFingers);
+    const finger = getFingerIdByCursor(text, cursor);
+
+    setAsActive(finger, null, allFingers);
     setFingersNodesIds(allFingers);
-  }, [setAsActive, activeFinger]);
+  }, [cursor, text, setAsActive]);
 
   useEffect(() => {
     const el = wrapper.current;
     if (el === null || fingersNodeIds.length === 0) return;
+    const finger = getFingerIdByCursor(text, cursor);
 
-    setAsActive(activeFinger, prevActiveFinger, fingersNodeIds);
-  }, [activeFinger, fingersNodeIds, prevActiveFinger, setAsActive]);
+    setAsActive(finger, prevActiveFinger, fingersNodeIds);
+  }, [cursor, text, setAsActive, fingersNodeIds, prevActiveFinger]);
 
   return (
     <WrapperSVG

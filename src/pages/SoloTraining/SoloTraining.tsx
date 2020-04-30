@@ -1,18 +1,13 @@
-import React, { useReducer, useCallback } from 'react';
+import React, { useReducer } from 'react';
 import styled from 'styled-components';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
-import {
-  TypingInput,
-  LettersPanel,
-  Hands,
-} from 'components/organisms';
+import { LettersPanel } from 'components/organisms';
 
 import { letters } from 'config/soloTrainingConfig';
+import TypingControllers from './TypingControllers';
 
-const types = {
-  TOGGLE_LETTER: 'TOGGLE_LETTER',
-};
+import lettersReducer, { types } from './choosedLettersReducer';
 
 const Wrapper = styled.div`
   display: grid;
@@ -20,59 +15,36 @@ const Wrapper = styled.div`
   height: 100%;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto auto;
+  grid-row-gap: 20px;
   margin: 0px auto;
   ${({ theme }) => theme.mediaQuery.md} {
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 65px);
     width: 90%;
     grid-template-columns: 1fr 230px;
     grid-template-rows: auto;
+    grid-row-gap: 0px;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    min-height: calc(100vh - 85px);
   }
 `;
-const WrapperWithInput = styled.div`
-  display: grid;
-  height: 600px;
-  grid-template-rows: 1fr 200px;
-  justify-content: center;
-  align-self: flex-end;
-`;
-
-type StateType = any[];
-const reducer = (state: StateType, action: any): StateType => {
-  if (action.type === types.TOGGLE_LETTER) {
-    const index = action.payload;
-
-    return [...state].map(letter =>
-      letter.id === index
-        ? { ...letter, active: !letter.active }
-        : letter,
-    );
-  }
-  return state;
-};
 
 const initialState = Object.keys(letters).map(letter => ({
-  // @ts-ignore
   ...letters[letter],
   letter,
 }));
 
 const SoloTraining = () => {
-  const [lettersArray, dispatch] = useReducer(reducer, initialState);
-
-  const text = 'fajny jest ten nowy input dobrze się to pisze';
+  const [lettersArray, dispatch] = useReducer<typeof lettersReducer>(
+    lettersReducer,
+    initialState,
+  );
 
   const handleToggleLetter = (e: any, id: number) => {
     dispatch({ type: types.TOGGLE_LETTER, payload: id });
   };
 
-  const activeFinger = useCallback((cursor: number) => {
-    const word = text.charAt(cursor);
-    if (word === ' ') return 5;
-
-    // @ts-ignore
-    const fingerIndex = letters[word] ? letters[word].finger : 5;
-    return fingerIndex;
-  }, []);
+  const text = 'fajny jest ten nowy input dobrze się to pisze';
 
   return (
     <WithMenuTemplate>
@@ -81,14 +53,7 @@ const SoloTraining = () => {
           lettersArray={lettersArray}
           toggleLetter={handleToggleLetter}
         />
-        <WrapperWithInput>
-          <TypingInput
-            text={text}
-            render={cursor => (
-              <Hands activeFinger={activeFinger(cursor)} />
-            )}
-          />
-        </WrapperWithInput>
+        <TypingControllers text={text} letters={lettersArray} />
       </Wrapper>
     </WithMenuTemplate>
   );

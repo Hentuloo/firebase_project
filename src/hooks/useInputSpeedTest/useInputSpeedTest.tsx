@@ -19,7 +19,6 @@ const initValue = {
   gameStatus: typingStatus.BEGINING,
   timeSteps: 30,
 };
-
 export const useInputSpeedTest = (text = '') => {
   const ref = useRef<HTMLInputElement>(null);
 
@@ -70,3 +69,7 @@ export const useInputSpeedTest = (text = '') => {
     setTimeSteps,
   };
 };
+
+export type UseInputSpeedTestReturnApi = ReturnType<
+  typeof useInputSpeedTest
+>;
