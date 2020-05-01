@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import { stickyModal } from 'components/molecules';
 import {
   useInputSpeedTest,
+  UseInputSpeedTestProps,
   UseInputSpeedTestReturnApi,
 } from 'hooks/useInputSpeedTest/useInputSpeedTest';
 
@@ -36,18 +37,18 @@ const InnerWrapper = styled.div`
   position: relative;
 `;
 
-interface TypingInput {
-  text: string;
+interface TypingInput extends UseInputSpeedTestProps {
   className?: string;
   render?: (inputState: UseInputSpeedTestReturnApi) => any;
 }
 export const TypingInput: FC<TypingInput> = ({
   text,
+  time,
   className = '',
   render = null,
 }) => {
   const ArrayedSourceText = useMemo(() => text.split(' '), [text]);
-  const inputState = useInputSpeedTest(text);
+  const inputState = useInputSpeedTest({ text, time });
   const {
     ref,
     inputValue,

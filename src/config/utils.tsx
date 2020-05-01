@@ -2,7 +2,7 @@ export const validImageFile = ({
   size,
   type,
 }: {
-  size: Number;
+  size: number;
   type: string;
 }) => {
   if (size < 100000 || size > 1000000) {
@@ -28,4 +28,25 @@ export const chunkArray = (array: Array<any>, chunkCount: number) => {
     chunks.push(copyOfArray.splice(0, chunkCount));
   }
   return chunks;
+};
+
+export const checkIfNumberIsInComprtment = (
+  value: any,
+  min: number,
+  max: number,
+) =>
+  value !== '' &&
+  value !== '-' &&
+  (min === undefined || value >= min) &&
+  (max === undefined || value <= max);
+
+export const getNumbersFromCompartment = (
+  min: number,
+  max: number,
+) => {
+  const numArray = [];
+  for (let i = min; i <= max; i += 1) {
+    numArray.push(i);
+  }
+  return numArray;
 };

@@ -8,8 +8,6 @@ import { Draggable } from 'gsap/all';
 import useIsMobile from 'hooks/useIsMobile';
 import List from './ListWrapper';
 
-gsap.registerPlugin(Draggable);
-
 const Wrapper = styled.nav`
   width: 60px;
   height: 100%;

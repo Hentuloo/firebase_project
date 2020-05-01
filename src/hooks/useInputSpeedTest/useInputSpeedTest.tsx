@@ -2,7 +2,11 @@ import { useEffect, useRef, useReducer } from 'react';
 
 import { Subscription } from 'rxjs';
 import { reducer } from './reducer';
-import { setNewTextAction, setTimeStepsAction } from './actions';
+import {
+  setNewTextAction,
+  setTimeStepsAction,
+  setNewInitialTimeAction,
+} from './actions';
 
 import { typingObserver } from './typingObserver';
 import { typingStatus } from './types';
@@ -24,22 +28,51 @@ const initValue = {
   accuracy: 100,
   speed: 0,
 };
-export const useInputSpeedTest = (text = '') => {
-  const ref = useRef<HTMLInputElement>(null);
 
+export interface UseInputSpeedTestProps {
+  text: string;
+  time: number;
+}
+
+export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
+  const { text, time: initialTimeSteps } = props;
+
+  const ref = useRef<HTMLInputElement>(null);
   const [state, dispatch] = useReducer<typeof reducer>(reducer, {
     ...initValue,
     text,
+    initialTimeSteps,
   });
+
+  const setInputFocus = () => {
+    const input = ref.current;
+    if (!input) return;
+    input.focus();
+  };
+
+  const setText = (pharse: string) =>
+    dispatch(setNewTextAction(pharse));
+
+  const setNewInitialTime = (number: number) =>
+    dispatch(setNewInitialTimeAction(number));
+
+  const setTimeSteps = (time: number) => {
+    dispatch(setTimeStepsAction(time));
+  };
+
+  useEffect(() => {
+    setNewInitialTime(initialTimeSteps);
+  }, [initialTimeSteps]);
 
   useEffect(() => {
     // typing listener
     const el = ref.current;
     if (!el) return;
 
+    setInputFocus();
     const sub = typingObserver(el, dispatch);
     return () => sub.unsubscribe();
-  }, [text]);
+  }, []);
 
   useEffect(() => {
     // time listener
@@ -51,19 +84,6 @@ export const useInputSpeedTest = (text = '') => {
       if (timeSub) timeSub.unsubscribe();
     };
   }, [state.gameStatus]);
-
-  const setInputFocus = () => {
-    const input = ref.current;
-    if (!input) return;
-    input.focus();
-  };
-
-  const setText = (pharse: string) =>
-    dispatch(setNewTextAction(pharse));
-
-  const setTimeSteps = (time: number) => {
-    dispatch(setTimeStepsAction(time));
-  };
 
   return {
     ...state,

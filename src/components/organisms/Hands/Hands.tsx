@@ -22,7 +22,7 @@ interface HandsProps {
   text: string;
   cursor: number;
 }
-export const Hands: FC<HandsProps> = ({ text, cursor }) => {
+export const Hands: FC<HandsProps> = ({ text, cursor, ...props }) => {
   const wrapper = useRef<SVGSVGElement>(null);
   const prevActiveFinger = usePrevious(
     getFingerIdByCursor(text, cursor),
@@ -72,6 +72,7 @@ export const Hands: FC<HandsProps> = ({ text, cursor }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       ref={wrapper}
+      {...props}
     >
       <g id="Hands">
         <g id="right">

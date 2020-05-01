@@ -16,3 +16,5 @@ declare module '*.json' {
   const content: string;
   export default content;
 }
+
+type Modify<T, R> = Omit<T, keyof R> & R;

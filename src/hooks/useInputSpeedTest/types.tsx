@@ -8,6 +8,7 @@ export enum types {
   SET_GENERAL_TEXT,
   SET_TIME_STEPS,
   SUBTRACT_TIME_STEPS,
+  SET_INITIAL_TIME,
 }
 
 export enum typingMood {

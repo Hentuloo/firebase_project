@@ -25,11 +25,28 @@ export const reducer = (
   state: StateType,
   action: Action,
 ): StateType => {
+  // const isBegining = state.gameStatus === typingStatus.BEGINING;
+  const isTyping = state.gameStatus === typingStatus.TYPING;
+  const isEnd = state.gameStatus === typingStatus.END;
+
   switch (action.type) {
     case types.SET_GENERAL_TEXT:
       return { ...state, text: action.payload };
+
     case types.SET_TIME_STEPS:
       return { ...state, timeSteps: action.payload };
+
+    case types.SET_INITIAL_TIME: {
+      if (isTyping || isEnd) return state;
+      const newTime = action.payload * 60;
+
+      return {
+        ...state,
+        initialTimeSteps: newTime,
+        timeSteps: newTime,
+      };
+    }
+
     case types.SUBTRACT_TIME_STEPS: {
       const newTimeStep = state.timeSteps - 1;
       const gameTime = state.initialTimeSteps - newTimeStep;
@@ -54,7 +71,7 @@ export const reducer = (
     }
 
     case types.INPUT_NEW_LETTER: {
-      if (state.gameStatus === typingStatus.END) return state;
+      if (isEnd) return state;
       const {
         payload,
         payload: { inputValue },
@@ -72,7 +89,7 @@ export const reducer = (
     }
 
     case types.INPUT_BACKSPACE: {
-      if (state.gameStatus === typingStatus.END) return state;
+      if (isEnd) return state;
       return {
         ...state,
         wordsInArray: removeLeterFromLastWord(state.wordsInArray),

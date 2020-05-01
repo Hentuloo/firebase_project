@@ -2,7 +2,8 @@ import { types } from './types';
 
 export type ActionCreatorsBasicTypse =
   | SetGeneralTextAction
-  | SetTimeStepsAction;
+  | SetTimeStepsAction
+  | SetNewInitialTimeAction;
 
 export type SetGeneralTextAction = {
   type: types.SET_GENERAL_TEXT;
@@ -24,4 +25,15 @@ export const setTimeStepsAction = (
 ): SetTimeStepsAction => ({
   type: types.SET_TIME_STEPS,
   payload: steps,
+});
+
+export type SetNewInitialTimeAction = {
+  type: types.SET_INITIAL_TIME;
+  payload: number;
+};
+export const setNewInitialTimeAction = (
+  time: number,
+): SetNewInitialTimeAction => ({
+  type: types.SET_INITIAL_TIME,
+  payload: time,
 });
