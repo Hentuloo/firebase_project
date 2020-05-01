@@ -5,7 +5,7 @@ import { Navigation } from 'components/organisms';
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 65px 1fr;
+  grid-template-columns: 1fr;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-template-columns: 1fr minmax(500px, 40%);
     grid-template-rows: 55px auto;
@@ -15,7 +15,6 @@ const Wrapper = styled.div`
   }
 `;
 const ContentWrapper = styled.div`
-  grid-column: 2 / -1;
   padding: 5px 0px 5px 5px;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-column: 1 / -1;
