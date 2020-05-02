@@ -6,14 +6,16 @@ import { types, Action, typingStatus } from './types';
 
 export type StateType = {
   inputValue: string;
-  wordsInArray: string[];
-  letterWasAdded: boolean;
+  writtenWords: string[];
+  letterWasAddedFlag: boolean;
   goodText: string;
   wrongText: string;
   wrongLength: number;
   goodLength: number;
   cursor: number;
-  text: string;
+  sourceText: string;
+  sourceTextInArray: string[];
+  lengthsOfSourceText: number[];
   gameStatus: typingStatus;
   timeSteps: number;
   initialTimeSteps: number;
@@ -31,7 +33,7 @@ export const reducer = (
 
   switch (action.type) {
     case types.SET_GENERAL_TEXT:
-      return { ...state, text: action.payload };
+      return { ...state, sourceText: action.payload };
 
     case types.SET_TIME_STEPS:
       return { ...state, timeSteps: action.payload };
@@ -52,7 +54,7 @@ export const reducer = (
       const gameTime = state.initialTimeSteps - newTimeStep;
 
       // Calculate new accurancy and speed
-      const writtenWords = state.wordsInArray.length;
+      const writtenWords = state.writtenWords.length;
       const accuracy = Number(
         (100 - (state.wrongLength / state.cursor) * 100).toFixed(2),
       );
@@ -77,7 +79,8 @@ export const reducer = (
         payload: { inputValue },
       } = action;
 
-      const isLastLetter = inputValue.length === state.text.length;
+      const isLastLetter =
+        inputValue.length === state.sourceText.length;
 
       return {
         ...state,
@@ -92,8 +95,8 @@ export const reducer = (
       if (isEnd) return state;
       return {
         ...state,
-        wordsInArray: removeLeterFromLastWord(state.wordsInArray),
-        letterWasAdded: false,
+        writtenWords: removeLeterFromLastWord(state.writtenWords),
+        letterWasAddedFlag: false,
         inputValue: state.inputValue.slice(0, -1),
         wrongText: state.wrongText.slice(0, -1),
         goodText: state.goodText.slice(0, -1),

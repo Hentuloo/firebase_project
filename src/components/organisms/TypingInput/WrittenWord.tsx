@@ -29,12 +29,12 @@ const PointCircle = styled.div<PointCircle>`
     `}
 `;
 
-interface InputTextProps {
+interface WrittenWordProps {
   activeWord: string;
   wordInSourceText: string;
 }
 
-const InputText: FC<InputTextProps> = ({
+const WrittenWord: FC<WrittenWordProps> = ({
   activeWord,
   wordInSourceText,
   ...props
@@ -47,9 +47,9 @@ const InputText: FC<InputTextProps> = ({
   );
 };
 
-export const MemomizedInputText = memo(
-  InputText,
+export const MemomizedWrittenWord = memo(
+  WrittenWord,
   (prev, next) => prev.activeWord === next.activeWord,
 );
 
-export default InputText;
+export default WrittenWord;

@@ -1,3 +1,6 @@
+export const isMobile = () =>
+  typeof window.orientation !== 'undefined';
+
 export const validImageFile = ({
   size,
   type,

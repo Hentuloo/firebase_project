@@ -14,14 +14,13 @@ import { timeObserver } from './timeObserver';
 
 const initValue = {
   inputValue: '',
-  wordsInArray: [] as string[],
-  letterWasAdded: true,
+  writtenWords: [] as string[],
+  letterWasAddedFlag: true,
   goodText: '',
   wrongText: '',
   wrongLength: 0,
   goodLength: 0,
   cursor: 0,
-  text: '',
   gameStatus: typingStatus.BEGINING,
   initialTimeSteps: 30,
   timeSteps: 30,
@@ -40,7 +39,9 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
   const ref = useRef<HTMLInputElement>(null);
   const [state, dispatch] = useReducer<typeof reducer>(reducer, {
     ...initValue,
-    text,
+    sourceText: text,
+    sourceTextInArray: text.split(' '),
+    lengthsOfSourceText: text.split(' ').map(word => word.length),
     initialTimeSteps,
   });
 

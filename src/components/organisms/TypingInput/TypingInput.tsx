@@ -1,4 +1,4 @@
-import React, { useMemo, FC } from 'react';
+import React, { FC } from 'react';
 
 import styled, { css } from 'styled-components';
 
@@ -10,7 +10,7 @@ import {
 } from 'hooks/useInputSpeedTest/useInputSpeedTest';
 
 import PanelWithTextToWrite from './PanelWithTextToWrite';
-import InputComponent from './InputComponent';
+import Input from './Input';
 import { Counters } from './Counters';
 
 const inputFont = css`
@@ -47,18 +47,19 @@ export const TypingInput: FC<TypingInput> = ({
   className = '',
   render = null,
 }) => {
-  const ArrayedSourceText = useMemo(() => text.split(' '), [text]);
   const inputState = useInputSpeedTest({ text, time });
   const {
     ref,
     inputValue,
     goodText,
     wrongText,
-    wordsInArray,
-    letterWasAdded,
+    writtenWords,
+    letterWasAddedFlag,
     accuracy,
     speed,
+    sourceTextInArray,
   } = inputState;
+
   return (
     <>
       <Wrapper className={className}>
@@ -69,12 +70,12 @@ export const TypingInput: FC<TypingInput> = ({
             doneGood={goodText}
             doneWrong={wrongText}
           />
-          <InputComponent
+          <Input
             ref={ref}
-            ArrayedSourceText={ArrayedSourceText}
+            sourceTextInArray={sourceTextInArray}
             inputValue={inputValue}
-            inputWordsInArray={wordsInArray}
-            letterWasAdded={letterWasAdded}
+            inputWordsInArray={writtenWords}
+            letterWasAdded={letterWasAddedFlag}
           />
         </InnerWrapper>
       </Wrapper>

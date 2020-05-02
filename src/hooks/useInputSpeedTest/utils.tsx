@@ -1,4 +1,5 @@
 import { StateType } from './reducer';
+import { InputObserverResponse } from './typingObserver';
 
 export const checkNewInputValue = (
   correctText: string,
@@ -16,55 +17,65 @@ export const checkNewInputValue = (
   return [' ', isSpace ? '_' : letterInCorrectText, true];
 };
 
-export const addLetterToLastWordInArray = (
-  array: Array<string>,
-  letter: string,
+export const addWrittenLetter = (
+  lengthsOfSourceText: number[],
+  writtenWords: string[],
+  newLetter: string,
 ) => {
-  if (array.length === 0) return [letter];
-  if (letter === ' ') return [...array, ' '];
-  return [...array.slice(0, -1), array.slice(-1)[0] + letter];
+  if (writtenWords.length === 0) return [newLetter];
+  const wordId = writtenWords.length - 1;
+  const lastWrittenWord = writtenWords.slice(-1)[0];
+
+  // source letter + space
+  if (lengthsOfSourceText[wordId] + 1 > lastWrittenWord.length) {
+    return [
+      ...writtenWords.slice(0, -1),
+      lastWrittenWord + newLetter,
+    ];
+  }
+  // create new written item
+  return [...writtenWords, newLetter];
 };
 
 export const removeLeterFromLastWord = (
-  array: Array<string>,
+  words: Array<string>,
 ): string[] => {
-  if (array.length === 0) return [];
-  if (array.length === 1) return [array[0].slice(0, -1)];
+  const { length } = words;
+  if (length === 0) return [];
+  if (length === 1) return [words[0].slice(0, -1)];
 
-  if (array.slice(-1)[0] === ' ') return [...array.slice(0, -1)];
-  if (array.slice(-1)[0] === '') {
-    if (array.length === 2) return [array[0].slice(0, -1)];
+  if (words.slice(-1)[0] === ' ') return [...words.slice(0, -1)];
+  if (words.slice(-1)[0] === '') {
+    if (length === 2) return [words[0].slice(0, -1)];
     return [
-      ...array.slice(0, -2),
-      array.slice(-2, -1)[0].slice(0, -1),
+      ...words.slice(0, -2),
+      words.slice(-2, -1)[0].slice(0, -1),
     ];
   }
-  return [...array.slice(0, -1), array.slice(-1)[0].slice(0, -1)];
+  return [...words.slice(0, -1), words.slice(-1)[0].slice(0, -1)];
 };
 
 export const getStatePieceWithNewLetter = (
   state: StateType,
-  values: {
-    inputValue: string;
-    letter: string;
-  },
+  values: InputObserverResponse,
 ) => {
   const { inputValue, letter: newLetter } = values;
   const [newGoodChar, newWrongChar, isWrong] = checkNewInputValue(
-    state.text,
+    state.sourceText,
     inputValue,
     newLetter,
   );
 
-  const wordsInArray = addLetterToLastWordInArray(
-    state.wordsInArray,
+  const writtenWords = addWrittenLetter(
+    state.lengthsOfSourceText,
+    state.writtenWords,
     newLetter,
   );
 
   return {
     inputValue,
-    wordsInArray,
-    letterWasAdded: true,
+    writtenWords,
+    letterWasAddedFlag: true,
     cursor: inputValue.length,
     wrongText: state.wrongText + newWrongChar,
     goodText: state.goodText + newGoodChar,

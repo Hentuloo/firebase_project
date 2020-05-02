@@ -1,9 +1,12 @@
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { isMobile } from 'config/utils';
 import { types, Action } from './types';
 
 export type TypingObserverActions = TypingBackspace | TypingNewLetter;
+
+type letterType = string | boolean | null;
 
 export interface InputObserverResponse {
   letter: string;
@@ -26,13 +29,21 @@ export const typingObserver = (
   const input$ = fromEvent(inputElement, 'input');
   const typing$ = input$.pipe(
     map((e: any) => {
-      e.preventDefault();
-      const {
-        data: letter,
-        target: { value: inputValue },
-      }: { data: string; target: HTMLInputElement } = e;
+      let letter: letterType = e.data;
 
-      return { letter, inputValue };
+      const { currentTarget } = e;
+      const { value } = currentTarget;
+
+      // (on mobile) e.data is not a single letter
+      if (isMobile()) {
+        const prevValue = currentTarget.defaultValue;
+
+        if (prevValue.length > value.length) letter = null;
+        else if (prevValue.length === value.length) letter = false;
+        else letter = value.slice(-1);
+      }
+
+      return { letter, inputValue: value };
     }),
   );
 
@@ -45,12 +56,15 @@ export const typingObserver = (
             type: types.INPUT_BACKSPACE,
           };
         case ' ': {
-          if (inputValue.slice(-2) === '  ') return { type: null };
           return {
             payload: { letter, inputValue },
             type: types.INPUT_NEW_LETTER,
           };
         }
+
+        case false:
+          return { type: null };
+
         default: {
           return {
             payload: { letter, inputValue },

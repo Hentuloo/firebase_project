@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { stickyModal } from 'components/molecules';
 
 import gsap from 'gsap';
-import { MemomizedInputText } from './InputText';
+import { MemomizedWrittenWord } from './WrittenWord';
 
 import {
   resetTextAnim,
@@ -40,26 +40,21 @@ const InputText = styled.div`
   white-space: pre;
 `;
 
-interface InputComponentProps {
-  ArrayedSourceText: string[];
+interface InputCmpProps {
+  sourceTextInArray: string[];
   inputValue: string;
   inputWordsInArray: string[];
   letterWasAdded: boolean;
 }
 
-const InputComponent = forwardRef<
-  HTMLInputElement,
-  InputComponentProps
->(
-  (
-    {
-      ArrayedSourceText,
+const InputCmp = forwardRef<HTMLInputElement, InputCmpProps>(
+  (props, ref) => {
+    const {
+      sourceTextInArray,
       inputValue,
       inputWordsInArray,
       letterWasAdded,
-    },
-    ref,
-  ) => {
+    } = props;
     const inputTextRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -101,14 +96,17 @@ const InputComponent = forwardRef<
           type="text"
           // @ts-ignore
           spellcheck="false"
+          autoComplete="false"
+          autoCorrect="off"
+          autoCapitalize="off"
         />
         <InputText ref={inputTextRef}>
           {inputWordsInArray.map((word, i) => (
-            <MemomizedInputText
+            <MemomizedWrittenWord
               key={i}
               activeWord={word}
               wordInSourceText={
-                ArrayedSourceText[inputWordsInArray.length - 1]
+                sourceTextInArray[inputWordsInArray.length - 1]
               }
             />
           ))}
@@ -118,4 +116,4 @@ const InputComponent = forwardRef<
   },
 );
 
-export default InputComponent;
+export default InputCmp;
