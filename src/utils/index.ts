@@ -1,3 +1,5 @@
+export * from './listenHotkey/ListenHotkey';
+
 export const isMobile = () =>
   typeof window.orientation !== 'undefined';
 

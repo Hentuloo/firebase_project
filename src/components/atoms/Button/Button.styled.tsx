@@ -17,9 +17,17 @@ export const ClearButton = styled.button`
 export const ButtonWithBar = styled(ClearButton)`
   ${BarDecorator}
 `;
+
 export const RoundButton = styled(ClearButton)`
   border-radius: 40px;
   border: ${({ theme }) => theme.color.brand[1]} 2px solid;
+`;
+export const CircleButton = styled(ClearButton)`
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  color: ${({ theme }) => theme.color.brand[0]};
 `;
 
 export const FilledButton = styled(ClearButton)`

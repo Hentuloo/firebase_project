@@ -1,5 +1,5 @@
 import { interval } from 'rxjs';
-import { Action, types } from './types';
+import { Action, types } from '../types';
 
 export type TimeObserverAction = SubtractTimeAction;
 

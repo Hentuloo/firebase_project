@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { chunkArray } from 'config/utils';
+import { chunkArray } from 'utils';
 
 export const setInvisibleElementsInParentHeight = (
   elments: any,

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import googleIconSVG from 'assets/svg/googleIconGreen.svg';
+import googleIconSVG from 'assets/svg/icons/googleIconGreen.svg';
 
 const Wrapper = styled.div`
   text-align: center;

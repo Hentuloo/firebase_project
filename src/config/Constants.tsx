@@ -1,4 +1,4 @@
-import defaultProfilePicture from 'assets/svg/defaultProfilePicture.svg';
+import defaultProfilePicture from 'assets/svg/icons/defaultProfilePicture.svg';
 
 export const Constants = {
   paths: {

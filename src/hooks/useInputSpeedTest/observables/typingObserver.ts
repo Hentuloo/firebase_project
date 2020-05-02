@@ -1,8 +1,8 @@
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { isMobile } from 'config/utils';
-import { types, Action } from './types';
+import { isMobile } from 'utils';
+import { types, Action } from '../types';
 
 export type TypingObserverActions = TypingBackspace | TypingNewLetter;
 

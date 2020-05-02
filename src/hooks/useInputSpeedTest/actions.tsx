@@ -3,7 +3,15 @@ import { types } from './types';
 export type ActionCreatorsBasicTypse =
   | SetGeneralTextAction
   | SetTimeStepsAction
-  | SetNewInitialTimeAction;
+  | SetNewInitialTimeAction
+  | ResetGameStateAction;
+
+export type ResetGameStateAction = {
+  type: types.RESET_GAME;
+};
+export const resetGameStateAction = (): ResetGameStateAction => ({
+  type: types.RESET_GAME,
+});
 
 export type SetGeneralTextAction = {
   type: types.SET_GENERAL_TEXT;
@@ -18,10 +26,10 @@ export const setNewTextAction = (
 
 export type SetTimeStepsAction = {
   type: types.SET_TIME_STEPS;
-  payload: number;
+  payload: number | true | false;
 };
 export const setTimeStepsAction = (
-  steps: number,
+  steps: number | true | false,
 ): SetTimeStepsAction => ({
   type: types.SET_TIME_STEPS,
   payload: steps,

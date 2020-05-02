@@ -8,7 +8,7 @@ import {
   loginWithGoogle,
 } from 'fb/controllers/auth';
 
-import logoSVG from 'assets/svg/logo.svg';
+import logoSVG from 'assets/svg/icons/logo.svg';
 import backgroundImage from 'assets/svg/road/corner1.svg';
 
 import { Constants } from 'config/Constants';

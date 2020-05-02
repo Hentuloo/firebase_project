@@ -1,5 +1,5 @@
 import { StateType } from './reducer';
-import { InputObserverResponse } from './typingObserver';
+import { InputObserverResponse } from './observables/typingObserver';
 
 export const checkNewInputValue = (
   correctText: string,

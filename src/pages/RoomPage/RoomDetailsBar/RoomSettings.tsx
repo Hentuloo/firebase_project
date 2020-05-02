@@ -2,7 +2,7 @@ import React, { useState, useMemo, FC } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { copyToClipBoard } from 'config/utils';
+import { copyToClipBoard } from 'utils';
 import { Constants } from 'config/Constants';
 import { getCopyStatusMessage } from '../utils';
 

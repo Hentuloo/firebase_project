@@ -8,11 +8,11 @@ import {
   RoundButton,
 } from 'components/atoms';
 
-import logoSVG from 'assets/svg/logo.svg';
+import logoSVG from 'assets/svg/icons/logo.svg';
 import textMockSVG from 'assets/svg/svgText.svg';
 import carsRaceSVG from 'assets/svg/road/carsRaceFirst.svg';
 import leavesSVG from 'assets/svg/leaves.svg';
-import arrowSVG from 'assets/svg/arrow-white.svg';
+import arrowSVG from 'assets/svg/icons/arrow-white.svg';
 
 import { Constants } from 'config/Constants';
 

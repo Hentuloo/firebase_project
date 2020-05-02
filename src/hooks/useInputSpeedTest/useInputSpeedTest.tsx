@@ -6,11 +6,13 @@ import {
   setNewTextAction,
   setTimeStepsAction,
   setNewInitialTimeAction,
+  resetGameStateAction,
 } from './actions';
 
-import { typingObserver } from './typingObserver';
+import { typingObserver } from './observables/typingObserver';
 import { typingStatus } from './types';
-import { timeObserver } from './timeObserver';
+import { timeObserver } from './observables/timeObserver';
+import { hotkeyObserver } from './observables/hotkeyObserver';
 
 const initValue = {
   inputValue: '',
@@ -57,6 +59,8 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
   const setNewInitialTime = (number: number) =>
     dispatch(setNewInitialTimeAction(number));
 
+  const resetGameState = () => dispatch(resetGameStateAction());
+
   const setTimeSteps = (time: number) => {
     dispatch(setTimeStepsAction(time));
   };
@@ -66,12 +70,12 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
   }, [initialTimeSteps]);
 
   useEffect(() => {
-    // typing listener
+    // typing listener & hotkeyListener
     const el = ref.current;
     if (!el) return;
 
-    setInputFocus();
     const sub = typingObserver(el, dispatch);
+    sub.add(hotkeyObserver(dispatch));
     return () => sub.unsubscribe();
   }, []);
 
@@ -86,6 +90,10 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     };
   }, [state.gameStatus]);
 
+  useEffect(() => {
+    setInputFocus();
+  }, []);
+
   return {
     ...state,
     ref,
@@ -93,6 +101,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     setText,
     text,
     setTimeSteps,
+    resetGameState,
   };
 };
 

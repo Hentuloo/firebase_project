@@ -9,7 +9,7 @@ import {
 } from 'components/atoms';
 import { Card } from 'components/molecules';
 import leavesSVG from 'assets/svg/leaves.svg';
-import googleIconSVG from 'assets/svg/googleIcon.svg';
+import googleIconSVG from 'assets/svg/icons/googleIcon.svg';
 import { usePerspectiveAnimation } from 'hooks/usePerspectiveAnimation';
 
 const Label = styled.label``;

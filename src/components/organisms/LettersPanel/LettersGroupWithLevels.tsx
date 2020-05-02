@@ -2,7 +2,7 @@ import React, { Fragment, FC } from 'react';
 import styled from 'styled-components';
 
 import { MemomizedLettersGroup } from 'components/atoms';
-import { chunkArray } from 'config/utils';
+import { chunkArray } from 'utils';
 
 import firstLevel from 'assets/svg/levels/level1.svg';
 import secondLevel from 'assets/svg/levels/level2.svg';

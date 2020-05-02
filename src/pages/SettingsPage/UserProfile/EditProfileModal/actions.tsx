@@ -1,7 +1,7 @@
 import { uploadFilePromise, userPhotoRef } from 'fb/storage';
 import { updateUserDoc } from 'fb/controllers/userProfile';
 
-import { validImageFile } from 'config/utils';
+import { validImageFile } from 'utils';
 import { types } from './types';
 
 interface SubmitFormProps {

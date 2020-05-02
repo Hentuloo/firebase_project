@@ -5,7 +5,7 @@ import { BarDecorator } from 'components/atoms';
 import { useImage } from 'hooks/useImage';
 import { useSelector } from 'react-redux';
 
-import defaultPicture from 'assets/svg/defaultProfilePicture.svg';
+import defaultPicture from 'assets/svg/icons/defaultProfilePicture.svg';
 import { StoreType } from 'store/store';
 
 const Wrapper = styled.div`

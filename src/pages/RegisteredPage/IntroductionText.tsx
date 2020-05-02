@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import smileSVG from 'assets/svg/smile.svg';
+import smileSVG from 'assets/svg/icons/smile.svg';
 
 import { stickyModal } from 'components/molecules';
 import { CircleImage, BarDecorator } from 'components/atoms';

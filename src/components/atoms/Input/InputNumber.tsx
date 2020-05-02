@@ -9,7 +9,7 @@ import styled, { css } from 'styled-components';
 import {
   checkIfNumberIsInComprtment,
   getNumbersFromCompartment,
-} from 'config/utils';
+} from 'utils';
 import gsap, { Draggable } from 'gsap/all';
 
 const circleSize = 50;
@@ -82,14 +82,16 @@ export const InputNumber: FC<InputNumberProps> = ({
   };
 
   useEffect(() => {
-    // set default number
     const wrapper = ref.current;
     if (!wrapper) return;
 
     const childHeight = wrapper.children[0].clientHeight;
-    gsap.set(wrapper, { y: -(value - 1) * childHeight });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    gsap.to(wrapper, {
+      duration: 0.5,
+      y: -value * childHeight,
+    });
+  }, [value]);
 
   useEffect(() => {
     // set draggable listener
@@ -113,12 +115,7 @@ export const InputNumber: FC<InputNumberProps> = ({
         const indexOfNumber = Math.round(this.y / childHeight);
         const number = numbers[Math.abs(indexOfNumber)];
         onChange(number);
-
         gsap.set('body', { cursor: 'auto' });
-        gsap.to(wrapper, {
-          duration: 0.5,
-          y: indexOfNumber * childHeight,
-        });
       },
     });
 

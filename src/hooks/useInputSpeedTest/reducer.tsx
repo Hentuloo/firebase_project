@@ -35,8 +35,25 @@ export const reducer = (
     case types.SET_GENERAL_TEXT:
       return { ...state, sourceText: action.payload };
 
-    case types.SET_TIME_STEPS:
-      return { ...state, timeSteps: action.payload };
+    case types.SET_TIME_STEPS: {
+      if (isTyping || isEnd) return state;
+      if (typeof action.payload === 'number')
+        return {
+          ...state,
+          timeSteps: action.payload,
+          initialTimeSteps: action.payload,
+        };
+
+      const newTime = action.payload
+        ? state.timeSteps + 60
+        : state.timeSteps - 60;
+      if (newTime > 720 || newTime < 30) return state;
+      return {
+        ...state,
+        timeSteps: newTime,
+        initialTimeSteps: newTime,
+      };
+    }
 
     case types.SET_INITIAL_TIME: {
       if (isTyping || isEnd) return state;
@@ -102,6 +119,21 @@ export const reducer = (
         goodText: state.goodText.slice(0, -1),
       };
     }
+    case types.RESET_GAME:
+      return {
+        ...state,
+        inputValue: '',
+        writtenWords: [],
+        goodText: '',
+        wrongText: '',
+        wrongLength: 0,
+        goodLength: 0,
+        cursor: 0,
+        gameStatus: typingStatus.BEGINING,
+        timeSteps: state.initialTimeSteps,
+        accuracy: 100,
+        speed: 0,
+      };
 
     default:
       return state;
