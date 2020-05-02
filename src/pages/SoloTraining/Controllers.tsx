@@ -12,6 +12,13 @@ const Wrapper = styled.div`
     align-self: center;
   }
 `;
+const ControllerWrapper = styled.div``;
+const ControllerTitle = styled.span`
+  display: block;
+  width: 100%;
+  margin: 5px 0px;
+  text-align: center;
+`;
 
 const StyledInputNumber = styled(InputNumber)``;
 
@@ -26,13 +33,17 @@ export const Controllers: FC<ControllersProps> = ({
 }) => {
   return (
     <Wrapper>
-      <StyledInputNumber
-        min={1}
-        max={12}
-        value={time}
-        onChange={setTime}
-        title="Ustaw czas"
-      />
+      <ControllerWrapper>
+        <ControllerTitle>Czas</ControllerTitle>
+        <StyledInputNumber
+          insertBefore={[0.5]}
+          min={1}
+          max={12}
+          value={time}
+          onChange={setTime}
+          title="Ustaw czas"
+        />
+      </ControllerWrapper>
     </Wrapper>
   );
 };

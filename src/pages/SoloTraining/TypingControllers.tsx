@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   max-width: 800px;
-  grid-template-rows: 1fr 50px 200px 50px;
+  grid-template-rows: 1fr 70px 50px;
   justify-content: center;
   align-self: center;
   grid-column-gap: 25px;
@@ -40,9 +40,11 @@ const StyledLoadingBar = styled(LoadingBar)`
   }
 `;
 const StyledHands = styled(Hands)`
-  justify-self: center;
+  display: none;
   ${({ theme }) => theme.mediaQuery.md} {
+    justify-self: center;
     grid-column: 1/-1;
+    display: block;
   }
 `;
 

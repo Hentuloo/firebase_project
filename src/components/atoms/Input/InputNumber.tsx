@@ -49,6 +49,8 @@ export type InputNumberProps = Modify<
   {
     onChange: (number: number) => any;
     value: number;
+    insertBefore?: number[];
+    insertAfter?: number[];
     max?: number;
     min?: number;
   }
@@ -57,16 +59,19 @@ export type InputNumberProps = Modify<
 export const InputNumber: FC<InputNumberProps> = ({
   onChange,
   value,
+  insertBefore,
+  insertAfter,
   max = 10,
   min = 1,
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const numbers = useMemo(() => getNumbersFromCompartment(min, max), [
-    max,
-    min,
-  ]);
+  const numbers = useMemo(
+    () =>
+      getNumbersFromCompartment(min, max, insertBefore, insertAfter),
+    [max, min, insertBefore, insertAfter],
+  );
 
   const handleChangeNumber = (
     e: React.ChangeEvent<HTMLInputElement>,

@@ -46,10 +46,12 @@ export const checkIfNumberIsInComprtment = (
 export const getNumbersFromCompartment = (
   min: number,
   max: number,
+  insertBefore: number[] = [],
+  insertAfter: number[] = [],
 ) => {
-  const numArray = [];
+  const numArray = [...insertBefore];
   for (let i = min; i <= max; i += 1) {
     numArray.push(i);
   }
-  return numArray;
+  return numArray.concat(insertAfter);
 };
