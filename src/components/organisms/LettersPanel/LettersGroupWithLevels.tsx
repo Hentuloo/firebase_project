@@ -6,8 +6,8 @@ import { chunkArray } from 'utils';
 import firstLevel from 'assets/svg/levels/level1.svg';
 import secondLevel from 'assets/svg/levels/level2.svg';
 import ThirdLevel from 'assets/svg/levels/level3.svg';
-import { MemomizedLettersButtons as LettersButtons } from './LettersButtons';
-import { ToggleLetter, LetterObjectWithActive } from './types';
+import { LettersButtons } from './LettersButtons';
+import { ToggleLetter, LetterWithStatusFlags } from './types';
 
 const ImageWrapper = styled.div`
   text-align: center;
@@ -27,28 +27,24 @@ const ImageComponent: FC<{ src: string }> = ({ src, ...props }) => (
 
 export interface LettersPanelProps {
   activeIndex: number;
-  letters: LetterObjectWithActive[];
+  letters: LetterWithStatusFlags[];
   toggleLetter: ToggleLetter;
 }
 const LettersGroupWithLevels: Function = ({
   letters,
   toggleLetter,
 }: LettersPanelProps): JSX.Element[] => {
-  const chunkedArray = chunkArray<LetterObjectWithActive>(letters, 4);
+  const chunkedArray = chunkArray<LetterWithStatusFlags>(letters, 4);
 
   return chunkedArray.map((LettersGroup, index) => {
-    const GroupComponent = () => (
-      <LettersButtons
-        onClick={toggleLetter}
-        lettersArray={LettersGroup}
-      />
-    );
-
     if (index === 2) {
       return (
         <Fragment key={LettersGroup[0].id}>
           <ImageComponent src={firstLevel} />
-          <GroupComponent />
+          <LettersButtons
+            onClick={toggleLetter}
+            lettersArray={LettersGroup}
+          />
         </Fragment>
       );
     }
@@ -57,7 +53,10 @@ const LettersGroupWithLevels: Function = ({
       return (
         <Fragment key={LettersGroup[0].id}>
           <ImageComponent src={secondLevel} />
-          <GroupComponent />
+          <LettersButtons
+            onClick={toggleLetter}
+            lettersArray={LettersGroup}
+          />
         </Fragment>
       );
     }
@@ -66,12 +65,21 @@ const LettersGroupWithLevels: Function = ({
       return (
         <Fragment key={LettersGroup[0].id}>
           <ImageComponent src={ThirdLevel} />
-          <GroupComponent />
+          <LettersButtons
+            onClick={toggleLetter}
+            lettersArray={LettersGroup}
+          />
         </Fragment>
       );
     }
 
-    return <GroupComponent key={LettersGroup[0].id} />;
+    return (
+      <LettersButtons
+        key={LettersGroup[0].id}
+        onClick={toggleLetter}
+        lettersArray={LettersGroup}
+      />
+    );
   });
 };
 

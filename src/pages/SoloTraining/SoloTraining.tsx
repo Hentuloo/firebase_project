@@ -36,16 +36,17 @@ const initialLetters = Object.keys(initialLettersObject).map(
   (letter): LetterObject => ({
     ...initialLettersObject[letter],
     letter,
-    blocked: true,
   }),
 );
 
 const SoloTraining = () => {
-  const [{ letters, lastActiveLetterIndex }, dispatch] = useReducer<
-    typeof lettersReducer
-  >(lettersReducer, {
+  const [
+    { letters, lastActiveLetterIndex, firstBlockedLetterIndex },
+    dispatch,
+  ] = useReducer<typeof lettersReducer>(lettersReducer, {
     letters: initialLetters,
     lastActiveLetterIndex: 6,
+    firstBlockedLetterIndex: 10,
   });
 
   const handleToggleLetter = (e: any, id: number | string) => {
@@ -58,7 +59,8 @@ const SoloTraining = () => {
     <WithMenuTemplate>
       <Wrapper>
         <LettersPanel
-          activeIndex={lastActiveLetterIndex}
+          firstBlockedIndex={firstBlockedLetterIndex}
+          lastActiveIndex={lastActiveLetterIndex}
           letters={letters}
           toggleLetter={handleToggleLetter}
         />

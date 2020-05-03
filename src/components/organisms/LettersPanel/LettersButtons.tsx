@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { stickyModal } from 'components/molecules';
 import { ClearButton } from '../../atoms/Button/Button.styled';
-import { LetterObjectWithActive, ToggleLetter } from './types';
+import { LetterWithStatusFlags, ToggleLetter } from './types';
 
 const Wrapper = styled.div`
   ${stickyModal}
@@ -16,6 +16,7 @@ const Wrapper = styled.div`
 `;
 
 const StyledClearButton = styled(ClearButton)`
+  position: relative;
   font-weight: ${({ theme }) => theme.fw[1]} !important;
   ${({ active }: { active?: boolean }) =>
     active &&
@@ -23,8 +24,24 @@ const StyledClearButton = styled(ClearButton)`
       color: ${({ theme }) => theme.color.brand[0]};
     `}
 `;
+const BlockedIcon = styled.span`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: ${({ theme }) => theme.fs.xxxs};
+  transform: translate(-120%, -50%);
+  ${({ theme }) => theme.mediaQuery.md} {
+    font-size: ${({ theme }) => theme.fs.mini};
+    transform: translate(-100%, -50%);
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    transform: translate(-70%, -50%);
+    font-size: 0.4em;
+  }
+`;
+
 interface LettersButtonsProps {
-  lettersArray: LetterObjectWithActive[];
+  lettersArray: LetterWithStatusFlags[];
   onClick: ToggleLetter;
 }
 
@@ -37,7 +54,7 @@ export const LettersButtons = ({
 
   return (
     <Wrapper {...props}>
-      {lettersArray.map(({ id, letter, active }) => (
+      {lettersArray.map(({ id, letter, active, blocked }) => (
         <StyledClearButton
           onClick={e => onClick(e, id)}
           key={letter}
@@ -45,16 +62,11 @@ export const LettersButtons = ({
           type="button"
         >
           {letter}
+          {blocked && (
+            <BlockedIcon className="fa fa-lock" aria-hidden="true" />
+          )}
         </StyledClearButton>
       ))}
     </Wrapper>
   );
 };
-
-export const MemomizedLettersButtons = memo(
-  LettersButtons,
-  (prev, next) =>
-    prev.lettersArray.every(
-      (letter, i) => letter.active === next.lettersArray[i].active,
-    ),
-);

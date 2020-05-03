@@ -1,10 +1,10 @@
 export interface LetterObject {
   letter: string;
-  blocked: boolean;
   id: number;
 }
-export interface LetterObjectWithActive extends LetterObject {
+export interface LetterWithStatusFlags extends LetterObject {
   active: boolean;
+  blocked: boolean;
 }
 
 export type ToggleLetter = (e: any, id: number | string) => any;

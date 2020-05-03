@@ -37,14 +37,16 @@ const collapseInit = {
 };
 
 export interface LettersPanelProps {
-  activeIndex: number;
+  firstBlockedIndex: number;
+  lastActiveIndex: number;
   letters: LetterObject[];
   toggleLetter: ToggleLetter;
 }
 
 export const LettersPanel: FC<LettersPanelProps> = ({
   letters,
-  activeIndex,
+  firstBlockedIndex,
+  lastActiveIndex,
   toggleLetter,
 }) => {
   const colapse = useCollapseAnimation<HTMLDivElement>(collapseInit);
@@ -57,7 +59,8 @@ export const LettersPanel: FC<LettersPanelProps> = ({
           key="letters"
           letters={letters.map((letter, index) => ({
             ...letter,
-            active: activeIndex > index,
+            active: lastActiveIndex > index,
+            blocked: firstBlockedIndex < index + 2,
           }))}
           toggleLetter={toggleLetter}
         />

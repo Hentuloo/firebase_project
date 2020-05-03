@@ -10,13 +10,14 @@ export interface LetterObject extends LetterProperties {
 }
 export type StateType = {
   letters: LetterObject[];
+  firstBlockedLetterIndex: number;
   lastActiveLetterIndex: number;
 };
 
 export default (state: StateType, action: any): StateType => {
   if (action.type === types.TOGGLE_LETTER) {
     const index = action.payload;
-    if (!state.letters[index].blocked) return state;
+    if (index >= state.firstBlockedLetterIndex) return state;
     return { ...state, lastActiveLetterIndex: index };
   }
   return state;
