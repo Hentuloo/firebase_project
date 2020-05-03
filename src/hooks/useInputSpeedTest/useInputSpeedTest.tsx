@@ -8,6 +8,7 @@ import {
   setNewInitialTimeAction,
   resetGameStateAction,
   generateNewWords,
+  updateSourceTextAction,
 } from './actions';
 
 import { typingObserver } from './observables/typingObserver';
@@ -72,6 +73,13 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     dispatch(setTimeStepsAction(time));
 
   useEffect(() => {
+    // update text and textAsset
+    if (state.gameStatus === typingStatus.TYPING) return;
+    dispatch(updateSourceTextAction(text, textAssets));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text, textAssets]);
+
+  useEffect(() => {
     // typing listener & hotkeyListener
     const el = ref.current;
     if (!el) return;
@@ -93,7 +101,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
   }, [state.gameStatus]);
 
   useEffect(() => {
-    // update text from textAssets
+    // generate new text from textAssets
     if (generateNewWordsFlag === true) {
       dispatch(generateNewWords());
     }

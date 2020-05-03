@@ -54,8 +54,6 @@ const SoloTraining = () => {
     dispatch({ type: types.TOGGLE_LETTER, payload: id });
   };
 
-  const text = 'fajny jest ten nowy input dobrze się to pisze';
-
   return (
     <WithMenuTemplate>
       <Wrapper>
@@ -66,9 +64,7 @@ const SoloTraining = () => {
           toggleLetter={handleToggleLetter}
         />
         <TypingControllers
-          text={text}
-          letters={letters}
-          lastActiveIndex={lastActiveLetterIndex}
+          activeLetter={letters[lastActiveLetterIndex - 1].letter}
         />
       </Wrapper>
     </WithMenuTemplate>

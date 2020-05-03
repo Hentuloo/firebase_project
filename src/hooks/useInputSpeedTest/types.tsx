@@ -11,6 +11,7 @@ export enum types {
   SET_INITIAL_TIME = 'SET_INITIAL_TIME',
   RESET_GAME = 'RESET_GAME',
   GENERATE_WORDS = 'GENERATE_WORDS',
+  UPDATE_SOURCE_TEXT = 'UPDATE_SOURCE_TEXT',
 }
 
 export enum typingMood {

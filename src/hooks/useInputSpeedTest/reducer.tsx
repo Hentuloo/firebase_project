@@ -164,6 +164,21 @@ export const reducer = (
         ],
       };
     }
+    case types.UPDATE_SOURCE_TEXT: {
+      if (isTyping) return state;
+      const { text, textAssets } = action.payload;
+      const sourceTextInArray = text.split(' ');
+
+      return {
+        ...state,
+        sourceText: text,
+        sourceTextInArray,
+        lengthsOfSourceText: sourceTextInArray.map(
+          word => word.length,
+        ),
+        textAssets,
+      };
+    }
     default:
       return state;
   }

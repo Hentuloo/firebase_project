@@ -5,13 +5,32 @@ export type ActionCreatorsBasicTypse =
   | SetTimeStepsAction
   | SetNewInitialTimeAction
   | ResetGameStateAction
-  | GenerateNewWordsAction;
+  | GenerateNewWordsAction
+  | UpdateSourceTextAction;
 
 export type GenerateNewWordsAction = {
   type: types.GENERATE_WORDS;
 };
 export const generateNewWords = (): GenerateNewWordsAction => ({
   type: types.GENERATE_WORDS,
+});
+
+export type UpdateSourceTextAction = {
+  type: types.UPDATE_SOURCE_TEXT;
+  payload: {
+    text: string;
+    textAssets: string[] | undefined;
+  };
+};
+export const updateSourceTextAction = (
+  text: string,
+  textAssets: string[] | undefined,
+): UpdateSourceTextAction => ({
+  type: types.UPDATE_SOURCE_TEXT,
+  payload: {
+    text,
+    textAssets,
+  },
 });
 
 export type ResetGameStateAction = {

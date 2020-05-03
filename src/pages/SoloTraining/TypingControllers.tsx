@@ -4,8 +4,8 @@ import { TypingInput, Hands } from 'components/organisms';
 import { LoadingBar } from 'components/atoms';
 
 import { soloTrainingWords } from 'config/soloTrainingWords';
+import { shuffleArray } from 'utils';
 import { Controllers } from './Controllers';
-import { LetterObject } from './lettersReducer';
 
 const Wrapper = styled.div`
   position: relative;
@@ -51,19 +51,19 @@ const StyledHands = styled(Hands)`
 `;
 
 export interface TypingControllersProps {
-  text: string;
-  letters: LetterObject[];
-  lastActiveIndex: number;
+  activeLetter: string;
 }
 
 const TypingControllers: React.SFC<TypingControllersProps> = ({
-  text,
+  activeLetter,
 }) => {
+  const text = shuffleArray<string>(soloTrainingWords[activeLetter]);
+
   return (
     <Wrapper>
       <StyledTypingInput
-        textAssets={soloTrainingWords.z}
-        text={soloTrainingWords.z.join(' ')}
+        textAssets={text}
+        text={text.join(' ')}
         render={({
           cursor,
           timeSteps,
@@ -72,6 +72,7 @@ const TypingControllers: React.SFC<TypingControllersProps> = ({
           setNewInitialTime,
           gameStatus,
           timeConfig: { stepsInOneMinute },
+          sourceText,
         }) => (
           <>
             <Controllers
@@ -85,7 +86,7 @@ const TypingControllers: React.SFC<TypingControllersProps> = ({
               setTime={setNewInitialTime}
               reset={resetGameState}
             />
-            <StyledHands text={text} cursor={cursor} />
+            <StyledHands text={sourceText} cursor={cursor} />
             <StyledLoadingBar
               green
               easing="linear"
