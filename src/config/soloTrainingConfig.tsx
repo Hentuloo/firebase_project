@@ -1,3 +1,12 @@
+export interface LetterProperties {
+  id: number;
+  active: boolean;
+  finger: number;
+}
+export interface LettersObjects {
+  [key: string]: LetterProperties;
+}
+
 export const letters = {
   a: {
     id: 1,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { PaginationArrows, stickyModal } from 'components/molecules';
 import { useCollapseAnimation } from 'hooks/useCollapseAnimation';
@@ -6,6 +6,7 @@ import { useCollapseAnimation } from 'hooks/useCollapseAnimation';
 import LettersGroupWithLevels from './LettersGroupWithLevels';
 import PharsesExamples from './PharsesExamples';
 import NewPharse from './NewPharse';
+import { LetterObject, ToggleLetter } from './types';
 
 const Wrapper = styled.div`
   display: grid;
@@ -26,29 +27,38 @@ const InnerWrapper = styled.div`
   padding-top: 4px;
   overflow: hidden;
 `;
-interface LettersPanelProps {
-  lettersArray: string[];
-  toggleLetter: (e: any, id: number) => any;
+
+const collapseInit = {
+  initStep: 0,
+  defaultSkipCount: 5,
+  activeCount: 5,
+  maxCount: 15,
+  minCount: 0,
+};
+
+export interface LettersPanelProps {
+  activeIndex: number;
+  letters: LetterObject[];
+  toggleLetter: ToggleLetter;
 }
-export const LettersPanel = ({
-  lettersArray,
+
+export const LettersPanel: FC<LettersPanelProps> = ({
+  letters,
+  activeIndex,
   toggleLetter,
-}: LettersPanelProps) => {
-  const [ref, nextStep, prevStep] = useCollapseAnimation<
-    HTMLDivElement
-  >({
-    initStep: 0,
-    defaultSkipCount: 5,
-    activeCount: 5,
-    maxCount: 20,
-    minCount: 0,
-  });
+}) => {
+  const colapse = useCollapseAnimation<HTMLDivElement>(collapseInit);
+  const [ref, nextStep, prevStep] = colapse;
+
   return (
     <Wrapper>
-      <InnerWrapper ref={ref as any}>
+      <InnerWrapper ref={ref}>
         <LettersGroupWithLevels
           key="letters"
-          lettersArray={lettersArray}
+          letters={letters.map((letter, index) => ({
+            ...letter,
+            active: activeIndex > index,
+          }))}
           toggleLetter={toggleLetter}
         />
         <PharsesExamples />

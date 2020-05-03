@@ -28,8 +28,6 @@ export const reducer = (
   state: StateType,
   action: Action,
 ): StateType => {
-  console.log(state);
-  console.log(`action: ${action.type}`);
   const isBegining = state.gameStatus === typingStatus.BEGINING;
   const isTyping = state.gameStatus === typingStatus.TYPING;
   const isEnd = state.gameStatus === typingStatus.END;

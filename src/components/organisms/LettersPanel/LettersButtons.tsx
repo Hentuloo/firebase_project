@@ -1,13 +1,18 @@
 import React, { memo } from 'react';
 import styled, { css } from 'styled-components';
 import { stickyModal } from 'components/molecules';
-import { ClearButton } from './Button.styled';
+import { ClearButton } from '../../atoms/Button/Button.styled';
+import { LetterObjectWithActive, ToggleLetter } from './types';
 
 const Wrapper = styled.div`
   ${stickyModal}
+  height: 74%;
   display: grid;
-  height: 45px;
   grid-auto-flow: column;
+  align-self: center;
+  &::before {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const StyledClearButton = styled(ClearButton)`
@@ -18,20 +23,16 @@ const StyledClearButton = styled(ClearButton)`
       color: ${({ theme }) => theme.color.brand[0]};
     `}
 `;
-interface LettersGroupProps {
-  lettersArray: {
-    letter: string;
-    active: boolean;
-    id: number;
-  }[];
-  onClick: (e: any, id: number | string) => any;
+interface LettersButtonsProps {
+  lettersArray: LetterObjectWithActive[];
+  onClick: ToggleLetter;
 }
 
-export const LettersGroup = ({
+export const LettersButtons = ({
   lettersArray,
   onClick,
   ...props
-}: LettersGroupProps) => {
+}: LettersButtonsProps) => {
   if (lettersArray.length === 0) return null;
 
   return (
@@ -50,8 +51,8 @@ export const LettersGroup = ({
   );
 };
 
-export const MemomizedLettersGroup = memo(
-  LettersGroup,
+export const MemomizedLettersButtons = memo(
+  LettersButtons,
   (prev, next) =>
     prev.lettersArray.every(
       (letter, i) => letter.active === next.lettersArray[i].active,

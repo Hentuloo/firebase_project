@@ -4,6 +4,7 @@ import { TypingInput, Hands } from 'components/organisms';
 import { LoadingBar } from 'components/atoms';
 
 import { Controllers } from './Controllers';
+import { LetterObject } from './lettersReducer';
 
 const Wrapper = styled.div`
   position: relative;
@@ -50,7 +51,7 @@ const StyledHands = styled(Hands)`
 
 export interface TypingControllersProps {
   text: string;
-  letters: string[];
+  letters: LetterObject[];
 }
 
 const TypingControllers: React.SFC<TypingControllersProps> = ({

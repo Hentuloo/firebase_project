@@ -4,10 +4,13 @@ import styled from 'styled-components';
 import WithMenuTemplate from 'templates/WithMenuTemplate';
 import { LettersPanel } from 'components/organisms';
 
-import { letters } from 'config/soloTrainingConfig';
+import { letters as initialLettersObject } from 'config/soloTrainingConfig';
 import TypingControllers from './TypingControllers';
 
-import lettersReducer, { types } from './choosedLettersReducer';
+import lettersReducer, {
+  types,
+  LetterObject,
+} from './lettersReducer';
 
 const Wrapper = styled.div`
   display: grid;
@@ -29,18 +32,23 @@ const Wrapper = styled.div`
   }
 `;
 
-const initialState = Object.keys(letters).map(letter => ({
-  ...letters[letter],
-  letter,
-}));
+const initialLetters = Object.keys(initialLettersObject).map(
+  (letter): LetterObject => ({
+    ...initialLettersObject[letter],
+    letter,
+    blocked: true,
+  }),
+);
 
 const SoloTraining = () => {
-  const [lettersArray, dispatch] = useReducer<typeof lettersReducer>(
-    lettersReducer,
-    initialState,
-  );
+  const [{ letters, lastActiveLetterIndex }, dispatch] = useReducer<
+    typeof lettersReducer
+  >(lettersReducer, {
+    letters: initialLetters,
+    lastActiveLetterIndex: 6,
+  });
 
-  const handleToggleLetter = (e: any, id: number) => {
+  const handleToggleLetter = (e: any, id: number | string) => {
     dispatch({ type: types.TOGGLE_LETTER, payload: id });
   };
 
@@ -50,10 +58,11 @@ const SoloTraining = () => {
     <WithMenuTemplate>
       <Wrapper>
         <LettersPanel
-          lettersArray={lettersArray}
+          activeIndex={lastActiveLetterIndex}
+          letters={letters}
           toggleLetter={handleToggleLetter}
         />
-        <TypingControllers text={text} letters={lettersArray} />
+        <TypingControllers text={text} letters={letters} />
       </Wrapper>
     </WithMenuTemplate>
   );
