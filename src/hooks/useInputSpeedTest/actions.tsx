@@ -26,10 +26,10 @@ export const setNewTextAction = (
 
 export type SetTimeStepsAction = {
   type: types.SET_TIME_STEPS;
-  payload: number | true | false;
+  payload: number;
 };
 export const setTimeStepsAction = (
-  steps: number | true | false,
+  steps: number,
 ): SetTimeStepsAction => ({
   type: types.SET_TIME_STEPS,
   payload: steps,
@@ -37,10 +37,10 @@ export const setTimeStepsAction = (
 
 export type SetNewInitialTimeAction = {
   type: types.SET_INITIAL_TIME;
-  payload: number;
+  payload: number | true | false;
 };
 export const setNewInitialTimeAction = (
-  time: number,
+  time: number | true | false,
 ): SetNewInitialTimeAction => ({
   type: types.SET_INITIAL_TIME,
   payload: time,

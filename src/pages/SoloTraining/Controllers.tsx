@@ -4,6 +4,7 @@ import { InputNumber, CircleButton } from 'components/atoms';
 
 import repeatIcon from 'assets/svg/icons/repeatIcon.svg';
 import chartIcon from 'assets/svg/icons/chartIcon.svg';
+import { typingStatus } from 'hooks/useInputSpeedTest/types';
 
 const Wrapper = styled.div`
   display: grid;
@@ -59,14 +60,19 @@ export interface ControllersProps {
   time: number;
   setTime: (props: number) => any;
   reset: () => any;
+  gameStatus: typingStatus;
+  stepsInOneMinute?: number;
 }
 
 export const Controllers: FC<ControllersProps> = ({
   time,
   setTime,
   reset,
+  gameStatus,
+  stepsInOneMinute = 60,
 }) => {
-  const handleSetTime = (num: number) => setTime(num * 60);
+  const handleSetTime = (num: number) =>
+    setTime(num * stepsInOneMinute);
 
   return (
     <Wrapper>
@@ -75,9 +81,10 @@ export const Controllers: FC<ControllersProps> = ({
           insertBefore={[0.5]}
           min={1}
           max={12}
-          value={Math.floor(Number((time / 60).toFixed(2)))}
+          value={time}
           onChange={handleSetTime}
           title="Ustaw czas [CTR+&uarr;&darr;]"
+          disable={gameStatus === typingStatus.TYPING}
         />
         <ClockIcon className="fa fa-clock-o" aria-hidden="true" />
       </ControllerWrapper>

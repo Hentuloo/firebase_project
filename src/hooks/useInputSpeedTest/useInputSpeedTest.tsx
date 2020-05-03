@@ -13,6 +13,7 @@ import { typingObserver } from './observables/typingObserver';
 import { typingStatus } from './types';
 import { timeObserver } from './observables/timeObserver';
 import { hotkeyObserver } from './observables/hotkeyObserver';
+import { timeSteps } from './config';
 
 const initValue = {
   inputValue: '',
@@ -24,15 +25,15 @@ const initValue = {
   goodLength: 0,
   cursor: 0,
   gameStatus: typingStatus.BEGINING,
-  initialTimeSteps: 30,
-  timeSteps: 30,
+  initialTimeSteps: timeSteps.defaultTimeSteps,
+  timeSteps: timeSteps.defaultTimeSteps,
   accuracy: 100,
   speed: 0,
 };
 
 export interface UseInputSpeedTestProps {
   text: string;
-  time: number;
+  time?: number;
 }
 
 export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
@@ -44,7 +45,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     sourceText: text,
     sourceTextInArray: text.split(' '),
     lengthsOfSourceText: text.split(' ').map(word => word.length),
-    initialTimeSteps,
+    initialTimeSteps: initialTimeSteps || initValue.initialTimeSteps,
   });
 
   const setInputFocus = () => {
@@ -61,13 +62,8 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
 
   const resetGameState = () => dispatch(resetGameStateAction());
 
-  const setTimeSteps = (time: number) => {
+  const setTimeSteps = (time: number) =>
     dispatch(setTimeStepsAction(time));
-  };
-
-  useEffect(() => {
-    setNewInitialTime(initialTimeSteps);
-  }, [initialTimeSteps]);
 
   useEffect(() => {
     // typing listener & hotkeyListener
@@ -83,7 +79,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     // time listener
     let timeSub: undefined | Subscription;
     if (state.gameStatus === typingStatus.TYPING) {
-      timeSub = timeObserver(100, dispatch);
+      timeSub = timeObserver(dispatch);
     }
     return () => {
       if (timeSub) timeSub.unsubscribe();
@@ -101,7 +97,9 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     setText,
     text,
     setTimeSteps,
+    setNewInitialTime,
     resetGameState,
+    timeConfig: timeSteps,
   };
 };
 

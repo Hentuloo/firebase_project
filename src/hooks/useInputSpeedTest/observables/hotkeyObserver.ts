@@ -1,7 +1,10 @@
 import { listenHotKey } from 'utils';
 
 import { Action } from '../types';
-import { resetGameStateAction, setTimeStepsAction } from '../actions';
+import {
+  resetGameStateAction,
+  setNewInitialTimeAction,
+} from '../actions';
 
 export const hotkeyObserver = (dispatch: React.Dispatch<Action>) => {
   // resetGame
@@ -13,12 +16,12 @@ export const hotkeyObserver = (dispatch: React.Dispatch<Action>) => {
     .subscribe(() => dispatch(resetGameStateAction()))
     .add(
       increaseTime$.subscribe(() =>
-        dispatch(setTimeStepsAction(true)),
+        dispatch(setNewInitialTimeAction(true)),
       ),
     )
     .add(
       decreseTime$.subscribe(() =>
-        dispatch(setTimeStepsAction(false)),
+        dispatch(setNewInitialTimeAction(false)),
       ),
     );
 

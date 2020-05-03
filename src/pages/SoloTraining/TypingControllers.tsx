@@ -56,24 +56,29 @@ export interface TypingControllersProps {
 const TypingControllers: React.SFC<TypingControllersProps> = ({
   text,
 }) => {
-  // const handle;
-
   return (
     <Wrapper>
       <StyledTypingInput
         text={text}
-        time={2}
         render={({
           cursor,
           timeSteps,
           initialTimeSteps,
           resetGameState,
-          setTimeSteps,
+          setNewInitialTime,
+          gameStatus,
+          timeConfig: { stepsInOneMinute },
         }) => (
           <>
             <Controllers
-              time={timeSteps}
-              setTime={setTimeSteps}
+              gameStatus={gameStatus}
+              stepsInOneMinute={stepsInOneMinute}
+              time={Math.floor(
+                Number(
+                  (initialTimeSteps / stepsInOneMinute).toFixed(2),
+                ),
+              )}
+              setTime={setNewInitialTime}
               reset={resetGameState}
             />
             <StyledHands text={text} cursor={cursor} />

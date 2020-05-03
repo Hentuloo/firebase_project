@@ -3,6 +3,7 @@ import {
   getStatePieceWithNewLetter,
 } from './utils';
 import { types, Action, typingStatus } from './types';
+import { timeSteps } from './config';
 
 export type StateType = {
   inputValue: string;
@@ -27,7 +28,9 @@ export const reducer = (
   state: StateType,
   action: Action,
 ): StateType => {
-  // const isBegining = state.gameStatus === typingStatus.BEGINING;
+  console.log(state);
+  console.log(`action: ${action.type}`);
+  const isBegining = state.gameStatus === typingStatus.BEGINING;
   const isTyping = state.gameStatus === typingStatus.TYPING;
   const isEnd = state.gameStatus === typingStatus.END;
 
@@ -36,6 +39,15 @@ export const reducer = (
       return { ...state, sourceText: action.payload };
 
     case types.SET_TIME_STEPS: {
+      if (!isBegining) return state;
+
+      return {
+        ...state,
+        timeSteps: state.timeSteps - action.payload,
+      };
+    }
+
+    case types.SET_INITIAL_TIME: {
       if (isTyping || isEnd) return state;
       if (typeof action.payload === 'number')
         return {
@@ -45,24 +57,18 @@ export const reducer = (
         };
 
       const newTime = action.payload
-        ? state.timeSteps + 60
-        : state.timeSteps - 60;
-      if (newTime > 720 || newTime < 30) return state;
+        ? state.timeSteps + timeSteps.stepsInOneMinute
+        : state.timeSteps - timeSteps.stepsInOneMinute;
+
+      if (
+        newTime > timeSteps.maxTimeSteps ||
+        newTime < timeSteps.minTimeSteps
+      )
+        return state;
       return {
         ...state,
         timeSteps: newTime,
         initialTimeSteps: newTime,
-      };
-    }
-
-    case types.SET_INITIAL_TIME: {
-      if (isTyping || isEnd) return state;
-      const newTime = action.payload * 60;
-
-      return {
-        ...state,
-        initialTimeSteps: newTime,
-        timeSteps: newTime,
       };
     }
 
@@ -76,7 +82,10 @@ export const reducer = (
         (100 - (state.wrongLength / state.cursor) * 100).toFixed(2),
       );
       const speed = Number(
-        (writtenWords / (gameTime / 60)).toFixed(2),
+        (
+          writtenWords /
+          (gameTime / timeSteps.stepsInOneMinute)
+        ).toFixed(2),
       );
 
       return {

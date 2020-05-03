@@ -53,6 +53,7 @@ export type InputNumberProps = Modify<
     insertAfter?: number[];
     max?: number;
     min?: number;
+    disable?: boolean;
   }
 >;
 
@@ -63,6 +64,7 @@ export const InputNumber: FC<InputNumberProps> = ({
   insertAfter,
   max = 10,
   min = 1,
+  disable = false,
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -96,7 +98,7 @@ export const InputNumber: FC<InputNumberProps> = ({
   useEffect(() => {
     // set draggable listener
     const wrapper = ref.current;
-    if (!wrapper) return;
+    if (!wrapper || disable) return;
     const childHeight = wrapper.children[0].clientHeight;
 
     const sub = Draggable.create(wrapper, {
@@ -122,7 +124,7 @@ export const InputNumber: FC<InputNumberProps> = ({
     return () => {
       sub[0].kill();
     };
-  }, [numbers, onChange]);
+  }, [numbers, onChange, disable]);
 
   return (
     <Wrapper {...props}>
