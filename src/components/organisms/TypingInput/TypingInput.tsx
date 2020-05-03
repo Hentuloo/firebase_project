@@ -44,10 +44,11 @@ interface TypingInput extends UseInputSpeedTestProps {
 export const TypingInput: FC<TypingInput> = ({
   text,
   time,
+  textAssets,
   className = '',
   render = null,
 }) => {
-  const inputState = useInputSpeedTest({ text, time });
+  const inputState = useInputSpeedTest({ text, time, textAssets });
   const {
     ref,
     inputValue,
@@ -58,6 +59,7 @@ export const TypingInput: FC<TypingInput> = ({
     accuracy,
     speed,
     sourceTextInArray,
+    sourceText,
   } = inputState;
 
   return (
@@ -66,7 +68,7 @@ export const TypingInput: FC<TypingInput> = ({
         <Counters accuracy={accuracy} speed={speed} />
         <InnerWrapper>
           <PanelWithTextToWrite
-            todo={text.slice(inputValue.length)}
+            todo={sourceText.slice(inputValue.length)}
             doneGood={goodText}
             doneWrong={wrongText}
           />

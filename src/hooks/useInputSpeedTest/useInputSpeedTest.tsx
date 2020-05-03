@@ -7,6 +7,7 @@ import {
   setTimeStepsAction,
   setNewInitialTimeAction,
   resetGameStateAction,
+  generateNewWords,
 } from './actions';
 
 import { typingObserver } from './observables/typingObserver';
@@ -33,20 +34,25 @@ const initValue = {
 
 export interface UseInputSpeedTestProps {
   text: string;
+  textAssets?: string[];
   time?: number;
 }
 
 export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
-  const { text, time: initialTimeSteps } = props;
+  const { textAssets, text, time: initialTimeSteps } = props;
 
   const ref = useRef<HTMLInputElement>(null);
   const [state, dispatch] = useReducer<typeof reducer>(reducer, {
     ...initValue,
     sourceText: text,
+    textAssets,
     sourceTextInArray: text.split(' '),
     lengthsOfSourceText: text.split(' ').map(word => word.length),
     initialTimeSteps: initialTimeSteps || initValue.initialTimeSteps,
   });
+  const generateNewWordsFlag =
+    textAssets &&
+    state.writtenWords.length >= state.sourceTextInArray.length - 5;
 
   const setInputFocus = () => {
     const input = ref.current;
@@ -85,6 +91,13 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
       if (timeSub) timeSub.unsubscribe();
     };
   }, [state.gameStatus]);
+
+  useEffect(() => {
+    // update text from textAssets
+    if (generateNewWordsFlag === true) {
+      dispatch(generateNewWords());
+    }
+  }, [generateNewWordsFlag]);
 
   useEffect(() => {
     setInputFocus();

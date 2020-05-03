@@ -10,6 +10,7 @@ export enum types {
   SUBTRACT_TIME_STEPS = 'SUBTRACT_TIME_STEPS',
   SET_INITIAL_TIME = 'SET_INITIAL_TIME',
   RESET_GAME = 'RESET_GAME',
+  GENERATE_WORDS = 'GENERATE_WORDS',
 }
 
 export enum typingMood {

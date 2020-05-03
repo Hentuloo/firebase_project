@@ -1,4 +1,5 @@
 export * from './listenHotkey/ListenHotkey';
+export * from './shuffleArray';
 
 export const isMobile = () =>
   typeof window.orientation !== 'undefined';

@@ -45,6 +45,7 @@ const SoloTraining = () => {
     dispatch,
   ] = useReducer<typeof lettersReducer>(lettersReducer, {
     letters: initialLetters,
+
     lastActiveLetterIndex: 6,
     firstBlockedLetterIndex: 10,
   });
@@ -64,7 +65,11 @@ const SoloTraining = () => {
           letters={letters}
           toggleLetter={handleToggleLetter}
         />
-        <TypingControllers text={text} letters={letters} />
+        <TypingControllers
+          text={text}
+          letters={letters}
+          lastActiveIndex={lastActiveLetterIndex}
+        />
       </Wrapper>
     </WithMenuTemplate>
   );

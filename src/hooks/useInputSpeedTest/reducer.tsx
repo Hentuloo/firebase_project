@@ -1,3 +1,4 @@
+import { shuffleArray } from 'utils';
 import {
   removeLeterFromLastWord,
   getStatePieceWithNewLetter,
@@ -14,6 +15,7 @@ export type StateType = {
   wrongLength: number;
   goodLength: number;
   cursor: number;
+  textAssets?: string[];
   sourceText: string;
   sourceTextInArray: string[];
   lengthsOfSourceText: number[];
@@ -141,7 +143,27 @@ export const reducer = (
         accuracy: 100,
         speed: 0,
       };
+    case types.GENERATE_WORDS: {
+      const assetsWords = state.textAssets;
+      if (!assetsWords) return state;
 
+      const randomWords = shuffleArray<string>(assetsWords);
+      const newSourceTex = randomWords.join(' ');
+      const newLengths = randomWords.map(word => word.length);
+
+      return {
+        ...state,
+        sourceText: `${state.sourceText} ${newSourceTex}`,
+        sourceTextInArray: [
+          ...state.sourceTextInArray,
+          ...randomWords,
+        ],
+        lengthsOfSourceText: [
+          ...state.lengthsOfSourceText,
+          ...newLengths,
+        ],
+      };
+    }
     default:
       return state;
   }

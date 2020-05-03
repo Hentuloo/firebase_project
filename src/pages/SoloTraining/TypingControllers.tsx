@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { TypingInput, Hands } from 'components/organisms';
 import { LoadingBar } from 'components/atoms';
 
+import { soloTrainingWords } from 'config/soloTrainingWords';
 import { Controllers } from './Controllers';
 import { LetterObject } from './lettersReducer';
 
@@ -52,6 +53,7 @@ const StyledHands = styled(Hands)`
 export interface TypingControllersProps {
   text: string;
   letters: LetterObject[];
+  lastActiveIndex: number;
 }
 
 const TypingControllers: React.SFC<TypingControllersProps> = ({
@@ -60,7 +62,8 @@ const TypingControllers: React.SFC<TypingControllersProps> = ({
   return (
     <Wrapper>
       <StyledTypingInput
-        text={text}
+        textAssets={soloTrainingWords.z}
+        text={soloTrainingWords.z.join(' ')}
         render={({
           cursor,
           timeSteps,

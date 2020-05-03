@@ -4,7 +4,15 @@ export type ActionCreatorsBasicTypse =
   | SetGeneralTextAction
   | SetTimeStepsAction
   | SetNewInitialTimeAction
-  | ResetGameStateAction;
+  | ResetGameStateAction
+  | GenerateNewWordsAction;
+
+export type GenerateNewWordsAction = {
+  type: types.GENERATE_WORDS;
+};
+export const generateNewWords = (): GenerateNewWordsAction => ({
+  type: types.GENERATE_WORDS,
+});
 
 export type ResetGameStateAction = {
   type: types.RESET_GAME;
