@@ -1,10 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { InputNumber, CircleButton } from 'components/atoms';
 
 import repeatIcon from 'assets/svg/icons/repeatIcon.svg';
 import chartIcon from 'assets/svg/icons/chartIcon.svg';
 import { typingStatus } from 'hooks/useInputSpeedTest/types';
+import { useDispatch } from 'react-redux';
+import { updateSnaps } from 'store/actions/soloTraining';
 
 const Wrapper = styled.div`
   display: grid;
@@ -57,7 +59,10 @@ const ButtonImage = styled.img`
 `;
 
 export interface ControllersProps {
-  time: number;
+  accuracy: number;
+  speed: number;
+  initTime: number;
+  timeStep: number;
   setTime: (props: number) => any;
   reset: () => any;
   gameStatus: typingStatus;
@@ -65,14 +70,25 @@ export interface ControllersProps {
 }
 
 export const Controllers: FC<ControllersProps> = ({
-  time,
+  initTime,
+  timeStep,
   setTime,
   reset,
   gameStatus,
   stepsInOneMinute = 60,
+  accuracy,
+  speed,
 }) => {
+  const dispatch = useDispatch();
   const handleSetTime = (num: number) =>
     setTime(num * stepsInOneMinute);
+
+  useEffect(() => {
+    if (gameStatus === typingStatus.END) {
+      dispatch(updateSnaps({ time: initTime, accuracy, speed }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameStatus]);
 
   return (
     <Wrapper>
@@ -81,7 +97,7 @@ export const Controllers: FC<ControllersProps> = ({
           insertBefore={[0.5]}
           min={1}
           max={12}
-          value={time}
+          value={timeStep}
           onChange={handleSetTime}
           title="Ustaw czas [CTR+&uarr;&darr;]"
           disable={gameStatus === typingStatus.TYPING}

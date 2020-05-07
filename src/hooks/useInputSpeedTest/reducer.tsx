@@ -4,7 +4,7 @@ import {
   getStatePieceWithNewLetter,
 } from './utils';
 import { types, Action, typingStatus } from './types';
-import { timeSteps } from './config';
+import { timeStepsConfig } from './config';
 
 export type StateType = {
   inputValue: string;
@@ -57,12 +57,12 @@ export const reducer = (
         };
 
       const newTime = action.payload
-        ? state.timeSteps + timeSteps.stepsInOneMinute
-        : state.timeSteps - timeSteps.stepsInOneMinute;
+        ? state.timeSteps + timeStepsConfig.stepsInOneMinute
+        : state.timeSteps - timeStepsConfig.stepsInOneMinute;
 
       if (
-        newTime > timeSteps.maxTimeSteps ||
-        newTime < timeSteps.minTimeSteps
+        newTime > timeStepsConfig.maxTimeSteps ||
+        newTime < timeStepsConfig.minTimeSteps
       )
         return state;
       return {
@@ -84,7 +84,7 @@ export const reducer = (
       const speed = Number(
         (
           writtenWords /
-          (gameTime / timeSteps.stepsInOneMinute)
+          (gameTime / timeStepsConfig.stepsInOneMinute)
         ).toFixed(2),
       );
 
@@ -179,6 +179,7 @@ export const reducer = (
         textAssets,
       };
     }
+
     default:
       return state;
   }

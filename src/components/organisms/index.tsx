@@ -4,3 +4,4 @@ export * from './SummaryPanel/SummaryPanel';
 export * from './TypingInput/TypingInput';
 export * from './LettersPanel/LettersPanel';
 export * from './Hands/Hands';
+export * from './TypingSnapsChart/TypingSnapsChart';

@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import styled from 'styled-components';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
-import { LettersPanel } from 'components/organisms';
+import { LettersPanel, TypingSnapsChart } from 'components/organisms';
 
 import { letters as initialLettersObject } from 'config/soloTrainingConfig';
 import TypingControllers from './TypingControllers';
@@ -65,6 +65,11 @@ const SoloTraining = () => {
         />
         <TypingControllers
           activeLetter={letters[lastActiveLetterIndex - 1].letter}
+        />
+        <TypingSnapsChart
+          time={[0.4, 2, 2, 2, 2]}
+          speed={[20, 40, 32, 21, 44, 11]}
+          accurancy={[99, 92, 94, 91, 51, 77]}
         />
       </Wrapper>
     </WithMenuTemplate>

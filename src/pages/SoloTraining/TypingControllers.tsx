@@ -73,12 +73,19 @@ const TypingControllers: React.SFC<TypingControllersProps> = ({
           gameStatus,
           timeConfig: { stepsInOneMinute },
           sourceText,
+          accuracy,
+          speed,
         }) => (
           <>
             <Controllers
+              accuracy={accuracy}
+              speed={speed}
               gameStatus={gameStatus}
               stepsInOneMinute={stepsInOneMinute}
-              time={Math.floor(
+              initTime={Number(
+                (initialTimeSteps / stepsInOneMinute).toFixed(2),
+              )}
+              timeStep={Math.floor(
                 Number(
                   (initialTimeSteps / stepsInOneMinute).toFixed(2),
                 ),

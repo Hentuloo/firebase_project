@@ -15,7 +15,7 @@ import { typingObserver } from './observables/typingObserver';
 import { typingStatus } from './types';
 import { timeObserver } from './observables/timeObserver';
 import { hotkeyObserver } from './observables/hotkeyObserver';
-import { timeSteps } from './config';
+import { timeStepsConfig } from './config';
 
 const initValue = {
   inputValue: '',
@@ -27,10 +27,11 @@ const initValue = {
   goodLength: 0,
   cursor: 0,
   gameStatus: typingStatus.BEGINING,
-  initialTimeSteps: timeSteps.defaultTimeSteps,
-  timeSteps: timeSteps.defaultTimeSteps,
+  initialTimeSteps: timeStepsConfig.defaultTimeSteps,
+  timeSteps: timeStepsConfig.defaultTimeSteps,
   accuracy: 100,
   speed: 0,
+  snaps: [],
 };
 
 export interface UseInputSpeedTestProps {
@@ -120,7 +121,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     setTimeSteps,
     setNewInitialTime,
     resetGameState,
-    timeConfig: timeSteps,
+    timeConfig: timeStepsConfig,
   };
 };
 

@@ -1,4 +1,4 @@
-export const timeSteps = {
+export const timeStepsConfig = {
   defaultTimeSteps: 180,
   minTimeSteps: 30,
   maxTimeSteps: 720,
