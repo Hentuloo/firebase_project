@@ -13,6 +13,7 @@ export default {
     gradients: [
       ' linear-gradient(to right, rgba(15,91,138,1) 0%, rgba(143,204,240,1) 41%, rgba(255,139,66,1) 64%, rgba(170,92,44,1) 100%);',
     ],
+    chart: ['#69C397', 'rgb(119, 119, 119)', 'rgb(220, 220, 220)'],
   },
   mediaQuery: {
     xs: '@media (min-width: 0px)',

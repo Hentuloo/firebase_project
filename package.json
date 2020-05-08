@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/chart.js": "^2.9.20",
     "chart.js": "^2.9.3",
+    "dayjs": "^1.8.26",
     "firebase": "^7.8.0",
     "font-awesome": "^4.7.0",
     "gsap": "^3.2.6",

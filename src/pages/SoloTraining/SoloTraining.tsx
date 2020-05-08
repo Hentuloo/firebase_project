@@ -2,15 +2,15 @@ import React, { useReducer } from 'react';
 import styled from 'styled-components';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
-import { LettersPanel, TypingSnapsChart } from 'components/organisms';
-
+import { LettersPanel } from 'components/organisms';
 import { letters as initialLettersObject } from 'config/soloTrainingConfig';
-import TypingControllers from './TypingControllers';
-
+import { useSwitchTab } from 'hooks/useSwitchTab';
+import TypingTab from './TypingTab/TypingTab';
 import lettersReducer, {
   types,
   LetterObject,
 } from './lettersReducer';
+import { ChartTab } from './ChartTab/ChartTab';
 
 const Wrapper = styled.div`
   display: grid;
@@ -31,6 +31,16 @@ const Wrapper = styled.div`
     min-height: calc(100vh - 85px);
   }
 `;
+const TabsWrapper = styled.div`
+  position: relative;
+  height: 330px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0px auto;
+  ${({ theme }) => theme.mediaQuery.md} {
+    height: auto;
+  }
+`;
 
 const initialLetters = Object.keys(initialLettersObject).map(
   (letter): LetterObject => ({
@@ -38,7 +48,10 @@ const initialLetters = Object.keys(initialLettersObject).map(
     letter,
   }),
 );
-
+enum Tabs {
+  TYPING,
+  CHART,
+}
 const SoloTraining = () => {
   const [
     { letters, lastActiveLetterIndex, firstBlockedLetterIndex },
@@ -49,6 +62,10 @@ const SoloTraining = () => {
     lastActiveLetterIndex: 6,
     firstBlockedLetterIndex: 10,
   });
+
+  const [tabRef, changeTab] = useSwitchTab<Tabs, HTMLDivElement>(
+    Tabs.TYPING,
+  );
 
   const handleToggleLetter = (e: any, id: number | string) => {
     dispatch({ type: types.TOGGLE_LETTER, payload: id });
@@ -63,14 +80,19 @@ const SoloTraining = () => {
           letters={letters}
           toggleLetter={handleToggleLetter}
         />
-        <TypingControllers
-          activeLetter={letters[lastActiveLetterIndex - 1].letter}
-        />
-        <TypingSnapsChart
-          time={[0.4, 2, 2, 2, 2]}
-          speed={[20, 40, 32, 21, 44, 11]}
-          accurancy={[99, 92, 94, 91, 51, 77]}
-        />
+        <TabsWrapper>
+          <TypingTab
+            ref={ref => tabRef(ref, Tabs.TYPING)}
+            activeLetter={letters[lastActiveLetterIndex - 1].letter}
+            changeTab={() => changeTab(Tabs.CHART)}
+          />
+          <ChartTab
+            ref={ref => {
+              tabRef(ref, Tabs.CHART);
+            }}
+            changeTab={() => changeTab(Tabs.TYPING)}
+          />
+        </TabsWrapper>
       </Wrapper>
     </WithMenuTemplate>
   );

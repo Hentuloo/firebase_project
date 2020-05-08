@@ -67,6 +67,7 @@ export interface ControllersProps {
   reset: () => any;
   gameStatus: typingStatus;
   stepsInOneMinute?: number;
+  changeTab: () => void;
 }
 
 export const Controllers: FC<ControllersProps> = ({
@@ -78,8 +79,15 @@ export const Controllers: FC<ControllersProps> = ({
   stepsInOneMinute = 60,
   accuracy,
   speed,
+  changeTab,
 }) => {
   const dispatch = useDispatch();
+
+  const handleChangeTab = () => {
+    if (gameStatus === typingStatus.TYPING) return;
+    changeTab();
+  };
+
   const handleSetTime = (num: number) =>
     setTime(num * stepsInOneMinute);
 
@@ -110,7 +118,7 @@ export const Controllers: FC<ControllersProps> = ({
         </StyledRepeat>
       </ControllerWrapper>
       <ControllerWrapper>
-        <StyledCharts title="Wykresy">
+        <StyledCharts title="Wykresy" onClick={handleChangeTab}>
           <ButtonImage
             src={chartIcon}
             alt="Pokaż historie na wykresie"
