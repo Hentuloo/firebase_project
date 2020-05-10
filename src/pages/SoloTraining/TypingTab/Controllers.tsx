@@ -1,12 +1,14 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { InputNumber, CircleButton } from 'components/atoms';
 
 import repeatIcon from 'assets/svg/icons/repeatIcon.svg';
 import chartIcon from 'assets/svg/icons/chartIcon.svg';
+import circles from 'assets/svg/circles1.svg';
 import { typingStatus } from 'hooks/useInputSpeedTest/types';
 import { useDispatch } from 'react-redux';
 import { updateSnaps } from 'store/actions/soloTraining';
+import gsap from 'gsap';
 
 const Wrapper = styled.div`
   display: grid;
@@ -29,6 +31,7 @@ const ControllerWrapper = styled.div`
 const StyledCircleButton = styled(CircleButton)`
   display: grid;
   font-size: ${({ theme }) => theme.fs.xl};
+  background-color: ${({ theme }) => theme.color.white[0]};
 `;
 const ClockIcon = styled.span`
   position: absolute;
@@ -51,11 +54,21 @@ const StyledInputNumber = styled(InputNumber)`
     }
   }
 `;
+
 const StyledRepeat = styled(StyledCircleButton)``;
 const StyledCharts = styled(StyledCircleButton)``;
 const ButtonImage = styled.img`
   display: block;
   margin: 0px auto;
+`;
+const AttentionCircles = styled.img`
+  position: absolute;
+  display: block;
+  top: 0%;
+  left: 0%;
+  z-index: -3;
+  opacity: 0;
+  transform: scale(0.9);
 `;
 
 export interface ControllersProps {
@@ -82,18 +95,30 @@ export const Controllers: FC<ControllersProps> = ({
   changeTab,
 }) => {
   const dispatch = useDispatch();
+  const chartAttentionCircles = useRef<HTMLImageElement>(null);
 
   const handleChangeTab = () => {
     if (gameStatus === typingStatus.TYPING) return;
     changeTab();
   };
+  const newChartAnim = () => {
+    const el = chartAttentionCircles.current;
+    const tl = gsap.timeline();
+    tl.to(el, { opacity: 1, scale: 1.2 }, 1.9)
+      .to(el, {
+        opacity: 0,
+      })
+      .to(el, { scale: 0.9 });
+  };
 
-  const handleSetTime = (num: number) =>
+  const handleSetTime = (num: number) => {
     setTime(num * stepsInOneMinute);
+  };
 
   useEffect(() => {
     if (gameStatus === typingStatus.END) {
       dispatch(updateSnaps({ time: initTime, accuracy, speed }));
+      newChartAnim();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStatus]);
@@ -124,6 +149,7 @@ export const Controllers: FC<ControllersProps> = ({
             alt="Pokaż historie na wykresie"
           />
         </StyledCharts>
+        <AttentionCircles ref={chartAttentionCircles} src={circles} />
       </ControllerWrapper>
     </Wrapper>
   );
