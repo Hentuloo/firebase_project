@@ -1,10 +1,10 @@
 import React, { useReducer, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createNewRoom } from 'fb/controllers/rooms';
 import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
 import { joinRoom } from 'store/actions/rooms';
 import { StoreType } from 'store/store';
+import { Db } from 'fb';
 
 interface DashboardStateInterface {
   roomName: string;
@@ -48,7 +48,7 @@ const Dashboard: FC = () => {
     try {
       // Without password
       if (!uid) return;
-      const newRoomRef = await createNewRoom(uid, roomName);
+      const newRoomRef = await Db.init().createNewRoom(uid, roomName);
       const roomId = newRoomRef.id;
       dispatch(joinRoom(roomId));
       redirect(`${Constants.paths.room.path}/${roomId}`);

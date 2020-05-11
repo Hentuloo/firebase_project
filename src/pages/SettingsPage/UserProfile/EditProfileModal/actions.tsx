@@ -1,7 +1,5 @@
-import { uploadFilePromise, userPhotoRef } from 'fb/storage';
-import { updateUserDoc } from 'fb/controllers/userProfile';
-
 import { validImageFile } from 'utils';
+import { Storage, Db } from 'fb';
 import { types } from './types';
 
 interface SubmitFormProps {
@@ -34,12 +32,8 @@ export const submitForm = ({
       const { ok, message } = validImageFile(firstImage);
       if (!ok) throw new Error(message);
 
-      // upload to storage
-      const photoUrl = await uploadFilePromise(
-        userPhotoRef(uid),
-        firstImage,
-        updateProgress,
-      );
+      const { uploadImage } = Storage.init(uid);
+      const photoUrl = await uploadImage(firstImage, updateProgress);
 
       nweFields.photoURL = photoUrl as string;
     }
@@ -47,7 +41,7 @@ export const submitForm = ({
     if (inputValue !== '') nweFields.displayName = inputValue;
 
     if (Object.keys(nweFields).length > 0)
-      await updateUserDoc(uid, nweFields);
+      await Db.init().updateUserDoc(uid, nweFields);
 
     dispatch({ type: types.REQUEST_SUCCESSFUL });
   } catch (err) {

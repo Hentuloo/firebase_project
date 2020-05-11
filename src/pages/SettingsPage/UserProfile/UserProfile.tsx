@@ -2,7 +2,6 @@ import React, { useState, FC } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { logout } from 'fb/controllers/auth';
 
 import {
   ClearButton,
@@ -12,6 +11,7 @@ import {
 import { stickyModal } from 'components/molecules';
 
 import { StoreType } from 'store/store';
+import { Auth } from 'fb';
 import EditProfileModal from './EditProfileModal/EditProfileModal';
 
 const Wrapper = styled.div`
@@ -85,7 +85,7 @@ const UserProfile: FC<UserProfileProps> = ({ className = '' }) => {
 
   const handleLogout = (e: any) => {
     e.preventDefault();
-    logout();
+    Auth.init().logout();
   };
 
   const handleDeleteAccount = (e: any) => {

@@ -6,13 +6,9 @@ import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
 
 import { deleteActiveRoomData } from 'store/actions/rooms';
-import {
-  listenRoom,
-  joinToOpenRoom,
-  leaveRoom,
-} from 'fb/controllers/rooms';
 
 import { StoreType } from 'store/store';
+import { Db, FireFunctions } from 'fb';
 import RoomDetailsBar from './RoomDetailsBar/RoomDetailsBar';
 
 const Wrapper = styled.div`
@@ -31,7 +27,11 @@ const RoomPage: FC = () => {
 
   useEffect(() => {
     // Try to join to this room
+    const { joinToOpenRoom, leaveRoom } = FireFunctions.init();
+    const { listenRoom } = Db.init();
+
     let unSubActiveRoom = () => null;
+
     const joinToRoom = async () => {
       try {
         await joinToOpenRoom(roomId);

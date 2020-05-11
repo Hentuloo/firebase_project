@@ -2,18 +2,13 @@ import React, { useState, FC } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import {
-  loginWithEmail,
-  createAccountWithEmail,
-  loginWithGoogle,
-} from 'fb/controllers/auth';
-
 import logoSVG from 'assets/svg/icons/logo.svg';
 import backgroundImage from 'assets/svg/road/corner1.svg';
 
 import { Constants } from 'config/Constants';
 import { GoogleLoading } from 'components/atoms';
 import { useRedirect } from 'hooks/useRedirect';
+import { Auth } from 'fb';
 import Form from './Form';
 
 const Wrapper = styled.div`
@@ -96,6 +91,7 @@ const LoginPage: FC = () => {
     displayName: string;
   }) => {
     setErrorMessage(null);
+    const { loginWithEmail, createAccountWithEmail } = Auth.init();
     try {
       if (hasAccount) {
         setAuthRequest(true);
@@ -121,7 +117,7 @@ const LoginPage: FC = () => {
     e.preventDefault();
     try {
       setAuthRequest('google');
-      await loginWithGoogle();
+      await Auth.init().loginWithGoogle();
       if (!hasAccount)
         return redirect(Constants.paths.registered.path);
       setAuthRequest(false);

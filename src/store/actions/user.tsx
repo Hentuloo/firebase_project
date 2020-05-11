@@ -1,7 +1,5 @@
-import { subscribeAuthChanges } from 'fb/controllers/auth';
-
-import { subscribeUserProfile } from 'fb/controllers/userProfile';
 import { Dispatch } from 'redux';
+import { Auth, Db } from 'fb';
 import { types } from './types';
 
 export type UserActions =
@@ -29,7 +27,8 @@ export const listenUserProfile = (
       } as UpadateUserProfileAction);
     }
   };
-  return subscribeUserProfile(uid, onSnapChange);
+
+  return Db.init().subscribeUserProfile(uid, onSnapChange);
 };
 
 interface UserIsNotLoggedAction {
@@ -37,7 +36,7 @@ interface UserIsNotLoggedAction {
 }
 export const listenAuthChanges = () => (dispatch: Dispatch) => {
   let unSubscribeUserProfile: any = null;
-  subscribeAuthChanges(async (user: any) => {
+  Auth.init().subscribeAuthChanges(async (user: any) => {
     if (user) {
       unSubscribeUserProfile = listenUserProfile(user.uid, dispatch);
     } else {

@@ -2,7 +2,6 @@ import React, { useEffect, FC } from 'react';
 import styled, { css } from 'styled-components';
 
 import { useSelector } from 'react-redux';
-import { listenRooms } from 'fb/controllers/rooms';
 import { Card } from 'components/molecules';
 import {
   InputWithFA,
@@ -12,6 +11,7 @@ import {
 
 import { Link } from 'react-router-dom';
 import { StoreType } from 'store/store';
+import { Db } from 'fb';
 import ButtonsGroup from './ButtonsGroup';
 
 const Wrapper = styled(Card)`
@@ -82,7 +82,7 @@ export const RoomsPanel: FC = () => {
   );
 
   useEffect(() => {
-    const unSubAvaiableRooms = listenRooms();
+    const unSubAvaiableRooms = Db.init().listenRooms();
     return () => {
       unSubAvaiableRooms();
     };

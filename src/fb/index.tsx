@@ -21,3 +21,5 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 export default firebase;
+
+export * from './controllers';
