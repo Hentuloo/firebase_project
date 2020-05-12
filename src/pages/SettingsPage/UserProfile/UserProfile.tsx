@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { FC, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,9 @@ import { stickyModal } from 'components/molecules';
 
 import { StoreType } from 'store/store';
 import { Auth } from 'fb';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import EditProfileModal from './EditProfileModal/EditProfileModal';
+import DeleteUserModal from './DeleteUserModal';
 
 const Wrapper = styled.div`
   ${stickyModal}
@@ -78,23 +80,26 @@ interface UserProfileProps {
 }
 
 const UserProfile: FC<UserProfileProps> = ({ className = '' }) => {
-  const [openSettingModal, setOpenSettingModal] = useState(false);
+  const history = useHistory();
+  const [isRequest, setIsRequest] = useState(false);
+
   const { displayName } = useSelector(
     (state: StoreType) => state.user,
   );
 
-  const handleLogout = (e: any) => {
-    e.preventDefault();
+  const handleLogout = () => {
     Auth.init().logout();
   };
 
-  const handleDeleteAccount = (e: any) => {
-    e.preventDefault();
-    // logout();
+  const handleDeleteAccount = async (password: string) => {
+    if (isRequest) return null;
+    setIsRequest(true);
+    await Auth.init().deleteUser(password);
+    setIsRequest(false);
   };
 
-  const toggleModalOpen = () => {
-    setOpenSettingModal(!openSettingModal);
+  const closeModal = async () => {
+    history.goBack();
   };
 
   return (
@@ -102,17 +107,27 @@ const UserProfile: FC<UserProfileProps> = ({ className = '' }) => {
       <DisplayName>{displayName}</DisplayName>
       <StyledProfileImage />
       <ButtonsWrapper>
-        <Button onClick={handleDeleteAccount}>Usuń konto</Button>
+        <Button to="/app/ustawienia/usuwanie-profilu">
+          Usuń konto
+        </Button>
         <Button onClick={handleLogout}>Wyloguj się</Button>
       </ButtonsWrapper>
       <StyledButtonEdit
         title="Edytuj profil"
-        onClick={toggleModalOpen}
+        to="/app/ustawienia/profil"
       />
-      <EditProfileModal
-        isActive={openSettingModal}
-        toggleActive={toggleModalOpen}
-      />
+
+      <Switch>
+        <Route path="/app/ustawienia/profil">
+          <EditProfileModal toggleActive={closeModal} />
+        </Route>
+        <Route path="/app/ustawienia/usuwanie-profilu">
+          <DeleteUserModal
+            handleSubmit={handleDeleteAccount}
+            toggleActive={closeModal}
+          />
+        </Route>
+      </Switch>
     </Wrapper>
   );
 };

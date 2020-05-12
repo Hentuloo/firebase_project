@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 export const useDetectOutElementClick = <T extends HTMLElement>(
-  active: boolean,
   callback: () => any,
+  active = true,
 ) => {
   const ref = useRef<T>(null);
 

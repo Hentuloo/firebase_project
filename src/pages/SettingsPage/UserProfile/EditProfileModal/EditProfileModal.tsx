@@ -47,14 +47,10 @@ const initState = {
 };
 
 interface EditProfileModal {
-  isActive: boolean;
   toggleActive: () => any;
 }
 
-const EditProfileModal: FC<EditProfileModal> = ({
-  isActive = false,
-  toggleActive,
-}) => {
+const EditProfileModal: FC<EditProfileModal> = ({ toggleActive }) => {
   const imageRef = useRef(null);
   const [progress, updateProgress] = useProgressBar();
   const { displayName, uid } = useSelector(
@@ -88,7 +84,7 @@ const EditProfileModal: FC<EditProfileModal> = ({
   }, [isRequest]);
 
   return (
-    <Wrapper active={isActive} toggleActive={toggleActive}>
+    <Wrapper toggleActive={toggleActive}>
       <FormWrapper onSubmit={handleSubmitChange}>
         <LoadingBar
           progress={progress as number}

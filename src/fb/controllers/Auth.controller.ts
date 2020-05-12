@@ -1,3 +1,4 @@
+import { defaultUser } from 'fb/default';
 import firebase from '../index';
 import { Db } from './Db.controller';
 
@@ -22,12 +23,31 @@ export class Auth {
     return this.instance.onAuthStateChanged(callback);
   };
 
-  public logout = () => {
-    return this.instance.signOut();
+  public logout = () => this.instance.signOut();
+
+  public getCurrentUser = () => this.instance.currentUser;
+
+  public updateCredential = async (password: string) => {
+    const user = this.getCurrentUser();
+
+    if (user && user.email) {
+      const credential = firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        password,
+      );
+      await user.reauthenticateWithCredential(credential);
+    }
+
+    return user;
   };
 
-  public getCurrentUser = () => {
-    return this.instance.currentUser;
+  public deleteUser = async (password: string) => {
+    try {
+      const user = await this.updateCredential(password);
+      if (user) return user.delete();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   public loginWithEmail = (email: string, password: string) => {
@@ -50,7 +70,7 @@ export class Auth {
       const userSnap = await user.get();
 
       if (userSnap.exists) return user;
-      await user.set(additionalProps);
+      await user.set({ ...defaultUser, ...additionalProps });
 
       return user;
     } catch (err) {

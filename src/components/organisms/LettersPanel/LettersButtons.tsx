@@ -56,7 +56,7 @@ export const LettersButtons = ({
     <Wrapper {...props}>
       {lettersArray.map(({ id, letter, active, blocked }) => (
         <StyledClearButton
-          onClick={e => onClick(e, id)}
+          onClick={(e: any) => onClick(e, id)}
           key={letter}
           active={active}
           type="button"

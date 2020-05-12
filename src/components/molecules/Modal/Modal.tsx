@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
-
 import { useDetectOutElementClick } from 'hooks/useDetectOutElementClick';
+import Portal from './Portal';
 
 const withShadow = css`
   position: relative;
@@ -25,17 +25,13 @@ export const stickyModal = css`
   ${withShadow}
 `;
 
-interface FixedModalProps {
-  active?: boolean;
-}
-
-export const FixedModal = styled.div<FixedModalProps>`
+export const FixedModal = styled.div`
   width: 94%;
   max-width: 400px;
   min-height: 80px;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -100vh);
+  transform: translate(-50%, -50%);
   border-radius: 40px;
   transition: transform 0.4s ease-in;
   z-index: 6;
@@ -46,19 +42,13 @@ export const FixedModal = styled.div<FixedModalProps>`
   ${({ theme }) => theme.mediaQuery.lg} {
     max-width: 600px;
   }
-
-  ${({ active }) =>
-    active &&
-    css`
-      transform: translate(-50%, -50%);
-    `}
 `;
 
 interface FixedModalWrapperProps {
   active?: boolean;
 }
 
-export const FixedModalWrapper = styled.div<FixedModalWrapperProps>`
+export const FixedModalWrapper = styled.div`
   &::before {
     position: fixed;
     content: '';
@@ -70,35 +60,25 @@ export const FixedModalWrapper = styled.div<FixedModalWrapperProps>`
     background-color: ${({ theme }) => theme.color.gray[0]};
     opacity: 0.4;
     z-index: 5;
-    display: none;
-    ${({ active }) =>
-      active &&
-      css`
-        display: block;
-      `}
   }
 `;
 
 interface ModalProps {
   children: React.ReactNode;
-  toggleActive: (flag: boolean) => void;
-  active?: boolean;
+  toggleActive: () => void;
 }
 
 export const Modal: FC<ModalProps> = ({
   children,
-  active = false,
   toggleActive,
   ...props
 }) => {
-  const ref = useDetectOutElementClick<HTMLDivElement>(active, () =>
-    toggleActive(false),
-  );
+  const ref = useDetectOutElementClick<HTMLDivElement>(toggleActive);
   return (
-    <FixedModalWrapper active={active} {...props}>
-      <FixedModal ref={ref} active={active}>
-        {children}
-      </FixedModal>
-    </FixedModalWrapper>
+    <Portal>
+      <FixedModalWrapper {...props}>
+        <FixedModal ref={ref}>{children}</FixedModal>
+      </FixedModalWrapper>
+    </Portal>
   );
 };

@@ -1,7 +1,29 @@
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { BarDecorator } from 'components/atoms';
+import { Link } from 'react-router-dom';
 
-export const ClearButton = styled.button`
+export interface ButtonProps extends React.ComponentProps<any> {
+  to?: string;
+}
+
+const Button: FC<ButtonProps> = ({ to, children, ...props }) => {
+  if (to) {
+    return (
+      <Link to={to} {...props}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <button type="button" {...props}>
+      {children}
+    </button>
+  );
+};
+
+export const ClearButton = styled(Button)`
   border: none;
   background-color: transparent;
   cursor: pointer;

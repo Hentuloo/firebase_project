@@ -1,12 +1,7 @@
 import React, { FC } from 'react';
-import { ClearButton } from 'components/atoms';
+import { ClearButton, ButtonProps } from 'components/atoms';
 
-export interface ButtonEditProps {
-  title: string;
-  onClick?: (props: any) => any;
-}
-
-export const ButtonEdit: FC<ButtonEditProps> = ({
+export const ButtonEdit: FC<ButtonProps> = ({
   title = 'Edytuj',
   ...props
 }) => {
