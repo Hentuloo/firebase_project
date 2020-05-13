@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import Toastify from './Toastify.styled';
 
 export default createGlobalStyle`
  html {
@@ -66,7 +67,5 @@ ul {
         display:none;
     }
 }
-    
-
-
+${Toastify}
 `;

@@ -10,6 +10,8 @@ export default {
     white: ['rgb(255, 255, 255)', '#F0E2D9', '#E7C8B5'],
     black: ['#4F4F4F', '#2D2D2D', '#4F4F4F', '#727272'],
     gray: ['rgb(220, 220, 220)', 'rgb(119, 119, 119)'],
+    red: ['#d53035'],
+    yellow: ['#e6a700'],
     gradients: [
       ' linear-gradient(to right, rgba(15,91,138,1) 0%, rgba(143,204,240,1) 41%, rgba(255,139,66,1) 64%, rgba(170,92,44,1) 100%);',
     ],
