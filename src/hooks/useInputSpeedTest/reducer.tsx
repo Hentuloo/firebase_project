@@ -87,14 +87,25 @@ export const reducer = (
           (gameTime / timeStepsConfig.stepsInOneMinute)
         ).toFixed(2),
       );
-
+      const isLastTimeStep = newTimeStep === -1;
+      const endState = isLastTimeStep
+        ? {
+            inputValue: '',
+            writtenWords: [],
+            goodText: '',
+            wrongText: '',
+            wrongLength: 0,
+            goodLength: 0,
+            cursor: 0,
+            gameStatus: typingStatus.END,
+          }
+        : {};
       return {
         ...state,
         accuracy,
         speed,
         timeSteps: newTimeStep,
-        gameStatus:
-          newTimeStep === 0 ? typingStatus.END : state.gameStatus,
+        ...endState,
       };
     }
 

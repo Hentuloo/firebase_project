@@ -48,6 +48,12 @@ export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
   return (
     <Wrapper {...props}>
       <Line
+        options={{
+          tooltips: {
+            mode: 'x',
+            intersect: false,
+          },
+        }}
         ref={ref}
         data={{
           labels: dates,

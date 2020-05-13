@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { TypingSnapsChart } from 'components/organisms';
 import { Snap } from 'store/reducers/soloTraining.reducer';
 import dayjs from 'dayjs';
+import useIsMobile from 'hooks/useIsMobile';
 import { Controllers } from './Controllers';
 
 const Wrapper = styled.div`
@@ -47,8 +48,9 @@ export interface ChartTabProps {
 }
 export const ChartTab = forwardRef<HTMLDivElement, ChartTabProps>(
   ({ changeTab, charts, ...props }, ref) => {
+    const isMobile = useIsMobile();
     const { times, speeds, accurances, dates } = splitSnapsArray(
-      charts.slice(-10),
+      charts.slice(isMobile ? -7 : -15),
     );
     return (
       <Wrapper ref={ref} {...props}>

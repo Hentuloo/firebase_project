@@ -112,6 +112,15 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     setInputFocus();
   }, []);
 
+  useEffect(() => {
+    // reset input after game end
+    let tmID: number;
+    if (state.gameStatus === typingStatus.END) {
+      tmID = setTimeout(() => resetGameState(), 4000);
+    }
+    return () => clearTimeout(tmID);
+  }, [state.gameStatus]);
+
   return {
     ...state,
     ref,
