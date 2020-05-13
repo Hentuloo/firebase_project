@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 // Redux
 import store from 'store/store';
 import { Provider as ReduxProvider } from 'react-redux';
-import { listenAuthChanges } from 'store/actions/user';
+import { listenAuthChanges } from 'store/actions/user.actions';
 
 // Styled-components
 import { ThemeProvider } from 'styled-components';

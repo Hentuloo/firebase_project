@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import userReducer, { UserReducerState } from './userReducer';
-import roomsReducer, { RoomsReducerState } from './roomsReducer';
+import userReducer, { UserReducerState } from './user.reducer';
+import roomsReducer, { RoomsReducerState } from './rooms.reducer';
 import soloTrainingReducer, {
   SoloTrainingState,
-} from './soloTraining';
+} from './soloTraining.reducer';
 
 export default combineReducers({
   user: userReducer,

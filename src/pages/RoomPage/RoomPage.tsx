@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
-import { deleteActiveRoomData } from 'store/actions/rooms';
+import { deleteActiveRoomData } from 'store/actions/rooms.actions';
 import { Db, FireFunctions } from 'fb';
 import { getActiveRoom } from 'store/selectors/rooms.selector';
 import RoomDetailsBar from './RoomDetailsBar/RoomDetailsBar';

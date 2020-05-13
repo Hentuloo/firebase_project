@@ -2,7 +2,7 @@ import React, { useReducer, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
-import { joinRoom } from 'store/actions/rooms';
+import { joinRoom } from 'store/actions/rooms.actions';
 import { StoreType } from 'store/store';
 import { Db } from 'fb';
 

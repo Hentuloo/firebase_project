@@ -1,4 +1,4 @@
-import { BaseSoloTrainingState } from 'store/reducers/soloTraining';
+import { BaseSoloTrainingState } from 'store/reducers/soloTraining.reducer';
 import { Db } from 'fb';
 import { Dispatch } from 'redux';
 import { types } from './types';

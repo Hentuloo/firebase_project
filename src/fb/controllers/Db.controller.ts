@@ -1,7 +1,7 @@
 import {
   updateAvaiableRooms,
   updateActiveRoom,
-} from 'store/actions/rooms';
+} from 'store/actions/rooms.actions';
 
 import store from 'store/store';
 import { defaultUser, defaultUserSolo } from 'fb/default';

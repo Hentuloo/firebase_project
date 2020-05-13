@@ -6,7 +6,7 @@ import { LettersPanel } from 'components/organisms';
 
 import { useSwitchTab } from 'hooks/useSwitchTab';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSoloTrainingSnap } from 'store/actions/soloTraining';
+import { getSoloTrainingSnap } from 'store/actions/soloTraining.actions';
 import { getSoloTraining } from 'store/selectors/soloTraining.selector';
 import { getUser } from 'store/selectors/user.selector';
 import TypingTab from './TypingTab/TypingTab';

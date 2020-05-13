@@ -1,6 +1,6 @@
-import { RoomsActions } from './rooms';
-import { UserActions } from './user';
-import { SoloTrainingActions } from './soloTraining';
+import { RoomsActions } from './rooms.actions';
+import { UserActions } from './user.actions';
+import { SoloTrainingActions } from './soloTraining.actions';
 
 export type Action = RoomsActions | UserActions | SoloTrainingActions;
 
