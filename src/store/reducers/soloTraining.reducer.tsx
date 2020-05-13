@@ -11,6 +11,7 @@ export type Snap = {
   time: number;
   accuracy: number;
   speed: number;
+  date: string;
 };
 
 export interface BaseSoloTrainingState {

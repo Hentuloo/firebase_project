@@ -6,6 +6,7 @@ import {
 import store from 'store/store';
 import { defaultUser, defaultUserSolo } from 'fb/default';
 import { Snap } from 'store/reducers/soloTraining.reducer';
+import dayjs from 'dayjs';
 import firebase from '../index';
 import { collectionsWithId } from './helpers';
 
@@ -66,8 +67,14 @@ export class Db {
     const user = Db.init().userProfileRef(uid);
     const userTraining = Db.init().userSoloTrainingRef(uid);
 
-    await user.set({ ...defaultUser, ...additionalProps });
-    await userTraining.set({ ...defaultUserSolo });
+    const created = dayjs().format();
+    const createdFormated = dayjs(created).format('MM-DD-YYYY');
+
+    const defaultSoloTraining = { ...defaultUserSolo };
+    defaultSoloTraining.snaps[0].time = createdFormated;
+
+    await user.set({ ...defaultUser, created, ...additionalProps });
+    await userTraining.set(defaultSoloTraining);
 
     return user;
   };
@@ -94,11 +101,9 @@ export class Db {
   };
 
   public addSnap = (uid: string, snap: Snap) =>
-    this.userSoloTrainingRef(uid).set(
-      { snaps: [snap] },
-      { merge: true },
-    );
-
+    this.userSoloTrainingRef(uid).update({
+      snaps: firebase.firestore.FieldValue.arrayUnion(snap),
+    });
   // public addUserSnaps = async (uid: string, snap: Snap) => {
   //   await this.userProfileRef(uid)
   //     .collection('soloTraining/snaps')

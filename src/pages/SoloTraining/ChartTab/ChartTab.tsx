@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { TypingSnapsChart } from 'components/organisms';
 import { Snap } from 'store/reducers/soloTraining.reducer';
+import dayjs from 'dayjs';
 import { Controllers } from './Controllers';
 
 const Wrapper = styled.div`
@@ -21,6 +22,23 @@ const Wrapper = styled.div`
   }
 `;
 
+const splitSnapsArray = (charts: Snap[]) =>
+  charts.reduce<{
+    times: number[];
+    speeds: number[];
+    accurances: number[];
+    dates: string[];
+  }>(
+    (acc, { accuracy, speed, time, date }) => {
+      acc.times.push(time);
+      acc.speeds.push(speed);
+      acc.accurances.push(accuracy);
+      acc.dates.push(dayjs(date).fromNow());
+      return acc;
+    },
+    { times: [], speeds: [], accurances: [], dates: [] },
+  );
+
 const StyledTypingSnapsChart = styled(TypingSnapsChart)``;
 
 export interface ChartTabProps {
@@ -29,23 +47,14 @@ export interface ChartTabProps {
 }
 export const ChartTab = forwardRef<HTMLDivElement, ChartTabProps>(
   ({ changeTab, charts, ...props }, ref) => {
-    const [times, speeds, accurances, dates] = charts.reduce<
-      number[][]
-    >(
-      (acc, { accuracy, speed, time }, i) => {
-        acc[0].push(time);
-        acc[1].push(speed);
-        acc[2].push(accuracy);
-        acc[3].push(i);
-        return acc;
-      },
-      [[], [], [], []],
+    const { times, speeds, accurances, dates } = splitSnapsArray(
+      charts.slice(-10),
     );
     return (
       <Wrapper ref={ref} {...props}>
         <Controllers changeTab={changeTab} />
         <StyledTypingSnapsChart
-          dates={dates.map(data => data.toString())}
+          dates={dates}
           time={times}
           speed={speeds}
           accurancy={accurances}

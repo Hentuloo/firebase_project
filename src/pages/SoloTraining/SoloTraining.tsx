@@ -13,6 +13,7 @@ import {
 import { getSoloTraining } from 'store/selectors/soloTraining.selector';
 import { getUser } from 'store/selectors/user.selector';
 import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 import TypingTab from './TypingTab/TypingTab';
 import lettersReducer, {
   types,
@@ -86,7 +87,10 @@ const SoloTraining = () => {
     (time, accuracy, speed) => {
       if (!uid) return;
       try {
-        reduxDispatch(addSnapAction(uid, { time, accuracy, speed }));
+        const date = dayjs().format('MM-DD-YYYY');
+        reduxDispatch(
+          addSnapAction(uid, { time, accuracy, speed, date }),
+        );
       } catch ({ message }) {
         toast.success(`coś poszło nie tak${message}`);
       }

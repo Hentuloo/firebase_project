@@ -27,7 +27,7 @@ const ButtonWithOffProp = styled.button`
 const Button: FC<ButtonProps> = ({
   to,
   children,
-  disabled = false,
+  disabled = undefined,
   ...props
 }) => {
   if (to) {
