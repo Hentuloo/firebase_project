@@ -22,6 +22,14 @@ export const Constants = {
       path: '/app/ustawienia',
       name: 'Ustawienia',
     },
+    settingsDeleteUser: {
+      path: '/app/ustawienia/usun-uzytkownika',
+      name: 'Usuń użytkownika',
+    },
+    settingsChangeProfile: {
+      path: '/app/ustawienia/profil',
+      name: 'Zmień ustawienia użytkownika',
+    },
     room: {
       path: '/app/room',
       name: 'Pokój',
@@ -30,6 +38,11 @@ export const Constants = {
       path: '/app/training',
       name: 'Tryb pojedyńczy',
     },
+  },
+  firebaseErrors: {
+    'auth/user-not-found': 'Nie znaleziono użytkownika',
+    'auth/email-already-in-use': 'Email jest aktualnie już używany',
+    'auth/wrong-password': 'Podane hasło jest niepoprawne',
   },
   default: {
     profilePicture: defaultProfilePicture,

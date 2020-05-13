@@ -1,6 +1,7 @@
 import * as dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pl';
+import 'react-toastify/dist/ReactToastify.css';
 
 import gsap from 'gsap';
 import { Draggable } from 'gsap/all';

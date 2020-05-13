@@ -57,7 +57,7 @@ const EditProfileModal: FC<EditProfileModal> = ({ toggleActive }) => {
     (state: StoreType) => state.user,
   );
   const [
-    { closeModal, isRequest, errorMessage, inputValue },
+    { closeModal, isRequest, inputValue },
     dispatch,
   ] = useThunkReducer(reducer, initState);
 
@@ -110,7 +110,6 @@ const EditProfileModal: FC<EditProfileModal> = ({ toggleActive }) => {
           />
         </Label>
         <ClearButton type="submit">Wyślij</ClearButton>
-        {errorMessage && <p>{errorMessage}</p>}
         {isRequest && <p>Ładowanie {progress} %</p>}
       </FormWrapper>
     </Wrapper>

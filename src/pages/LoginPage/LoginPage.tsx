@@ -9,7 +9,8 @@ import { Constants } from 'config/Constants';
 import { GoogleLoading } from 'components/atoms';
 import { useRedirect } from 'hooks/useRedirect';
 import { Auth } from 'fb';
-import Form from './Form';
+import { toast } from 'react-toastify';
+import Form, { InputValuesReducerState } from './Form';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -79,37 +80,29 @@ const LoginPage: FC = () => {
   const [authRequest, setAuthRequest] = useState<boolean | string>(
     false,
   );
-  const [errorMessage, setErrorMessage] = useState(null);
   const redirect = useRedirect();
   const onSubmit = async ({
     email,
     password,
     displayName,
-  }: {
-    email: string;
-    password: string;
-    displayName: string;
-  }) => {
-    setErrorMessage(null);
+  }: InputValuesReducerState) => {
     const { loginWithEmail, createAccountWithEmail } = Auth.init();
     try {
+      setAuthRequest(true);
       if (hasAccount) {
-        setAuthRequest(true);
         await loginWithEmail(email, password);
         setAuthRequest(false);
-      } else {
-        setAuthRequest(true);
-        await createAccountWithEmail(
-          { email, password },
-          { displayName },
-        );
-        redirect(Constants.paths.registered.path);
-        // setAuthRequest(false);
+        return;
       }
+      await createAccountWithEmail(
+        { email, password },
+        { displayName },
+      );
+      redirect(Constants.paths.registered.path);
     } catch (err) {
+      toast.error(Constants.firebaseErrors[err.code] || err.message);
       if (err.code === 'auth/popup-closed-by-user') return;
       setAuthRequest(false);
-      setErrorMessage(err.message);
     }
   };
 
@@ -122,15 +115,14 @@ const LoginPage: FC = () => {
         return redirect(Constants.paths.registered.path);
       setAuthRequest(false);
     } catch (err) {
-      setErrorMessage(err.message);
+      toast.error(Constants.firebaseErrors[err.code] || err.message);
+      setAuthRequest(false);
     }
   };
 
   return (
     <Wrapper>
-      <StyledAuthLoading
-        active={authRequest === 'google' && !errorMessage}
-      />
+      <StyledAuthLoading active={authRequest === 'google'} />
       <Link to={Constants.paths.root.path}>
         <span className="sr-only">Przejdź do strony głównej</span>
         <LogoWrapper>
@@ -146,7 +138,7 @@ const LoginPage: FC = () => {
           loginWithGoogle={handleLoginWithGoogle}
         />
       )}
-      {errorMessage && <p>{errorMessage}</p>}
+
       <BackGroundImage src={backgroundImage} />
     </Wrapper>
   );

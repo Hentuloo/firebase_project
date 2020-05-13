@@ -13,6 +13,8 @@ import { stickyModal } from 'components/molecules';
 import { StoreType } from 'store/store';
 import { Auth } from 'fb';
 import { Switch, Route, useHistory } from 'react-router-dom';
+import { Constants } from 'config/Constants';
+import { toast } from 'react-toastify';
 import EditProfileModal from './EditProfileModal/EditProfileModal';
 import DeleteUserModal from './DeleteUserModal';
 
@@ -94,7 +96,11 @@ const UserProfile: FC<UserProfileProps> = ({ className = '' }) => {
   const handleDeleteAccount = async (password: string) => {
     if (isRequest) return null;
     setIsRequest(true);
-    await Auth.init().deleteUser(password);
+    try {
+      await Auth.init().deleteUser(password);
+    } catch (err) {
+      toast.error(Constants.firebaseErrors[err.code] || err.message);
+    }
     setIsRequest(false);
   };
 
@@ -103,32 +109,33 @@ const UserProfile: FC<UserProfileProps> = ({ className = '' }) => {
   };
 
   return (
-    <Wrapper className={className}>
-      <DisplayName>{displayName}</DisplayName>
-      <StyledProfileImage />
-      <ButtonsWrapper>
-        <Button to="/app/ustawienia/usuwanie-profilu">
-          Usuń konto
-        </Button>
-        <Button onClick={handleLogout}>Wyloguj się</Button>
-      </ButtonsWrapper>
-      <StyledButtonEdit
-        title="Edytuj profil"
-        to="/app/ustawienia/profil"
-      />
-
+    <>
+      <Wrapper className={className}>
+        <DisplayName>{displayName}</DisplayName>
+        <StyledProfileImage />
+        <ButtonsWrapper>
+          <Button to={Constants.paths.settingsDeleteUser.path}>
+            Usuń konto
+          </Button>
+          <Button onClick={handleLogout}>Wyloguj się</Button>
+        </ButtonsWrapper>
+        <StyledButtonEdit
+          title="Edytuj profil"
+          to={Constants.paths.settingsChangeProfile.path}
+        />
+      </Wrapper>
       <Switch>
-        <Route path="/app/ustawienia/profil">
+        <Route path={Constants.paths.settingsChangeProfile.path}>
           <EditProfileModal toggleActive={closeModal} />
         </Route>
-        <Route path="/app/ustawienia/usuwanie-profilu">
+        <Route path={Constants.paths.settingsDeleteUser.path}>
           <DeleteUserModal
             handleSubmit={handleDeleteAccount}
             toggleActive={closeModal}
           />
         </Route>
       </Switch>
-    </Wrapper>
+    </>
   );
 };
 

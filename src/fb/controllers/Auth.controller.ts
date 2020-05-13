@@ -1,4 +1,5 @@
 import { defaultUser } from 'fb/default';
+
 import firebase from '../index';
 import { Db } from './Db.controller';
 
@@ -29,91 +30,67 @@ export class Auth {
 
   public updateCredential = async (password: string) => {
     const user = this.getCurrentUser();
+    if (!user || !user.email) return user;
 
-    if (user && user.email) {
-      const credential = firebase.auth.EmailAuthProvider.credential(
-        user.email,
-        password,
-      );
-      await user.reauthenticateWithCredential(credential);
-    }
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      password,
+    );
+    await user.reauthenticateWithCredential(credential);
 
     return user;
   };
 
   public deleteUser = async (password: string) => {
-    try {
-      const user = await this.updateCredential(password);
-      if (user) return user.delete();
-    } catch (e) {
-      console.error(e);
-    }
+    const user = await this.updateCredential(password);
+    if (user) return user.delete();
   };
 
   public loginWithEmail = (email: string, password: string) => {
-    try {
-      return this.instance.signInWithEmailAndPassword(
-        email,
-        password,
-      );
-    } catch (err) {
-      throw new Error(err);
-    }
+    return this.instance.signInWithEmailAndPassword(email, password);
   };
 
   public createUserProfileDocument = async (
     uid: string,
     additionalProps: any,
   ) => {
-    try {
-      const user = Db.init().userRef(uid);
-      const userSnap = await user.get();
+    const user = Db.init().userRef(uid);
+    const userSnap = await user.get();
 
-      if (userSnap.exists) return user;
-      await user.set({ ...defaultUser, ...additionalProps });
+    if (userSnap.exists) return user;
+    await user.set({ ...defaultUser, ...additionalProps });
 
-      return user;
-    } catch (err) {
-      throw new Error(err);
-    }
+    return user;
   };
 
   public createAccountWithEmail = async (
     { email, password, displayName }: CreateAccountWithEmailProps,
     additionalProps = {},
   ) => {
-    try {
-      const {
-        user,
-      } = await this.instance.createUserWithEmailAndPassword(
-        email,
-        password,
-      );
-      if (!user) return;
-      const userRef = await this.createUserProfileDocument(user.uid, {
-        displayName,
-        ...additionalProps,
-      });
-      return userRef;
-    } catch (err) {
-      throw new Error(err);
-    }
+    const {
+      user,
+    } = await this.instance.createUserWithEmailAndPassword(
+      email,
+      password,
+    );
+    if (!user) return;
+    const userRef = await this.createUserProfileDocument(user.uid, {
+      displayName,
+      ...additionalProps,
+    });
+    return userRef;
   };
 
   public loginWithGoogle = async (additionalProps = {}) => {
-    try {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      const { user } = await this.instance.signInWithPopup(provider);
-      const { uid, displayName, photoURL } = user as firebase.User;
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const { user } = await this.instance.signInWithPopup(provider);
+    const { uid, displayName, photoURL } = user as firebase.User;
 
-      const userRef = await this.createUserProfileDocument(uid, {
-        displayName,
-        photoURL,
-        ...additionalProps,
-      });
-      return userRef;
-    } catch (err) {
-      throw new Error(err);
-    }
+    const userRef = await this.createUserProfileDocument(uid, {
+      displayName,
+      photoURL,
+      ...additionalProps,
+    });
+    return userRef;
   };
 }

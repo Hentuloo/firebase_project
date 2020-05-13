@@ -1,5 +1,7 @@
 import { validImageFile } from 'utils';
 import { Storage, Db } from 'fb';
+import { toast } from 'react-toastify';
+import { Constants } from 'config/Constants';
 import { types } from './types';
 
 interface SubmitFormProps {
@@ -17,8 +19,6 @@ export const submitForm = ({
 }: SubmitFormProps) => async (dispatch: any) => {
   const image = imageRef.current;
   if (!image || !image.files) return;
-
-  dispatch({ type: types.RESET_ERROR_MESSAGE, payload: null });
 
   const nweFields = {} as {
     photoURL: null | string;
@@ -45,7 +45,8 @@ export const submitForm = ({
 
     dispatch({ type: types.REQUEST_SUCCESSFUL });
   } catch (err) {
-    dispatch({ type: types.REQUEST_FAILURE, payload: err.message });
+    toast.error(Constants.firebaseErrors[err.code] || err.message);
+    dispatch({ type: types.REQUEST_FAILURE });
   }
   return null;
 };

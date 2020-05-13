@@ -11,7 +11,7 @@ export const validImageFile = ({
   size: number;
   type: string;
 }) => {
-  if (size < 100000 || size > 1000000) {
+  if (size < 600 || size > 1000000) {
     return { ok: false, message: 'Invalid size' };
   }
   if (

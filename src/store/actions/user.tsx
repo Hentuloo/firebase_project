@@ -36,6 +36,7 @@ interface UserIsNotLoggedAction {
 }
 export const listenAuthChanges = () => (dispatch: Dispatch) => {
   let unSubscribeUserProfile: any = null;
+
   Auth.init().subscribeAuthChanges(async (user: any) => {
     if (user) {
       unSubscribeUserProfile = listenUserProfile(user.uid, dispatch);

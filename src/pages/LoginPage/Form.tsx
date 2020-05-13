@@ -113,7 +113,7 @@ interface FormProps {
   authRequest: boolean | string;
 }
 
-interface InputValuesReducerState {
+export interface InputValuesReducerState {
   displayName: string;
   email: string;
   password: string;
