@@ -14,11 +14,13 @@ const Wrapper = styled.div`
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }
 `;
-
-const StyledClearButton = styled(ClearButton)`
+interface StyledClearButtonProps {
+  active?: boolean;
+}
+const StyledClearButton = styled(ClearButton)<StyledClearButtonProps>`
   position: relative;
   font-weight: ${({ theme }) => theme.fw[1]} !important;
-  ${({ active }: { active?: boolean }) =>
+  ${({ active }) =>
     active &&
     css`
       color: ${({ theme }) => theme.color.brand[0]};
@@ -58,8 +60,8 @@ export const LettersButtons = ({
         <StyledClearButton
           onClick={(e: any) => onClick(e, id)}
           key={letter}
-          active={active}
           type="button"
+          active={active ? 1 : 0}
         >
           {letter}
           {blocked && (

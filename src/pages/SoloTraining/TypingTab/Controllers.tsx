@@ -6,9 +6,8 @@ import repeatIcon from 'assets/svg/icons/repeatIcon.svg';
 import chartIcon from 'assets/svg/icons/chartIcon.svg';
 import circles from 'assets/svg/circles1.svg';
 import { typingStatus } from 'hooks/useInputSpeedTest/types';
-import { useDispatch } from 'react-redux';
-import { updateSnaps } from 'store/actions/soloTraining';
 import gsap from 'gsap';
+import { AddSnap } from '../types';
 
 const Wrapper = styled.div`
   display: grid;
@@ -81,6 +80,7 @@ export interface ControllersProps {
   gameStatus: typingStatus;
   stepsInOneMinute?: number;
   changeTab: () => void;
+  addSnap: AddSnap;
 }
 
 export const Controllers: FC<ControllersProps> = ({
@@ -93,8 +93,8 @@ export const Controllers: FC<ControllersProps> = ({
   accuracy,
   speed,
   changeTab,
+  addSnap,
 }) => {
-  const dispatch = useDispatch();
   const chartAttentionCircles = useRef<HTMLImageElement>(null);
 
   const handleChangeTab = () => {
@@ -117,7 +117,7 @@ export const Controllers: FC<ControllersProps> = ({
 
   useEffect(() => {
     if (gameStatus === typingStatus.END) {
-      dispatch(updateSnaps({ time: initTime, accuracy, speed }));
+      addSnap(initTime, accuracy, speed);
       newChartAnim();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

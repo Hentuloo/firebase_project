@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { Constants } from 'config/Constants';
 import { ProfileImage } from 'components/atoms';
-import { StoreType } from 'store/store';
+import { getUser } from 'store/selectors/user.selector';
 
 const Wrapper = styled.div`
   display: grid;
@@ -30,9 +30,7 @@ const Name = styled.span``;
 const WinsLossesSummary = styled.span``;
 
 const UserInfo: FC = () => {
-  const { photoURL, displayName } = useSelector(
-    (store: StoreType) => store.user,
-  );
+  const { photoURL, displayName } = useSelector(getUser);
 
   return (
     <Wrapper>

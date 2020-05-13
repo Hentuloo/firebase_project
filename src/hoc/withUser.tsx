@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Constants } from 'config/Constants';
-import { StoreType } from 'store/store';
+import { getUser } from 'store/selectors/user.selector';
 
 export const withUser = <
   P extends object = object,
@@ -12,9 +12,7 @@ export const withUser = <
   OtherPage?: React.ComponentType<O>,
 ) => {
   return (props: any) => {
-    const { loggedRequest, uid } = useSelector(
-      (state: StoreType) => state.user,
-    );
+    const { loggedRequest, uid } = useSelector(getUser);
 
     if (loggedRequest) return null;
     if (uid) return <WrapperedComponent {...props} />;
@@ -31,9 +29,7 @@ export const redirectWhenUserLogged = <
   OtherPage?: React.ComponentType<O>,
 ) => {
   return (props: any) => {
-    const { loggedRequest, uid } = useSelector(
-      (state: StoreType) => state.user,
-    );
+    const { loggedRequest, uid } = useSelector(getUser);
 
     if (loggedRequest) return null;
     if (!uid) return <WrapperedComponent {...props} />;

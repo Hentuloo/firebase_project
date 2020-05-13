@@ -4,11 +4,9 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
-
 import { deleteActiveRoomData } from 'store/actions/rooms';
-
-import { StoreType } from 'store/store';
 import { Db, FireFunctions } from 'fb';
+import { getActiveRoom } from 'store/selectors/rooms.selector';
 import RoomDetailsBar from './RoomDetailsBar/RoomDetailsBar';
 
 const Wrapper = styled.div`
@@ -20,9 +18,7 @@ const RoomPage: FC = () => {
   const redirect = useRedirect();
   const dispatch = useDispatch();
   const { roomId } = useParams();
-  const { users } = useSelector(
-    (store: StoreType) => store.rooms.activeRoom,
-  );
+  const { users } = useSelector(getActiveRoom);
   const [isRoomLoaded, setRoomLoaded] = useState(false);
 
   useEffect(() => {

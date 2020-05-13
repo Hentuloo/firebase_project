@@ -1,16 +1,21 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
 import { LettersPanel } from 'components/organisms';
-import { letters as initialLettersObject } from 'config/soloTrainingConfig';
+
 import { useSwitchTab } from 'hooks/useSwitchTab';
+import { useSelector, useDispatch } from 'react-redux';
+import { getSoloTrainingSnap } from 'store/actions/soloTraining';
+import { getSoloTraining } from 'store/selectors/soloTraining.selector';
+import { getUser } from 'store/selectors/user.selector';
 import TypingTab from './TypingTab/TypingTab';
 import lettersReducer, {
   types,
-  LetterObject,
+  lettersReducerInit,
 } from './lettersReducer';
 import { ChartTab } from './ChartTab/ChartTab';
+import { Tabs, AddSnap } from './types';
 
 const Wrapper = styled.div`
   display: grid;
@@ -42,34 +47,51 @@ const TabsWrapper = styled.div`
   }
 `;
 
-const initialLetters = Object.keys(initialLettersObject).map(
-  (letter): LetterObject => ({
-    ...initialLettersObject[letter],
-    letter,
-  }),
-);
-enum Tabs {
-  TYPING,
-  CHART,
-}
 const SoloTraining = () => {
+  const { fetched, avaiableWord } = useSelector(getSoloTraining);
+  const { uid } = useSelector(getUser);
+  const reduxDispatch = useDispatch();
   const [
-    { letters, lastActiveLetterIndex, firstBlockedLetterIndex },
+    {
+      fetchedSettings,
+      letters,
+      lastActiveLetterIndex,
+      firstBlockedLetterIndex,
+    },
     dispatch,
-  ] = useReducer<typeof lettersReducer>(lettersReducer, {
-    letters: initialLetters,
-
-    lastActiveLetterIndex: 6,
-    firstBlockedLetterIndex: 10,
-  });
+  ] = useReducer<typeof lettersReducer>(
+    lettersReducer,
+    lettersReducerInit,
+  );
 
   const [tabRef, changeTab] = useSwitchTab<Tabs, HTMLDivElement>(
     Tabs.TYPING,
   );
 
-  const handleToggleLetter = (e: any, id: number | string) => {
-    dispatch({ type: types.TOGGLE_LETTER, payload: id });
-  };
+  const handleToggleLetter = useCallback(
+    (e: any, id: number | string) => {
+      if (!fetchedSettings) return;
+      dispatch({ type: types.TOGGLE_LETTER, payload: id });
+    },
+    [fetchedSettings],
+  );
+
+  const addSnap: AddSnap = useCallback((time, accuracy, speed) => {
+    console.log(`to-do: addSnap:${[time, accuracy, speed]}`);
+  }, []);
+
+  useEffect(() => {
+    if (!uid) return;
+    if (!fetched) {
+      reduxDispatch(getSoloTrainingSnap(uid));
+    }
+    if (fetched && !fetchedSettings) {
+      dispatch({
+        type: types.SET_FETCHED_SETTINGS,
+        payload: avaiableWord,
+      });
+    }
+  }, [avaiableWord, fetched, fetchedSettings, reduxDispatch, uid]);
 
   return (
     <WithMenuTemplate>
@@ -85,6 +107,7 @@ const SoloTraining = () => {
             ref={ref => tabRef(ref, Tabs.TYPING)}
             activeLetter={letters[lastActiveLetterIndex - 1].letter}
             changeTab={() => changeTab(Tabs.CHART)}
+            addSnap={addSnap}
           />
           <ChartTab
             ref={ref => {

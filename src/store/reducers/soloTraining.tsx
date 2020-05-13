@@ -1,24 +1,34 @@
 import { Action, types } from 'store/actions/types';
-import { Snap } from 'store/actions/soloTraining';
 
 const init = {
+  fetched: false,
+  avaiableWord: null,
+  level: null,
   snaps: [],
 };
 
-export interface SoloTraining {
+export type Snap = {
+  time: number;
+  accuracy: number;
+  speed: number;
+};
+
+export interface BaseSoloTrainingState {
+  avaiableWord: number | null;
+  level: number | null;
   snaps: Snap[];
+}
+export interface SoloTrainingState extends BaseSoloTrainingState {
+  fetched: boolean;
 }
 
 export default (
-  state: SoloTraining = init,
+  state: SoloTrainingState = init,
   action: Action,
-): SoloTraining => {
+): SoloTrainingState => {
   switch (action.type) {
-    case types.UPDATE_SNAPS: {
-      return {
-        ...state,
-        snaps: [...state.snaps, action.payload],
-      };
+    case types.SET_SOLO_TRAINING_STATE: {
+      return { ...state, ...action.payload, fetched: true };
     }
     default:
       return state;

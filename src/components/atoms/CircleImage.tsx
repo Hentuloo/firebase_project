@@ -6,7 +6,7 @@ import { useImage } from 'hooks/useImage';
 import { useSelector } from 'react-redux';
 
 import defaultPicture from 'assets/svg/icons/defaultProfilePicture.svg';
-import { StoreType } from 'store/store';
+import { getUser } from 'store/selectors/user.selector';
 
 const Wrapper = styled.div`
   position: relative;
@@ -51,7 +51,7 @@ export const CircleImage: FC<CircleImageProps> = ({
 };
 
 export const ProfileImage = ({ ...props }) => {
-  const { photoURL } = useSelector((store: StoreType) => store.user);
+  const { photoURL } = useSelector(getUser);
 
   return <CircleImage src={photoURL || defaultPicture} {...props} />;
 };

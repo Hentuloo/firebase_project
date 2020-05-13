@@ -1,7 +1,6 @@
-export const defaultUser = {
-  soloTraining: {
-    avaiableWord: 10,
-    level: 0,
-    snaps: [],
-  },
+export const defaultUser = {};
+export const defaultUserSolo = {
+  avaiableWord: 10,
+  level: 0,
+  snaps: [],
 };

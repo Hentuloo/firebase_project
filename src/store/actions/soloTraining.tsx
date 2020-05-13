@@ -1,19 +1,24 @@
+import { BaseSoloTrainingState } from 'store/reducers/soloTraining';
+import { Db } from 'fb';
+import { Dispatch } from 'redux';
 import { types } from './types';
 
-export type SoloTrainingActions = UpadteSnapsAction;
+export type SoloTrainingActions = FetchSoloTrainingSnap;
 
-export type Snap = {
-  time: number;
-  accuracy: number;
-  speed: number;
-};
-
-export interface UpadteSnapsAction {
-  type: types.UPDATE_SNAPS;
-  payload: Snap;
+export interface FetchSoloTrainingSnap {
+  type: types.SET_SOLO_TRAINING_STATE;
+  payload: BaseSoloTrainingState;
 }
 
-export const updateSnaps = (snap: Snap): UpadteSnapsAction => ({
-  type: types.UPDATE_SNAPS,
-  payload: snap,
-});
+export const getSoloTrainingSnap = (uid: string) => async (
+  dispatch: Dispatch,
+) => {
+  const snap = await Db.init()
+    .userSoloTrainingRef(uid)
+    .get();
+  const data = snap.data();
+  dispatch({
+    type: types.SET_SOLO_TRAINING_STATE,
+    payload: data,
+  } as FetchSoloTrainingSnap);
+};

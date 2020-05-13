@@ -1,5 +1,3 @@
-import { defaultUser } from 'fb/default';
-
 import firebase from '../index';
 import { Db } from './Db.controller';
 
@@ -50,19 +48,6 @@ export class Auth {
     return this.instance.signInWithEmailAndPassword(email, password);
   };
 
-  public createUserProfileDocument = async (
-    uid: string,
-    additionalProps: any,
-  ) => {
-    const user = Db.init().userRef(uid);
-    const userSnap = await user.get();
-
-    if (userSnap.exists) return user;
-    await user.set({ ...defaultUser, ...additionalProps });
-
-    return user;
-  };
-
   public createAccountWithEmail = async (
     { email, password, displayName }: CreateAccountWithEmailProps,
     additionalProps = {},
@@ -74,7 +59,7 @@ export class Auth {
       password,
     );
     if (!user) return;
-    const userRef = await this.createUserProfileDocument(user.uid, {
+    const userRef = await Db.init().newUser(user.uid, {
       displayName,
       ...additionalProps,
     });
@@ -86,7 +71,7 @@ export class Auth {
     const { user } = await this.instance.signInWithPopup(provider);
     const { uid, displayName, photoURL } = user as firebase.User;
 
-    const userRef = await this.createUserProfileDocument(uid, {
+    const userRef = await Db.init().newUser(uid, {
       displayName,
       photoURL,
       ...additionalProps,

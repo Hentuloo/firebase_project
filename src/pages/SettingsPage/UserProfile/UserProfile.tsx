@@ -10,11 +10,11 @@ import {
 } from 'components/atoms';
 import { stickyModal } from 'components/molecules';
 
-import { StoreType } from 'store/store';
 import { Auth } from 'fb';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { Constants } from 'config/Constants';
 import { toast } from 'react-toastify';
+import { getUser } from 'store/selectors/user.selector';
 import EditProfileModal from './EditProfileModal/EditProfileModal';
 import DeleteUserModal from './DeleteUserModal';
 
@@ -85,9 +85,7 @@ const UserProfile: FC<UserProfileProps> = ({ className = '' }) => {
   const history = useHistory();
   const [isRequest, setIsRequest] = useState(false);
 
-  const { displayName } = useSelector(
-    (state: StoreType) => state.user,
-  );
+  const { displayName } = useSelector(getUser);
 
   const handleLogout = () => {
     Auth.init().logout();

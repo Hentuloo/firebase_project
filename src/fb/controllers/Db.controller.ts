@@ -2,7 +2,9 @@ import {
   updateAvaiableRooms,
   updateActiveRoom,
 } from 'store/actions/rooms';
+
 import store from 'store/store';
+import { defaultUser, defaultUserSolo } from 'fb/default';
 import firebase from '../index';
 import { collectionsWithId } from './helpers';
 
@@ -16,8 +18,12 @@ export class Db {
     return this.collection(`rooms`);
   };
 
-  userRef = (uid: string) => {
+  userProfileRef = (uid: string) => {
     return this.doc(`users/${uid}`);
+  };
+
+  userSoloTrainingRef = (uid: string) => {
+    return this.doc(`users-solo/${uid}`);
   };
 
   static init = () => {
@@ -43,7 +49,7 @@ export class Db {
   };
 
   public getUserProfile = async (uid: string) => {
-    const userSnap = await this.userRef(uid).get();
+    const userSnap = await this.userProfileRef(uid).get();
     return { uid, ...userSnap.data() };
   };
 
@@ -56,14 +62,37 @@ export class Db {
     });
   };
 
-  public subscribeUserProfile = (uid: string, callback: any) =>
-    this.userRef(uid).onSnapshot(callback);
+  public newUser = async (uid: string, additionalProps: any) => {
+    const user = Db.init().userProfileRef(uid);
+    const userTraining = Db.init().userSoloTrainingRef(uid);
 
-  public updateUserDoc = async (uid: string, newFields: any) => {
-    try {
-      await this.userRef(uid).update(newFields);
-    } catch (err) {
-      throw new Error(err);
-    }
+    await user.set({ ...defaultUser, ...additionalProps });
+    await userTraining.set({ ...defaultUserSolo });
+
+    return user;
   };
+
+  public updateUser = async (uid: string, additionalProps: any) => {
+    const user = Db.init().userProfileRef(uid);
+    const userSnap = await user.get();
+
+    if (userSnap.exists) return user;
+    await user.set({ ...defaultUser, ...additionalProps });
+
+    return user;
+  };
+
+  public subscribeUserProfile = (uid: string, callback: any) =>
+    this.userProfileRef(uid).onSnapshot(callback);
+
+  public updateUserDoc = (uid: string, newFields: any) =>
+    this.userProfileRef(uid).update(newFields);
+
+  // public addUserSnaps = async (uid: string, snap: Snap) => {
+  //   await this.userProfileRef(uid)
+  //     .collection('soloTraining/snaps')
+  //     .update(newFields);
+
+  //   throw new Error(err);
+  // };
 }

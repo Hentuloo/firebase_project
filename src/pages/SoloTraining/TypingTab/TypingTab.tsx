@@ -6,6 +6,7 @@ import { LoadingBar } from 'components/atoms';
 import { soloTrainingWords } from 'config/soloTrainingWords';
 import { shuffleArray } from 'utils';
 import { Controllers } from './Controllers';
+import { AddSnap } from '../types';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -53,10 +54,11 @@ const StyledHands = styled(Hands)`
 export interface TypingTabProps {
   activeLetter: string;
   changeTab: () => void;
+  addSnap: AddSnap;
 }
 
 const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
-  ({ activeLetter, changeTab }, ref) => {
+  ({ activeLetter, changeTab, addSnap }, ref) => {
     const text = shuffleArray<string>(
       soloTrainingWords[activeLetter],
     );
@@ -95,6 +97,7 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
                 setTime={setNewInitialTime}
                 reset={resetGameState}
                 changeTab={changeTab}
+                addSnap={addSnap}
               />
               <StyledHands text={sourceText} cursor={cursor} />
               <StyledLoadingBar

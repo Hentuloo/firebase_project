@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
 import { Constants } from 'config/Constants';
-import { StoreType } from 'store/store';
+import { getActiveRoom } from 'store/selectors/rooms.selector';
 
 const Wrapper = styled.div``;
 const ActiveUsers = styled.ul`
@@ -32,9 +32,7 @@ const IconImage = styled.img`
 `;
 
 const UsersList: FC = () => {
-  const { users } = useSelector(
-    (store: StoreType) => store.rooms.activeRoom,
-  );
+  const { users } = useSelector(getActiveRoom);
 
   return (
     <Wrapper>

@@ -12,8 +12,7 @@ import { Modal } from 'components/molecules';
 
 import { useProgressBar } from 'hooks/useProgressBar';
 import { useThunkReducer } from 'hooks/useThunkReducer';
-
-import { StoreType } from 'store/store';
+import { getUser } from 'store/selectors/user.selector';
 import { reducer } from './reducer';
 import { types } from './types';
 import { submitForm } from './actions';
@@ -53,9 +52,7 @@ interface EditProfileModal {
 const EditProfileModal: FC<EditProfileModal> = ({ toggleActive }) => {
   const imageRef = useRef(null);
   const [progress, updateProgress] = useProgressBar();
-  const { displayName, uid } = useSelector(
-    (state: StoreType) => state.user,
-  );
+  const { displayName, uid } = useSelector(getUser);
   const [
     { closeModal, isRequest, inputValue },
     dispatch,

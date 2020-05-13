@@ -6,6 +6,11 @@ export type UserActions =
   | UpadateUserProfileAction
   | UserIsNotLoggedAction;
 
+interface UserProfileSnapResponse {
+  uid: string;
+  displayName: string;
+  photoURL?: string;
+}
 interface UpadateUserProfileAction {
   type: types.UPDATE_PROFILE;
   payload: {
@@ -20,10 +25,12 @@ export const listenUserProfile = (
 ) => {
   const onSnapChange = (snapshot: any) => {
     if (snapshot.exists) {
-      const { displayName, photoURL } = snapshot.data();
       dispatch({
         type: types.UPDATE_PROFILE,
-        payload: { uid, displayName, photoURL },
+        payload: {
+          uid,
+          ...(snapshot.data() as UserProfileSnapResponse),
+        },
       } as UpadateUserProfileAction);
     }
   };
