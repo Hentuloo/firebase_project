@@ -81,6 +81,7 @@ export interface ControllersProps {
   stepsInOneMinute?: number;
   changeTab: () => void;
   addSnap: AddSnap;
+  disableCharts: boolean;
 }
 
 export const Controllers: FC<ControllersProps> = ({
@@ -94,6 +95,7 @@ export const Controllers: FC<ControllersProps> = ({
   speed,
   changeTab,
   addSnap,
+  disableCharts,
 }) => {
   const chartAttentionCircles = useRef<HTMLImageElement>(null);
 
@@ -143,7 +145,13 @@ export const Controllers: FC<ControllersProps> = ({
         </StyledRepeat>
       </ControllerWrapper>
       <ControllerWrapper>
-        <StyledCharts title="Wykresy" onClick={handleChangeTab}>
+        <StyledCharts
+          disabled={
+            disableCharts || gameStatus === typingStatus.TYPING
+          }
+          title="Wykresy"
+          onClick={handleChangeTab}
+        >
           <ButtonImage
             src={chartIcon}
             alt="Pokaż historie na wykresie"

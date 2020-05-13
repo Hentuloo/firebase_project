@@ -5,11 +5,11 @@ import {
 
 import store from 'store/store';
 import { defaultUser, defaultUserSolo } from 'fb/default';
+import { Snap } from 'store/reducers/soloTraining.reducer';
 import firebase from '../index';
 import { collectionsWithId } from './helpers';
 
 type FirestoreType = firebase.firestore.Firestore;
-type Snap = firebase.firestore.DocumentSnapshot;
 
 export class Db {
   instance: FirestoreType;
@@ -87,6 +87,17 @@ export class Db {
 
   public updateUserDoc = (uid: string, newFields: any) =>
     this.userProfileRef(uid).update(newFields);
+
+  public getSoloTrainingData = async (uid: string) => {
+    const snap = await this.userSoloTrainingRef(uid).get();
+    return snap.data();
+  };
+
+  public addSnap = (uid: string, snap: Snap) =>
+    this.userSoloTrainingRef(uid).set(
+      { snaps: [snap] },
+      { merge: true },
+    );
 
   // public addUserSnaps = async (uid: string, snap: Snap) => {
   //   await this.userProfileRef(uid)

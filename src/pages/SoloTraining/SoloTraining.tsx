@@ -6,9 +6,13 @@ import { LettersPanel } from 'components/organisms';
 
 import { useSwitchTab } from 'hooks/useSwitchTab';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSoloTrainingSnap } from 'store/actions/soloTraining.actions';
+import {
+  getSoloTrainingSnap,
+  addSnapAction,
+} from 'store/actions/soloTraining.actions';
 import { getSoloTraining } from 'store/selectors/soloTraining.selector';
 import { getUser } from 'store/selectors/user.selector';
+import { toast } from 'react-toastify';
 import TypingTab from './TypingTab/TypingTab';
 import lettersReducer, {
   types,
@@ -48,7 +52,9 @@ const TabsWrapper = styled.div`
 `;
 
 const SoloTraining = () => {
-  const { fetched, avaiableWord } = useSelector(getSoloTraining);
+  const { fetched, avaiableWord, snaps } = useSelector(
+    getSoloTraining,
+  );
   const { uid } = useSelector(getUser);
   const reduxDispatch = useDispatch();
   const [
@@ -76,9 +82,17 @@ const SoloTraining = () => {
     [fetchedSettings],
   );
 
-  const addSnap: AddSnap = useCallback((time, accuracy, speed) => {
-    console.log(`to-do: addSnap:${[time, accuracy, speed]}`);
-  }, []);
+  const addSnap: AddSnap = useCallback(
+    (time, accuracy, speed) => {
+      if (!uid) return;
+      try {
+        reduxDispatch(addSnapAction(uid, { time, accuracy, speed }));
+      } catch ({ message }) {
+        toast.success(`coś poszło nie tak${message}`);
+      }
+    },
+    [reduxDispatch, uid],
+  );
 
   useEffect(() => {
     if (!uid) return;
@@ -108,12 +122,14 @@ const SoloTraining = () => {
             activeLetter={letters[lastActiveLetterIndex - 1].letter}
             changeTab={() => changeTab(Tabs.CHART)}
             addSnap={addSnap}
+            snapsLength={snaps.length}
           />
           <ChartTab
             ref={ref => {
               tabRef(ref, Tabs.CHART);
             }}
             changeTab={() => changeTab(Tabs.TYPING)}
+            charts={snaps}
           />
         </TabsWrapper>
       </Wrapper>

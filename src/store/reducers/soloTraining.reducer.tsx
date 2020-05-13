@@ -30,6 +30,9 @@ export default (
     case types.SET_SOLO_TRAINING_STATE: {
       return { ...state, ...action.payload, fetched: true };
     }
+    case types.ADD_SNAP: {
+      return { ...state, snaps: [...state.snaps, action.payload] };
+    }
     default:
       return state;
   }

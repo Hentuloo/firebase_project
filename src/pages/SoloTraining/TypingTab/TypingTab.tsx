@@ -55,10 +55,11 @@ export interface TypingTabProps {
   activeLetter: string;
   changeTab: () => void;
   addSnap: AddSnap;
+  snapsLength: number;
 }
 
 const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
-  ({ activeLetter, changeTab, addSnap }, ref) => {
+  ({ activeLetter, changeTab, addSnap, snapsLength }, ref) => {
     const text = shuffleArray<string>(
       soloTrainingWords[activeLetter],
     );
@@ -98,6 +99,7 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
                 reset={resetGameState}
                 changeTab={changeTab}
                 addSnap={addSnap}
+                disableCharts={snapsLength < 2}
               />
               <StyledHands text={sourceText} cursor={cursor} />
               <StyledLoadingBar

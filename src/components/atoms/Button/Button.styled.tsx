@@ -1,36 +1,59 @@
 import React, { FC } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { BarDecorator } from 'components/atoms';
 import { Link } from 'react-router-dom';
 
 export interface ButtonProps extends React.ComponentProps<any> {
   to?: string;
+  disabled?: boolean;
 }
+const offStylesProps = css<{ off?: boolean }>`
+  ${({ off }) =>
+    off &&
+    css`
+      cursor: initial !important;
+      pointer-events: none;
+      filter: grayscale(100%);
+    `}
+`;
+const LinkWithOffProp = styled(Link)`
+  ${offStylesProps}
+`;
 
-const Button: FC<ButtonProps> = ({ to, children, ...props }) => {
+const ButtonWithOffProp = styled.button`
+  ${offStylesProps}
+`;
+
+const Button: FC<ButtonProps> = ({
+  to,
+  children,
+  disabled = false,
+  ...props
+}) => {
   if (to) {
     return (
-      <Link to={to} {...props}>
+      <LinkWithOffProp to={to} off={disabled} {...props}>
         {children}
-      </Link>
+      </LinkWithOffProp>
     );
   }
 
   return (
-    <button type="button" {...props}>
+    <ButtonWithOffProp type="button" off={disabled} {...props}>
       {children}
-    </button>
+    </ButtonWithOffProp>
   );
 };
 
 export const ClearButton = styled(Button)`
   border: none;
   background-color: transparent;
-  cursor: pointer;
   font-family: 'Open Sans', sans-serif;
   font-weight: ${({ theme }) => theme.fw[1]};
   font-size: ${({ theme }) => theme.fs.m};
   color: ${({ theme }) => theme.color.black[0]};
+  cursor: pointer;
+
   ${({ theme }) => theme.mediaQuery.md} {
     font-weight: 300;
   }

@@ -36,12 +36,19 @@ const Wrapper = styled.div`
 const NumbersWrapper = styled.div`
   margin-top: ${circleSize / 4}px;
 `;
-const NumberElement = styled.span`
+const NumberElement = styled.span<{ off?: boolean }>`
   display: block;
   ${size};
   height: ${circleSize / 2}px;
   line-height: ${circleSize / 2}px;
   text-align: center;
+  ${({ off }) =>
+    off &&
+    css`
+      cursor: initial !important;
+      pointer-events: none;
+      filter: grayscale(100%);
+    `}
 `;
 
 export type InputNumberProps = Modify<
@@ -139,7 +146,9 @@ export const InputNumber: FC<InputNumberProps> = ({
 
       <NumbersWrapper ref={ref}>
         {numbers.map(number => (
-          <NumberElement key={number}>{number}</NumberElement>
+          <NumberElement key={number} off={disable}>
+            {number}
+          </NumberElement>
         ))}
       </NumbersWrapper>
     </Wrapper>

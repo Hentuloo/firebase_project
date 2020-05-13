@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { TypingSnapsChart } from 'components/organisms';
-import dayjs from 'dayjs';
+import { Snap } from 'store/reducers/soloTraining.reducer';
 import { Controllers } from './Controllers';
 
 const Wrapper = styled.div`
@@ -25,24 +25,30 @@ const StyledTypingSnapsChart = styled(TypingSnapsChart)``;
 
 export interface ChartTabProps {
   changeTab: () => void;
+  charts: Snap[];
 }
-
 export const ChartTab = forwardRef<HTMLDivElement, ChartTabProps>(
-  ({ changeTab, ...props }, ref) => {
+  ({ changeTab, charts, ...props }, ref) => {
+    const [times, speeds, accurances, dates] = charts.reduce<
+      number[][]
+    >(
+      (acc, { accuracy, speed, time }, i) => {
+        acc[0].push(time);
+        acc[1].push(speed);
+        acc[2].push(accuracy);
+        acc[3].push(i);
+        return acc;
+      },
+      [[], [], [], []],
+    );
     return (
       <Wrapper ref={ref} {...props}>
         <Controllers changeTab={changeTab} />
         <StyledTypingSnapsChart
-          dates={[
-            '2020-05-08',
-            '2020-05-08',
-            '2020-05-08',
-            '2020-05-08',
-            '2020-05-08',
-          ].map(data => dayjs(data).fromNow())}
-          time={[0.4, 2, 2, 2, 2]}
-          speed={[20, 40, 32, 21, 44, 11]}
-          accurancy={[99, 92, 94, 91, 51, 77]}
+          dates={dates.map(data => data.toString())}
+          time={times}
+          speed={speeds}
+          accurancy={accurances}
         />
       </Wrapper>
     );
