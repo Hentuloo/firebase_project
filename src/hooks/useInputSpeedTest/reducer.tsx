@@ -2,6 +2,7 @@ import { shuffleArray } from 'utils';
 import {
   removeLeterFromLastWord,
   getStatePieceWithNewLetter,
+  generateRandomWords,
 } from './utils';
 import { types, Action, typingStatus } from './types';
 import { timeStepsConfig } from './config';
@@ -128,7 +129,13 @@ export const reducer = (
         goodText: state.goodText.slice(0, -1),
       };
     }
-    case types.RESET_GAME:
+    case types.RESET_GAME: {
+      const {
+        randomWords,
+        sourceText,
+        lengths,
+      } = generateRandomWords(state.textAssets);
+
       return {
         ...state,
         inputValue: '',
@@ -142,25 +149,30 @@ export const reducer = (
         timeSteps: state.initialTimeSteps,
         accuracy: 100,
         speed: 0,
+        sourceText,
+        sourceTextInArray: randomWords,
+        lengthsOfSourceText: lengths,
       };
+    }
     case types.GENERATE_WORDS: {
       const assetsWords = state.textAssets;
       if (!assetsWords) return state;
-
-      const randomWords = shuffleArray<string>(assetsWords);
-      const newSourceTex = randomWords.join(' ');
-      const newLengths = randomWords.map(word => word.length);
+      const {
+        randomWords,
+        sourceText,
+        lengths,
+      } = generateRandomWords(assetsWords);
 
       return {
         ...state,
-        sourceText: `${state.sourceText} ${newSourceTex}`,
+        sourceText: `${state.sourceText} ${sourceText}`,
         sourceTextInArray: [
           ...state.sourceTextInArray,
           ...randomWords,
         ],
         lengthsOfSourceText: [
           ...state.lengthsOfSourceText,
-          ...newLengths,
+          ...lengths,
         ],
       };
     }
@@ -177,6 +189,30 @@ export const reducer = (
           word => word.length,
         ),
         textAssets,
+      };
+    }
+    case types.CHANGE_TEXT_ASSETS: {
+      const newTextAssets = action.payload;
+      if (isEnd || isBegining || !newTextAssets) return state;
+      const randomWords = shuffleArray<string>(newTextAssets).slice();
+
+      const writtenWrodsLength = state.writtenWords.length + 5;
+      const lengthsOfSourceText = [
+        ...state.lengthsOfSourceText.slice(0, writtenWrodsLength - 1),
+        ...randomWords.map(word => word.length),
+      ];
+      const sourceTextInArray = [
+        ...state.sourceTextInArray.slice(0, writtenWrodsLength - 1),
+        ...randomWords,
+      ];
+      const sourceText = sourceTextInArray.join(' ');
+
+      return {
+        ...state,
+        sourceText,
+        sourceTextInArray,
+        lengthsOfSourceText,
+        textAssets: newTextAssets,
       };
     }
 

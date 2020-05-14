@@ -1,3 +1,4 @@
+import { shuffleArray } from 'utils';
 import { StateType } from './reducer';
 import { InputObserverResponse } from './observables/typingObserver';
 
@@ -81,5 +82,17 @@ export const getStatePieceWithNewLetter = (
     goodText: state.goodText + newGoodChar,
     wrongLength: state.wrongLength + (isWrong ? 1 : 0),
     goodLength: state.goodLength + (isWrong ? 0 : 1),
+  };
+};
+
+export const generateRandomWords = (assets?: string[]) => {
+  const randomWords = shuffleArray<string>(assets || []).slice(0, 6);
+  const sourceText = randomWords.join(' ');
+  const lengths = randomWords.map(word => word.length);
+
+  return {
+    randomWords,
+    sourceText,
+    lengths,
   };
 };

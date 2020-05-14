@@ -6,7 +6,8 @@ export type ActionCreatorsBasicTypse =
   | SetNewInitialTimeAction
   | ResetGameStateAction
   | GenerateNewWordsAction
-  | UpdateSourceTextAction;
+  | UpdateSourceTextAction
+  | ChangeTextAssetsAction;
 
 export type GenerateNewWordsAction = {
   type: types.GENERATE_WORDS;
@@ -31,6 +32,17 @@ export const updateSourceTextAction = (
     text,
     textAssets,
   },
+});
+
+export type ChangeTextAssetsAction = {
+  type: types.CHANGE_TEXT_ASSETS;
+  payload: string[] | undefined;
+};
+export const changeTextAssetsAction = (
+  textAssets: string[] | undefined,
+): ChangeTextAssetsAction => ({
+  type: types.CHANGE_TEXT_ASSETS,
+  payload: textAssets,
 });
 
 export type ResetGameStateAction = {

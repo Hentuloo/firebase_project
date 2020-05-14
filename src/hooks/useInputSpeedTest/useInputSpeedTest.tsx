@@ -9,6 +9,7 @@ import {
   resetGameStateAction,
   generateNewWords,
   updateSourceTextAction,
+  changeTextAssetsAction,
 } from './actions';
 
 import { typingObserver } from './observables/typingObserver';
@@ -84,9 +85,18 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
   useEffect(() => {
     // update text and textAsset
     if (state.gameStatus === typingStatus.TYPING) return;
+
     dispatch(updateSourceTextAction(text, textAssets));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, textAssets]);
+
+  useEffect(() => {
+    // update textAsset after level-changed
+    if (state.gameStatus === typingStatus.TYPING) {
+      dispatch(changeTextAssetsAction(textAssets));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [textAssets]);
 
   useEffect(() => {
     // typing listener & hotkeyListener

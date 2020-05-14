@@ -3,6 +3,7 @@ import React, {
   useRef,
   useEffect,
   useCallback,
+  useMemo,
 } from 'react';
 import styled from 'styled-components';
 import { TypingInput, Hands } from 'components/organisms';
@@ -84,14 +85,16 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
     ref,
   ) => {
     const timeSteps$ = useRef(new Subject<[StateType, number]>());
-    const text = shuffleArray<string>(
-      soloTrainingWords[activeLetter],
+
+    const text = useMemo(
+      () => shuffleArray<string>(soloTrainingWords[activeLetter]),
+      [activeLetter],
     );
 
     useEffect(() => {
       // update-level
       const steps$ = timeSteps$.current.pipe(
-        filter((_, index) => index % 20 === 0),
+        filter((_, index) => index % 30 === 0),
         skip(1),
       );
       const sub = steps$.subscribe(([props, level]) => {
