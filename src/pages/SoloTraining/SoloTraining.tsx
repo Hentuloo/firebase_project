@@ -9,11 +9,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   getSoloTrainingSnap,
   addSnapAction,
+  incrementLevelAction,
 } from 'store/actions/soloTraining.actions';
 import { getSoloTraining } from 'store/selectors/soloTraining.selector';
 import { getUser } from 'store/selectors/user.selector';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import { typingStatus } from 'hooks/useInputSpeedTest/types';
 import TypingTab from './TypingTab/TypingTab';
 import lettersReducer, {
   types,
@@ -53,9 +55,7 @@ const TabsWrapper = styled.div`
 `;
 
 const SoloTraining = () => {
-  const { fetched, avaiableWord, snaps } = useSelector(
-    getSoloTraining,
-  );
+  const { fetched, level, snaps } = useSelector(getSoloTraining);
   const { uid } = useSelector(getUser);
   const reduxDispatch = useDispatch();
   const [
@@ -82,12 +82,20 @@ const SoloTraining = () => {
     },
     [fetchedSettings],
   );
+  const handleChangeTypingStatus = useCallback(
+    (newStatus: typingStatus) =>
+      dispatch({
+        type: types.CHANGE_TYPING_STATUS,
+        payload: newStatus,
+      }),
+    [],
+  );
 
   const addSnap: AddSnap = useCallback(
     (time, accuracy, speed) => {
       if (!uid) return;
       try {
-        const date = dayjs().format('MM-DD-YYYY');
+        const date = dayjs().format();
         reduxDispatch(
           addSnapAction(uid, { time, accuracy, speed, date }),
         );
@@ -98,6 +106,22 @@ const SoloTraining = () => {
     [reduxDispatch, uid],
   );
 
+  const levelUp = useCallback(async () => {
+    if (!uid || firstBlockedLetterIndex !== lastActiveLetterIndex + 1)
+      return;
+    try {
+      await reduxDispatch(incrementLevelAction(uid));
+      dispatch({ type: types.INCREASE_AVAIABLE_LEVEL });
+    } catch {
+      toast.error(`Nie udało się zwiększyć poziomu(błąd serwera)`);
+    }
+  }, [
+    firstBlockedLetterIndex,
+    lastActiveLetterIndex,
+    reduxDispatch,
+    uid,
+  ]);
+
   useEffect(() => {
     if (!uid) return;
     if (!fetched) {
@@ -106,11 +130,10 @@ const SoloTraining = () => {
     if (fetched && !fetchedSettings) {
       dispatch({
         type: types.SET_FETCHED_SETTINGS,
-        payload: avaiableWord,
+        payload: level,
       });
     }
-  }, [avaiableWord, fetched, fetchedSettings, reduxDispatch, uid]);
-
+  }, [level, fetched, fetchedSettings, reduxDispatch, uid]);
   return (
     <WithMenuTemplate>
       <Wrapper>
@@ -123,10 +146,13 @@ const SoloTraining = () => {
         <TabsWrapper>
           <TypingTab
             ref={ref => tabRef(ref, Tabs.TYPING)}
+            firstBlockedLetterIndex={firstBlockedLetterIndex}
             activeLetter={letters[lastActiveLetterIndex - 1].letter}
             changeTab={() => changeTab(Tabs.CHART)}
             addSnap={addSnap}
             snapsLength={snaps.length}
+            levelUp={levelUp}
+            onChangeTypingSatus={handleChangeTypingStatus}
           />
           <ChartTab
             ref={ref => {

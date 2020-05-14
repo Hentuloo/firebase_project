@@ -2,15 +2,10 @@ import { interval } from 'rxjs';
 import { Action, types } from '../types';
 import { timeStepsConfig } from '../config';
 
-export type TimeObserverAction =
-  | SubtractTimeAction
-  | TakeGameSnapAction;
+export type TimeObserverAction = SubtractTimeAction;
 
 interface SubtractTimeAction {
   type: types.SUBTRACT_TIME_STEPS;
-}
-interface TakeGameSnapAction {
-  type: types.TAKE_GAME_SNAP;
 }
 
 export const timeObserver = (dispatch: React.Dispatch<Action>) => {

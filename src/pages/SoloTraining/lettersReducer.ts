@@ -2,10 +2,13 @@ import {
   letters as initialLettersObject,
   LetterProperties,
 } from 'config/soloTrainingConfig';
+import { typingStatus } from 'hooks/useInputSpeedTest/types';
 
 export enum types {
   TOGGLE_LETTER,
   SET_FETCHED_SETTINGS,
+  INCREASE_AVAIABLE_LEVEL,
+  CHANGE_TYPING_STATUS,
 }
 
 export interface LetterObject extends LetterProperties {
@@ -13,6 +16,7 @@ export interface LetterObject extends LetterProperties {
   blocked: boolean;
 }
 export type StateType = {
+  typingStatus: typingStatus;
   fetchedSettings: boolean;
   letters: LetterObject[];
   firstBlockedLetterIndex: number;
@@ -27,6 +31,7 @@ const initialLetters = Object.keys(initialLettersObject).map(
 );
 
 export const lettersReducerInit: StateType = {
+  typingStatus: typingStatus.BEGINING,
   fetchedSettings: false,
   letters: initialLetters,
   lastActiveLetterIndex: 6,
@@ -38,6 +43,8 @@ export default (
   action: any,
 ): StateType => {
   if (action.type === types.TOGGLE_LETTER) {
+    if (state.typingStatus === typingStatus.TYPING) return state;
+
     const index = action.payload;
     if (index >= state.firstBlockedLetterIndex) return state;
     return { ...state, lastActiveLetterIndex: index };
@@ -49,6 +56,21 @@ export default (
       fetchedSettings: true,
       firstBlockedLetterIndex: payload,
       lastActiveLetterIndex: payload - 1,
+    };
+  }
+  if (action.type === types.INCREASE_AVAIABLE_LEVEL) {
+    const { firstBlockedLetterIndex, lastActiveLetterIndex } = state;
+
+    return {
+      ...state,
+      firstBlockedLetterIndex: firstBlockedLetterIndex + 1,
+      lastActiveLetterIndex: lastActiveLetterIndex + 1,
+    };
+  }
+  if (action.type === types.CHANGE_TYPING_STATUS) {
+    return {
+      ...state,
+      typingStatus: action.payload,
     };
   }
   return state;

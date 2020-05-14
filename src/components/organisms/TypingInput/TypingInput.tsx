@@ -47,8 +47,14 @@ export const TypingInput: FC<TypingInput> = ({
   textAssets,
   className = '',
   render = null,
+  ...props
 }) => {
-  const inputState = useInputSpeedTest({ text, time, textAssets });
+  const inputState = useInputSpeedTest({
+    text,
+    time,
+    textAssets,
+    ...props,
+  });
   const {
     ref,
     inputValue,

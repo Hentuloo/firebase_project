@@ -1,7 +1,7 @@
 import { useEffect, useRef, useReducer } from 'react';
 
 import { Subscription } from 'rxjs';
-import { reducer } from './reducer';
+import { reducer, StateType } from './reducer';
 import {
   setNewTextAction,
   setTimeStepsAction,
@@ -38,10 +38,18 @@ export interface UseInputSpeedTestProps {
   text: string;
   textAssets?: string[];
   time?: number;
+  onTimeStepChange?: (props: StateType) => void;
+  onChangeGameStatus?: (status: typingStatus) => void;
 }
 
 export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
-  const { textAssets, text, time: initialTimeSteps } = props;
+  const {
+    textAssets,
+    text,
+    time: initialTimeSteps,
+    onTimeStepChange,
+    onChangeGameStatus,
+  } = props;
 
   const ref = useRef<HTMLInputElement>(null);
   const [state, dispatch] = useReducer<typeof reducer>(reducer, {
@@ -120,6 +128,20 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     }
     return () => clearTimeout(tmID);
   }, [state.gameStatus]);
+
+  useEffect(() => {
+    if (!onTimeStepChange) return;
+    onTimeStepChange(state);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onTimeStepChange, state.timeSteps]);
+
+  useEffect(() => {
+    if (!onChangeGameStatus) return;
+    onChangeGameStatus(state.gameStatus);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onChangeGameStatus, state.gameStatus]);
 
   return {
     ...state,

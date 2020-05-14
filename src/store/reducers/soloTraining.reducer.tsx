@@ -2,7 +2,6 @@ import { Action, types } from 'store/actions/types';
 
 const init = {
   fetched: false,
-  avaiableWord: null,
   level: null,
   snaps: [],
 };
@@ -15,7 +14,6 @@ export type Snap = {
 };
 
 export interface BaseSoloTrainingState {
-  avaiableWord: number | null;
   level: number | null;
   snaps: Snap[];
 }
@@ -33,6 +31,11 @@ export default (
     }
     case types.ADD_SNAP: {
       return { ...state, snaps: [...state.snaps, action.payload] };
+    }
+    case types.INCREASE_LEVEL: {
+      const { level } = state;
+      if (!level) return state;
+      return { ...state, level: level + 1 };
     }
     default:
       return state;

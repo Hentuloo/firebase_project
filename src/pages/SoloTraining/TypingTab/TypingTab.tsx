@@ -1,10 +1,19 @@
-import React, { forwardRef } from 'react';
+import React, {
+  forwardRef,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import styled from 'styled-components';
 import { TypingInput, Hands } from 'components/organisms';
 import { LoadingBar } from 'components/atoms';
 
 import { soloTrainingWords } from 'config/soloTrainingWords';
 import { shuffleArray } from 'utils';
+import { StateType } from 'hooks/useInputSpeedTest/reducer';
+import { Subject } from 'rxjs';
+import { filter, skip } from 'rxjs/operators';
+import { typingStatus } from 'hooks/useInputSpeedTest/types';
 import { Controllers } from './Controllers';
 import { AddSnap } from '../types';
 
@@ -56,18 +65,63 @@ export interface TypingTabProps {
   changeTab: () => void;
   addSnap: AddSnap;
   snapsLength: number;
+  levelUp: () => void;
+  firstBlockedLetterIndex: number;
+  onChangeTypingSatus: (status: typingStatus) => void;
 }
 
 const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
-  ({ activeLetter, changeTab, addSnap, snapsLength }, ref) => {
+  (
+    {
+      activeLetter,
+      changeTab,
+      addSnap,
+      snapsLength,
+      levelUp,
+      firstBlockedLetterIndex,
+      onChangeTypingSatus,
+    },
+    ref,
+  ) => {
+    const timeSteps$ = useRef(new Subject<[StateType, number]>());
     const text = shuffleArray<string>(
       soloTrainingWords[activeLetter],
+    );
+
+    useEffect(() => {
+      // update-level
+      const steps$ = timeSteps$.current.pipe(
+        filter((_, index) => index % 20 === 0),
+        skip(1),
+      );
+      const sub = steps$.subscribe(([props, level]) => {
+        const { accuracy, speed } = props;
+
+        if (level < 8 && (accuracy > 85 || speed > 30))
+          return levelUp();
+        if (level < 15 && (accuracy > 85 || speed > 35))
+          return levelUp();
+        if (level < 28 && (accuracy > 92 || speed > 40))
+          return levelUp();
+        if (level < 34 && (accuracy > 95 || speed > 45))
+          return levelUp();
+      });
+
+      return () => sub.unsubscribe();
+    }, [levelUp, timeSteps$]);
+
+    const handleTimeStep = useCallback(
+      (state: StateType) =>
+        timeSteps$.current.next([state, firstBlockedLetterIndex]),
+      [firstBlockedLetterIndex],
     );
 
     return (
       <Wrapper ref={ref}>
         <StyledTypingInput
           textAssets={text}
+          onTimeStepChange={handleTimeStep}
+          onChangeGameStatus={onChangeTypingSatus}
           text={text.join(' ')}
           render={({
             cursor,

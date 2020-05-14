@@ -12,7 +12,6 @@ export enum types {
   RESET_GAME = 'RESET_GAME',
   GENERATE_WORDS = 'GENERATE_WORDS',
   UPDATE_SOURCE_TEXT = 'UPDATE_SOURCE_TEXT',
-  TAKE_GAME_SNAP = 'TAKE_GAME_SNAP',
 }
 
 export enum typingMood {

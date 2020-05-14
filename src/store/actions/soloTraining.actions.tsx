@@ -8,7 +8,8 @@ import { types } from './types';
 
 export type SoloTrainingActions =
   | FetchSoloTrainingSnap
-  | AddSnapAction;
+  | AddSnapAction
+  | IncreaseLevelAction;
 
 export interface FetchSoloTrainingSnap {
   type: types.SET_SOLO_TRAINING_STATE;
@@ -40,6 +41,22 @@ export const addSnapAction = (uid: string, snap: Snap) => async (
       type: types.ADD_SNAP,
       payload: snap,
     } as AddSnapAction);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export interface IncreaseLevelAction {
+  type: types.INCREASE_LEVEL;
+}
+export const incrementLevelAction = (uid: string) => async (
+  dispatch: Dispatch,
+) => {
+  try {
+    await Db.init().increaseLevel(uid);
+    dispatch({
+      type: types.INCREASE_LEVEL,
+    } as IncreaseLevelAction);
   } catch (e) {
     throw new Error(e);
   }
