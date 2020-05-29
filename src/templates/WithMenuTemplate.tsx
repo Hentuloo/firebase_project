@@ -2,7 +2,18 @@ import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Navigation } from 'components/organisms';
+import { DarkModeButton } from 'components/molecules/DarkModeButton';
 
+const StyledDarkModeButton = styled(DarkModeButton)`
+  position: fixed;
+  left: 4px;
+  top: 4px;
+  ${({ theme }) => theme.mediaQuery.lg} {
+    top: auto;
+    left: 8px;
+    bottom: 8px;
+  }
+`;
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -39,6 +50,7 @@ const WithMenuTemplate: FC<WithMenuTemplateProps> = ({
 }) => {
   return (
     <Wrapper>
+      <StyledDarkModeButton small />
       <StyledNavigation />
       <ContentWrapper>{children}</ContentWrapper>
     </Wrapper>

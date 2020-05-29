@@ -15,6 +15,7 @@ body {
     font-weight: 300;
     font-size: ${({ theme }) => theme.fs.s};
     color:  ${({ theme }) => theme.color.black[0]};  
+    background-color:  ${({ theme }) => theme.color.white[0]};  
 
     ${({ theme }) => theme.mediaQuery.md}{
          font-size: 1.4rem;

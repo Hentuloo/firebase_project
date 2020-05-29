@@ -28,7 +28,7 @@ export const InnerBar = styled.div`
   ${({ green }: { green?: boolean }) =>
     green &&
     css`
-      background: ${({ theme }) => theme.color.brand[0]};
+      background: ${({ theme }) => theme.color.contrastBrand[1]};
     `}
 `;
 

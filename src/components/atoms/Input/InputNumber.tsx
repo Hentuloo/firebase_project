@@ -20,11 +20,11 @@ const size = css`
 const Wrapper = styled.div`
   ${size};
   border-radius: 50%;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 15px ${({ theme }) => theme.color.shadow[0]};
   overflow: hidden;
   font-size: ${({ theme }) => theme.fs.m};
   font-weight: ${({ theme }) => theme.fw[1]};
-  color: ${({ theme }) => theme.color.brand[0]};
+  color: ${({ theme }) => theme.color.brand[2]};
 
   ${({ theme }) => theme.mediaQuery.lg} {
     font-size: ${({ theme }) => theme.fs.s};

@@ -1,22 +1,7 @@
-export default {
-  color: {
-    brand: [
-      '#69C397',
-      '#3A7759',
-      'rgba(58, 119, 89, 0.4)',
-      '#6B9983',
-    ],
-    brandSecond: ['#FF9552', '#DC7738', '#B2612E'],
-    white: ['rgb(255, 255, 255)', '#F0E2D9', '#E7C8B5'],
-    black: ['#4F4F4F', '#2D2D2D', '#4F4F4F', '#727272'],
-    gray: ['rgb(220, 220, 220)', 'rgb(119, 119, 119)'],
-    red: ['#d53035'],
-    yellow: ['#e6a700'],
-    gradients: [
-      ' linear-gradient(to right, rgba(15,91,138,1) 0%, rgba(143,204,240,1) 41%, rgba(255,139,66,1) 64%, rgba(170,92,44,1) 100%);',
-    ],
-    chart: ['#69C397', 'rgb(119, 119, 119)', 'rgb(220, 220, 220)'],
-  },
+import { DarkMode } from 'store/reducers/user.reducer';
+import colors, { ThemeColor } from './colors';
+
+const coreTheme = {
   mediaQuery: {
     xs: '@media (min-width: 0px)',
     sm: '@media (min-width: 480px)',
@@ -42,3 +27,15 @@ export default {
   },
   fw: [400, 600],
 };
+
+type ThemeCore = typeof coreTheme;
+
+export interface ThemeType extends ThemeColor, ThemeCore {}
+export type ThemeTypeWithDarkMode = {
+  [key in DarkMode]: ThemeType;
+};
+const theme: ThemeTypeWithDarkMode = {
+  DARK: { ...coreTheme, ...colors.dark },
+  LIGHT: { ...coreTheme, ...colors.light },
+};
+export default theme;

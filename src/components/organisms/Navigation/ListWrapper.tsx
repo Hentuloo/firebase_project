@@ -35,17 +35,17 @@ const ListElement = styled.li`
 `;
 const LinkElementStyles = css`
   text-decoration: none;
-  color: ${({ theme }) => theme.color.brand[1]};
+  color: ${({ theme }) => theme.color.contrastBrand[0]};
   font-size: ${({ theme }) => theme.fs.xs};
   font-weight: ${({ theme }) => theme.fw[0]};
 `;
 const LinkElementBar = css`
   ${BarDecorator}
-
   &::after {
     width: 40px;
     left: 50%;
     opacity: 0.3;
+    background-color: ${({ theme }) => theme.color.contrastBrand[1]};
   }
   &.active {
     &::after {
@@ -55,7 +55,7 @@ const LinkElementBar = css`
 `;
 const LinkElement = styled(NavLink)`
   ${LinkElementStyles}
-   ${BarDecorator}
+  ${BarDecorator}
   ${LinkElementBar}
 `;
 const StyledButton = styled(ClearButton)`

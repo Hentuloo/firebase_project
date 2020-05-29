@@ -10,7 +10,6 @@ import {
 import { Card } from 'components/molecules';
 import leavesSVG from 'assets/svg/leaves.svg';
 import googleIconSVG from 'assets/svg/icons/googleIcon.svg';
-import { usePerspectiveAnimation } from 'hooks/usePerspectiveAnimation';
 
 const Label = styled.label``;
 
@@ -131,8 +130,6 @@ const Form: FC<FormProps> = ({
   loginWithGoogle,
   authRequest,
 }) => {
-  const ref = usePerspectiveAnimation<HTMLFormElement>();
-
   const [inputValues, setInputValues] = useReducer(
     (
       prevState: InputValuesReducerState,
@@ -160,7 +157,7 @@ const Form: FC<FormProps> = ({
 
   return (
     <>
-      <Wrapper ref={ref} as="form" onSubmit={handleSubmitForm}>
+      <Wrapper as="form" onSubmit={handleSubmitForm}>
         <Title>{hasAccount ? 'Logowanie' : 'Nowe konto'}</Title>
         {hasAccount === false && (
           <Label>

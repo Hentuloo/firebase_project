@@ -31,25 +31,13 @@ export const usePerspectiveAnimation = <T extends HTMLElement>(
 
     const hoverEffect = (mouse: any) => {
       const { clientX, clientY } = mouse || mouse.touches[0];
+      const rect = mouse.currentTarget.getBoundingClientRect();
 
-      // Get mouse x position within card
-      const x =
-        clientX -
-        (target.offsetLeft -
-          (window.scrollX ||
-            window.pageXOffset ||
-            document.body.scrollLeft));
+      const x = clientX - rect.left; // x position within the element.
+      const y = clientY - rect.top; // y position within the element.
 
-      // Get mouse y position within card
-      const y =
-        clientY -
-        (target.offsetTop -
-          (window.scrollY ||
-            window.pageYOffset ||
-            document.body.scrollTop));
-
-      const rotateX = -(y - target.clientHeight / 2) / dampen;
-      const rotateY = (x - target.clientWidth / 2) / dampen;
+      const rotateY = -(target.clientWidth / 2 - x) / dampen;
+      const rotateX = (target.clientHeight / 2 - y) / dampen;
 
       gsap.to(target, {
         duration: 0.5,

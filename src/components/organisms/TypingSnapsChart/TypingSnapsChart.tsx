@@ -1,7 +1,6 @@
 import React, { FC, useRef, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Line } from 'react-chartjs-2';
-import mainTheme from 'themes/mainTheme';
 
 const Wrapper = styled.div`
   position: relative;
@@ -21,9 +20,11 @@ export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
   time,
   speed,
   accurancy,
+
   ...props
 }) => {
   const ref = useRef<Line>(null);
+  const theme = useTheme();
 
   useEffect(() => {
     const chart = ref.current;
@@ -39,10 +40,10 @@ export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
     fill: false,
     pointRadius: 3,
     hoverRadius: 5,
-    borderColor: mainTheme.color.chart[index],
-    pointBackgroundColor: mainTheme.color.chart[index],
-    pointBorderColor: mainTheme.color.chart[index],
-    pointHoverBackgroundColor: mainTheme.color.chart[index],
+    borderColor: theme.color.chart[index],
+    pointBackgroundColor: theme.color.chart[index],
+    pointBorderColor: theme.color.chart[index],
+    pointHoverBackgroundColor: theme.color.chart[index],
   });
 
   return (

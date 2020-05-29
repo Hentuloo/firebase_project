@@ -6,7 +6,7 @@ import React, {
   FC,
 } from 'react';
 
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import gsap from 'gsap';
 import { usePrevious } from 'hooks/usePrevious';
 
@@ -23,24 +23,28 @@ interface HandsProps {
   cursor: number;
 }
 export const Hands: FC<HandsProps> = ({ text, cursor, ...props }) => {
+  const theme = useTheme();
   const wrapper = useRef<SVGSVGElement>(null);
   const prevActiveFinger = usePrevious(
     getFingerIdByCursor(text, cursor),
   );
   const [fingersNodeIds, setFingersNodesIds] = useState<any[]>([]);
 
-  const setAsActive = useCallback((active, prevActive, nodes) => {
-    if (prevActive) {
-      gsap.set(`#${nodes[prevActive - 1]} > path`, {
+  const setAsActive = useCallback(
+    (active, prevActive, nodes) => {
+      if (prevActive) {
+        gsap.set(`#${nodes[prevActive - 1]} > path`, {
+          duration: 0.1,
+          fill: '#4F4F4F',
+        });
+      }
+      gsap.set(`#${nodes[active - 1]} > path`, {
         duration: 0.1,
-        fill: '#4F4F4F',
+        fill: theme.color.contrastBrand[0],
       });
-    }
-    gsap.set(`#${nodes[active - 1]} > path`, {
-      duration: 0.1,
-      fill: 'green',
-    });
-  }, []);
+    },
+    [theme.color.contrastBrand],
+  );
 
   useEffect(() => {
     const el = wrapper.current;

@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import mainTheme from 'themes/mainTheme';
+import { useTheme } from 'styled-components';
 
 export default function useIsMobile() {
+  const theme = useTheme();
   const [isMobile, setIsMobile] = useState(
-    window.innerWidth <= mainTheme.mediaQuery.isMobil,
+    window.innerWidth <= theme.mediaQuery.isMobil,
   );
 
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth <= mainTheme.mediaQuery.isMobil) {
+      if (window.innerWidth <= theme.mediaQuery.isMobil) {
         if (!isMobile) {
           setIsMobile(true);
         }

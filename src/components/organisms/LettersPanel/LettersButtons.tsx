@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   grid-auto-flow: column;
   align-self: center;
   &::before {
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px ${({ theme }) => theme.color.shadow[0]};
   }
 `;
 interface StyledClearButtonProps {
@@ -23,7 +23,7 @@ const StyledClearButton = styled(ClearButton)<StyledClearButtonProps>`
   ${({ active }) =>
     active &&
     css`
-      color: ${({ theme }) => theme.color.brand[0]};
+      color: ${({ theme }) => theme.color.contrastBrand[1]};
     `}
 `;
 const BlockedIcon = styled.span`

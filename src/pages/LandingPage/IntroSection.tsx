@@ -15,6 +15,7 @@ import leavesSVG from 'assets/svg/leaves.svg';
 import arrowSVG from 'assets/svg/icons/arrow-white.svg';
 
 import { Constants } from 'config/Constants';
+import { DarkModeButton } from 'components/molecules/DarkModeButton';
 
 const Wrapper = styled.section`
   position: relative;
@@ -139,6 +140,7 @@ const LeavesImage = styled.img`
   grid-row: -1 / -3;
   align-self: flex-end;
   opacity: 0.3;
+  z-index: -1;
   ${({ theme }) => theme.mediaQuery.md} {
     width: 550px;
     margin-left: 40px;
@@ -147,6 +149,15 @@ const LeavesImage = styled.img`
   }
   ${({ theme }) => theme.mediaQuery.lg} {
     width: 650px;
+  }
+`;
+const StyledDarkModeButton = styled(DarkModeButton)`
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  ${({ theme }) => theme.mediaQuery.lg} {
+    right: 25px;
+    top: 15px;
   }
 `;
 
@@ -161,6 +172,7 @@ const IntroSection: FC = () => {
 
   return (
     <Wrapper>
+      <StyledDarkModeButton />
       <LogoWrapper>
         <LogoImage src={logoSVG} />
       </LogoWrapper>

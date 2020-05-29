@@ -4,7 +4,8 @@ import { types } from './types';
 
 export type UserActions =
   | UpadateUserProfileAction
-  | UserIsNotLoggedAction;
+  | UserIsNotLoggedAction
+  | ToggleDarkModeAction;
 
 interface UserProfileSnapResponse {
   uid: string;
@@ -57,3 +58,9 @@ export const listenAuthChanges = () => (dispatch: Dispatch) => {
     }
   });
 };
+interface ToggleDarkModeAction {
+  type: types.TOGGLE_DARK_MODE;
+}
+export const toggleDarkMode = () => ({
+  type: types.TOGGLE_DARK_MODE,
+});

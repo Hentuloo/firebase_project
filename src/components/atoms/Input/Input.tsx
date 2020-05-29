@@ -15,10 +15,27 @@ const withBorder = css`
 
 export const Input = styled.input`
   ${withBorder}
+  color: ${({ theme }) => theme.color.black[0]};
+  &::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: inherit;
+    opacity: 1; /* Firefox */
+  }
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: inherit;
+  }
+
+  &::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: inherit;
+  }
 `;
 export const TextInput = styled.input`
   padding: 5px 8px 5px 10px;
   border: none;
+  color: ${({ theme }) => theme.color.black[0]};
   border-bottom: 1px solid ${({ theme }) => theme.color.gray[0]};
   background-color: transparent;
   &:focus {

@@ -20,6 +20,7 @@ const Wrapper = styled.div`
   align-content: start;
   row-gap: 24px;
   padding: 10px;
+  margin: 10px auto;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-column: 2 / span 2;
     grid-row: 2/-1;

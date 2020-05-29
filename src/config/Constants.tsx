@@ -47,4 +47,7 @@ export const Constants = {
   default: {
     profilePicture: defaultProfilePicture,
   },
+  localStorage: {
+    darkMode: 'darkModeTheme',
+  },
 };
