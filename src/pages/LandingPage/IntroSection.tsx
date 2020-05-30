@@ -9,13 +9,13 @@ import {
 } from 'components/atoms';
 
 import logoSVG from 'assets/svg/icons/logo.svg';
-import textMockSVG from 'assets/svg/svgText.svg';
 import carsRaceSVG from 'assets/svg/road/carsRaceFirst.svg';
 import leavesSVG from 'assets/svg/leaves.svg';
 import arrowSVG from 'assets/svg/icons/arrow-white.svg';
 
 import { Constants } from 'config/Constants';
 import { DarkModeButton } from 'components/molecules/DarkModeButton';
+import { DemoTyingInput } from './DemoTyingInput';
 
 const Wrapper = styled.section`
   position: relative;
@@ -48,21 +48,39 @@ const LogoImage = styled.img`
   max-width: 100%;
 `;
 
-const HeaderText = styled.p`
+const HeaderText = styled.div`
   grid-column: 2 / span 1;
   grid-row: 2 / span 1;
   font-size: ${({ theme }) => theme.fs.large};
   ${({ theme }) => theme.mediaQuery.md} {
-    grid-column: 3 / span 1;
+    grid-column: 3 / span 2;
   }
   ${({ theme }) => theme.mediaQuery.lg} {
     font-size: 3.2em;
   }
   ${({ theme }) => theme.mediaQuery.vlg} {
-    font-size: 4.2em;
+    font-size: 3.8em;
   }
   span {
     display: block;
+
+    ${({ theme }) => theme.mediaQuery.vlg} {
+      line-height: 105%;
+    }
+  }
+  p {
+    min-width: 300px;
+    padding-top: 15px;
+    text-align: center;
+    ${({ theme }) => theme.mediaQuery.vlg} {
+      min-width: 400px;
+    }
+  }
+`;
+const SmallText = styled.p`
+  font-size: 16px;
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    font-size: 22px;
   }
 `;
 const WithBar = styled.span`
@@ -101,24 +119,6 @@ const ButtonWrapper = styled(Link)`
   }
 `;
 
-const TextMockImage = styled.img`
-  display: none;
-  ${({ theme }) => theme.mediaQuery.md} {
-    display: block;
-    max-width: 80vw;
-    grid-column: 5 / -1;
-    grid-row: 2 / span 1;
-    z-index: -2;
-    opacity: 0.2;
-    margin: 0px auto;
-    transform: translate(0%, -75%);
-    width: 42vw;
-  }
-  ${({ theme }) => theme.mediaQuery.lg} {
-    max-width: 600px;
-    transform: translate(0%, -40%);
-  }
-`;
 const RaceImage = styled.img`
   max-width: 120vw;
   grid-column: -1 / -3;
@@ -180,11 +180,16 @@ const IntroSection: FC = () => {
         <span>Pisz</span>
         <span>Rywalizuj</span>
         <WithBar>Ucz się!</WithBar>
+        <SmallText>
+          Naszym zadaniem jest poprawić Twoje umiejętności w pisaniu
+          na klawiaturze.
+        </SmallText>
       </HeaderText>
+
       <ButtonWrapper to={Constants.paths.login.path}>
         <ButtonWithBar as="span">Nowe konto</ButtonWithBar>
       </ButtonWrapper>
-      <TextMockImage src={textMockSVG} />
+      <DemoTyingInput />
       <RaceImage src={carsRaceSVG} />
       <LeavesImage src={leavesSVG} />
       <ArrowButton title="Przejdź dalej" onClick={handleScrollPage}>

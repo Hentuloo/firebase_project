@@ -21,15 +21,23 @@ const inputFont = css`
 const Wrapper = styled.div`
   position: relative;
   display: grid;
+  min-width: 250px;
   grid-template-rows: 60px 135px auto;
   grid-row-gap: 15px;
+
   ${inputFont}
   ${({ theme }) => theme.mediaQuery.lg} {
     grid-row-gap: 35px;
   }
+  ${({ withoutCounters }: { withoutCounters: boolean }) =>
+    withoutCounters &&
+    css`
+      grid-template-rows: 135px auto;
+    `}
 `;
 const InnerWrapper = styled.div`
   display: grid;
+  grid-template-rows: 2/3;
   grid-template-rows: 40px 40px;
   padding: 30px 20px;
 
@@ -39,6 +47,7 @@ const InnerWrapper = styled.div`
 
 interface TypingInput extends UseInputSpeedTestProps {
   className?: string;
+  withoutCounters?: boolean;
   render?: (inputState: UseInputSpeedTestReturnApi) => any;
 }
 export const TypingInput: FC<TypingInput> = ({
@@ -47,6 +56,7 @@ export const TypingInput: FC<TypingInput> = ({
   textAssets,
   className = '',
   render = null,
+  withoutCounters = false,
   ...props
 }) => {
   const inputState = useInputSpeedTest({
@@ -70,8 +80,13 @@ export const TypingInput: FC<TypingInput> = ({
 
   return (
     <>
-      <Wrapper className={className}>
-        <Counters accuracy={accuracy} speed={speed} />
+      <Wrapper
+        className={className}
+        withoutCounters={withoutCounters}
+      >
+        {!withoutCounters && (
+          <Counters accuracy={accuracy} speed={speed} />
+        )}
         <InnerWrapper>
           <PanelWithTextToWrite
             todo={sourceText.slice(inputValue.length)}

@@ -1,10 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 
 import smileSVG from 'assets/svg/icons/smile.svg';
 
 import { stickyModal } from 'components/molecules';
 import { CircleImage, BarDecorator } from 'components/atoms';
+import { useSelector } from 'react-redux';
+import { getUser } from 'store/selectors/user.selector';
 
 const Wrapper = styled.div`
   max-width: 600px;
@@ -66,13 +68,19 @@ const Title = styled.h2`
 `;
 
 const IntroductionText: FC = () => {
+  const { displayName } = useSelector(getUser);
+  const firstName = useMemo(() => {
+    if (!displayName) return null;
+    return displayName.split(' ')[0];
+  }, [displayName]);
   return (
     <Wrapper>
       <StyledCirlceImage src={smileSVG} />
       <Title>Cześć!</Title>
       <p>
-        Mamy nadzieje że spodoba ci się ta rozrywka, na dzień
-        dzisiejszy nasza aplikacja jest w fazie testów
+        {firstName ? `${firstName}, mamy` : 'Mamy'} nadzieje że
+        spodoba ci się ta rozrywka, na dzień dzisiejszy nasza
+        aplikacja jest w fazie testów
       </p>
       <p>
         Twoją nazwę i awatar mogą zobaczyć inni, zalecamy więc nie
