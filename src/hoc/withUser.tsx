@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Constants } from 'config/Constants';
@@ -29,11 +29,20 @@ export const redirectWhenUserLogged = <
   OtherPage?: React.ComponentType<O>,
 ) => {
   return (props: any) => {
+    const [checkedOnce, setCheckedOnce] = useState(false);
     const { loggedRequest, uid } = useSelector(getUser);
 
+    useEffect(() => {
+      // prevent redirect in future
+      if (!loggedRequest && !uid) {
+        setCheckedOnce(true);
+      }
+    }, [loggedRequest, uid]);
+
     if (loggedRequest) return null;
-    if (!uid) return <WrapperedComponent {...props} />;
+    if (!uid || checkedOnce) return <WrapperedComponent {...props} />;
     if (OtherPage) return <OtherPage {...props} />;
+
     return <Redirect to={Constants.paths.dashboard.path} />;
   };
 };

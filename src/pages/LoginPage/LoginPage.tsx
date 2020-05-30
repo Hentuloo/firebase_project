@@ -92,6 +92,7 @@ const LoginPage: FC = () => {
       if (hasAccount) {
         await loginWithEmail(email, password);
         setAuthRequest(false);
+        redirect(Constants.paths.dashboard.path);
         return;
       }
       await createAccountWithEmail(
@@ -114,6 +115,7 @@ const LoginPage: FC = () => {
       if (!hasAccount)
         return redirect(Constants.paths.registered.path);
       setAuthRequest(false);
+      return redirect(Constants.paths.dashboard.path);
     } catch (err) {
       toast.error(Constants.firebaseErrors[err.code] || err.message);
       setAuthRequest(false);
