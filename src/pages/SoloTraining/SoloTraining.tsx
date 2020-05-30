@@ -23,6 +23,7 @@ import lettersReducer, {
 } from './lettersReducer';
 import { ChartTab } from './ChartTab/ChartTab';
 import { Tabs, AddSnap } from './types';
+import { Modals } from './Modals/Modals';
 
 const Wrapper = styled.div`
   display: grid;
@@ -162,6 +163,7 @@ const SoloTraining = () => {
             charts={snaps}
           />
         </TabsWrapper>
+        <Modals />
       </Wrapper>
     </WithMenuTemplate>
   );

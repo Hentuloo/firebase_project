@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { CircleButton } from 'components/atoms';
 
-import chartIcon from 'assets/svg/icons/chartIcon.svg';
+import exitDoor from 'assets/svg/icons/exitDoor.svg';
 
 const Wrapper = styled.div`
   display: grid;
@@ -44,11 +44,8 @@ export const Controllers: FC<ControllersProps> = ({
   return (
     <Wrapper {...props}>
       <ControllerWrapper>
-        <StyledCharts title="Wykresy" onClick={changeTab}>
-          <ButtonImage
-            src={chartIcon}
-            alt="Pokaż historie na wykresie"
-          />
+        <StyledCharts title="Powrót" onClick={changeTab}>
+          <ButtonImage src={exitDoor} alt="Powrót" />
         </StyledCharts>
       </ControllerWrapper>
     </Wrapper>

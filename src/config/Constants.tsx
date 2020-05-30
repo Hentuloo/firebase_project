@@ -35,7 +35,11 @@ export const Constants = {
       name: 'Pokój',
     },
     solo: {
-      path: '/app/training',
+      path: '/app/trening',
+      name: 'Tryb pojedyńczy',
+    },
+    soloBadAccurancy: {
+      path: '/app/trening/celnosc',
       name: 'Tryb pojedyńczy',
     },
   },

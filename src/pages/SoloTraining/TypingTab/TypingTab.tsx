@@ -11,10 +11,12 @@ import { LoadingBar } from 'components/atoms';
 
 import { soloTrainingWords } from 'config/soloTrainingWords';
 import { shuffleArray } from 'utils';
-import { StateType } from 'hooks/useInputSpeedTest/reducer';
 import { Subject } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
 import { typingStatus } from 'hooks/useInputSpeedTest/types';
+import { useHistory } from 'react-router-dom';
+import { Constants } from 'config/Constants';
+import { UseInputSpeedTestReturnApi } from 'hooks/useInputSpeedTest/useInputSpeedTest';
 import { Controllers } from './Controllers';
 import { AddSnap } from '../types';
 
@@ -84,7 +86,10 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
     },
     ref,
   ) => {
-    const timeSteps$ = useRef(new Subject<[StateType, number]>());
+    const history = useHistory();
+    const timeSteps$ = useRef(
+      new Subject<[UseInputSpeedTestReturnApi, number]>(),
+    );
 
     const text = useMemo(
       () => shuffleArray<string>(soloTrainingWords[activeLetter]),
@@ -98,7 +103,13 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
         skip(1),
       );
       const sub = steps$.subscribe(([props, level]) => {
-        const { accuracy, speed } = props;
+        const { accuracy, speed, resetGameState } = props;
+
+        if (accuracy < 75) {
+          history.push(Constants.paths.soloBadAccurancy.path);
+          resetGameState();
+          return;
+        }
 
         if (level < 8 && (accuracy > 85 || speed > 30))
           return levelUp();
@@ -111,10 +122,10 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
       });
 
       return () => sub.unsubscribe();
-    }, [levelUp, timeSteps$]);
+    }, [history, levelUp, timeSteps$]);
 
     const handleTimeStep = useCallback(
-      (state: StateType) =>
+      (state: UseInputSpeedTestReturnApi) =>
         timeSteps$.current.next([state, firstBlockedLetterIndex]),
       [firstBlockedLetterIndex],
     );

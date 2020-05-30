@@ -1,5 +1,5 @@
 export const defaultUser = {};
 export const defaultUserSolo = {
   level: 10,
-  snaps: [{ time: '01-01-2020', accuracy: 0, speed: 0 }],
+  snaps: [{ data: '01-01-2020', time: 0, accuracy: 0, speed: 0 }],
 };

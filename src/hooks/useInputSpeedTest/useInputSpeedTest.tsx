@@ -1,7 +1,7 @@
-import { useEffect, useRef, useReducer } from 'react';
+import { useEffect, useRef, useReducer, useCallback } from 'react';
 
 import { Subscription } from 'rxjs';
-import { reducer, StateType } from './reducer';
+import { reducer } from './reducer';
 import {
   setNewTextAction,
   setTimeStepsAction,
@@ -39,7 +39,7 @@ export interface UseInputSpeedTestProps {
   text: string;
   textAssets?: string[];
   time?: number;
-  onTimeStepChange?: (props: StateType) => void;
+  onTimeStepChange?: (props: UseInputSpeedTestReturnApi) => void;
   onChangeGameStatus?: (status: typingStatus) => void;
 }
 
@@ -71,16 +71,25 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     input.focus();
   };
 
-  const setText = (pharse: string) =>
-    dispatch(setNewTextAction(pharse));
+  const setText = useCallback(
+    (pharse: string) => dispatch(setNewTextAction(pharse)),
+    [],
+  );
 
-  const setNewInitialTime = (number: number) =>
-    dispatch(setNewInitialTimeAction(number));
+  const setNewInitialTime = useCallback(
+    (number: number) => dispatch(setNewInitialTimeAction(number)),
+    [],
+  );
 
-  const resetGameState = () => dispatch(resetGameStateAction());
+  const resetGameState = useCallback(
+    () => dispatch(resetGameStateAction()),
+    [],
+  );
 
-  const setTimeSteps = (time: number) =>
-    dispatch(setTimeStepsAction(time));
+  const setTimeSteps = useCallback(
+    (time: number) => dispatch(setTimeStepsAction(time)),
+    [],
+  );
 
   useEffect(() => {
     // update text and textAsset
@@ -137,11 +146,21 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
       tmID = setTimeout(() => resetGameState(), 4000);
     }
     return () => clearTimeout(tmID);
-  }, [state.gameStatus]);
+  }, [resetGameState, state.gameStatus]);
 
   useEffect(() => {
     if (!onTimeStepChange) return;
-    onTimeStepChange(state);
+    onTimeStepChange({
+      ...state,
+      ref,
+      setInputFocus,
+      setText,
+      text,
+      setTimeSteps,
+      setNewInitialTime,
+      resetGameState,
+      timeConfig: timeStepsConfig,
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onTimeStepChange, state.timeSteps]);

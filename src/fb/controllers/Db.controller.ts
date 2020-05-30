@@ -71,7 +71,7 @@ export class Db {
     const createdFormated = dayjs(created).format('MM-DD-YYYY');
 
     const defaultSoloTraining = { ...defaultUserSolo };
-    defaultSoloTraining.snaps[0].time = createdFormated;
+    defaultSoloTraining.snaps[0].data = createdFormated;
 
     await user.set({ ...defaultUser, created, ...additionalProps });
     await userTraining.set(defaultSoloTraining);

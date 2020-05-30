@@ -20,7 +20,6 @@ export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
   time,
   speed,
   accurancy,
-
   ...props
 }) => {
   const ref = useRef<Line>(null);
