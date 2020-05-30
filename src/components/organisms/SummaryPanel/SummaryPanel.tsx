@@ -2,14 +2,13 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import { FilledButton } from 'components/atoms';
-import {
-  RangImage,
-  ProggressChart,
-  stickyModal,
-} from 'components/molecules';
+import { RangImage, stickyModal } from 'components/molecules';
 import { Constants } from 'config/Constants';
 import { Link } from 'react-router-dom';
+import { splitSnapsArray } from 'utils/splitSnapsArray';
+import { useSoloTrainingSnaps } from 'hooks/useSoloTrainingSnaps';
 import UserInfo from './UserInfo';
+import { TypingSnapsChart } from '../TypingSnapsChart/TypingSnapsChart';
 
 const Wrapper = styled.div`
   ${stickyModal}
@@ -25,6 +24,9 @@ const Wrapper = styled.div`
     grid-column: 2 / span 2;
     grid-row: 2/-1;
   }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    grid-row-gap: 40px;
+  }
 `;
 const LinkButton = styled(FilledButton)`
   width: 80%;
@@ -37,8 +39,13 @@ const ButtonWithRangImage = styled.div`
   grid-template-columns: 1fr 30%;
   justify-content: space-around;
 `;
+const StyledTypingSnapsChart = styled(TypingSnapsChart)``;
 
 export const SummaryPanel: FC = () => {
+  const { snaps } = useSoloTrainingSnaps();
+  const { times, speeds, accurances, dates } = splitSnapsArray(
+    snaps.slice(-7),
+  );
   return (
     <Wrapper>
       <UserInfo />
@@ -48,7 +55,14 @@ export const SummaryPanel: FC = () => {
         </LinkButton>
         <RangImage />
       </ButtonWithRangImage>
-      <ProggressChart />
+      {snaps.length > 1 && (
+        <StyledTypingSnapsChart
+          dates={dates}
+          time={times}
+          speed={speeds}
+          accurancy={accurances}
+        />
+      )}
     </Wrapper>
   );
 };

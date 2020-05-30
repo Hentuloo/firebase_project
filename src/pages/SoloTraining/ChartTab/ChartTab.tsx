@@ -2,8 +2,8 @@ import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { TypingSnapsChart } from 'components/organisms';
 import { Snap } from 'store/reducers/soloTraining.reducer';
-import dayjs from 'dayjs';
 import useIsMobile from 'hooks/useIsMobile';
+import { splitSnapsArray } from 'utils/splitSnapsArray';
 import { Controllers } from './Controllers';
 
 const Wrapper = styled.div`
@@ -22,23 +22,6 @@ const Wrapper = styled.div`
     grid-template-columns: 40px 1fr;
   }
 `;
-
-const splitSnapsArray = (charts: Snap[]) =>
-  charts.reduce<{
-    times: number[];
-    speeds: number[];
-    accurances: number[];
-    dates: string[];
-  }>(
-    (acc, { accuracy, speed, time, date }) => {
-      acc.times.push(time);
-      acc.speeds.push(speed);
-      acc.accurances.push(accuracy);
-      acc.dates.push(dayjs(date).fromNow());
-      return acc;
-    },
-    { times: [], speeds: [], accurances: [], dates: [] },
-  );
 
 const StyledTypingSnapsChart = styled(TypingSnapsChart)``;
 

@@ -7,15 +7,14 @@ import { LettersPanel } from 'components/organisms';
 import { useSwitchTab } from 'hooks/useSwitchTab';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  getSoloTrainingSnap,
   addSnapAction,
   incrementLevelAction,
 } from 'store/actions/soloTraining.actions';
-import { getSoloTraining } from 'store/selectors/soloTraining.selector';
 import { getUser } from 'store/selectors/user.selector';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { typingStatus } from 'hooks/useInputSpeedTest/types';
+import { useSoloTrainingSnaps } from 'hooks/useSoloTrainingSnaps';
 import TypingTab from './TypingTab/TypingTab';
 import lettersReducer, {
   types,
@@ -56,7 +55,7 @@ const TabsWrapper = styled.div`
 `;
 
 const SoloTraining = () => {
-  const { fetched, level, snaps } = useSelector(getSoloTraining);
+  const { fetched, level, snaps } = useSoloTrainingSnaps();
   const { uid } = useSelector(getUser);
   const reduxDispatch = useDispatch();
   const [
@@ -124,10 +123,6 @@ const SoloTraining = () => {
   ]);
 
   useEffect(() => {
-    if (!uid) return;
-    if (!fetched) {
-      reduxDispatch(getSoloTrainingSnap(uid));
-    }
     if (fetched && !fetchedSettings) {
       dispatch({
         type: types.SET_FETCHED_SETTINGS,
