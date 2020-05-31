@@ -73,10 +73,15 @@ export class Db {
     const defaultSoloTraining = { ...defaultUserSolo };
     defaultSoloTraining.snaps[0].data = createdFormated;
 
+    const userRef = await user.get();
+    if (userRef.exists) {
+      return userRef;
+    }
+
     await user.set({ ...defaultUser, created, ...additionalProps });
     await userTraining.set(defaultSoloTraining);
 
-    return user;
+    return userRef;
   };
 
   public updateUser = async (uid: string, additionalProps: any) => {
