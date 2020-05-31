@@ -69,7 +69,6 @@ const Dashboard: FC = () => {
           onChange={handleChangeInput}
         />
       </label>
-
       <input type="submit" />
     </form>
   );

@@ -8,6 +8,7 @@
     "dayjs": "^1.8.26",
     "firebase": "^7.8.0",
     "font-awesome": "^4.7.0",
+    "formik": "^2.1.4",
     "gsap": "^3.2.6",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

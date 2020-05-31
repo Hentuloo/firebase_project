@@ -1,6 +1,5 @@
 import React, { useEffect, FC } from 'react';
-import styled, { css } from 'styled-components';
-
+import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Card } from 'components/molecules';
 import {
@@ -8,10 +7,10 @@ import {
   BarDecorator,
   FilledButton,
 } from 'components/atoms';
-
 import { Link } from 'react-router-dom';
 import { StoreType } from 'store/store';
 import { Db } from 'fb';
+import { Constants } from 'config/Constants';
 import ButtonsGroup from './ButtonsGroup';
 
 const Wrapper = styled(Card)`
@@ -67,13 +66,13 @@ const StyledInput = styled(InputWithFA)`
   padding-bottom: 8px;
   font-weight: ${({ theme }) => theme.fw[1]};
 `;
-const Controller = css`
+
+const StyledFilledLink = styled(FilledButton)`
   width: 100%;
   padding: 10px 0px;
   margin: 6px auto;
-`;
-const StyledFilledLink = styled(FilledButton)`
-  ${Controller}
+  text-decoration: none;
+  text-align: center;
 `;
 
 export const RoomsPanel: FC = () => {
@@ -91,7 +90,7 @@ export const RoomsPanel: FC = () => {
   return (
     <Wrapper>
       <Title>Pokoje</Title>
-      <StyledFilledLink as={Link} to="/room/hello">
+      <StyledFilledLink as={Link} to={Constants.paths.newRoom.path}>
         Nowy pokój
       </StyledFilledLink>
       <Label>

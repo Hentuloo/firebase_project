@@ -4,12 +4,9 @@ import { Link } from 'react-router-dom';
 
 import WithMenuTemplate from 'templates/WithMenuTemplate';
 
-// import { useStoredRoom } from 'hooks/useStoredRoom';
 import { ProfileImage } from 'components/atoms';
 import { Constants } from 'config/Constants';
 import { RoomsPanel, SummaryPanel } from 'components/organisms';
-// import Dashboard from './Dashboard';
-
 import cornerSVG from 'assets/svg/road/corner2.svg';
 
 const Wrapper = styled.div`
@@ -45,6 +42,13 @@ const BackgroundImage = styled.img`
 const MainPage: FC = () => {
   // const [isActiveRoomId, redirect] = useStoredRoom();
 
+  // useEffect(() => {
+  //   if (isActiveRoomId) {
+  //     toast(() => <button type="button">Przejdź do pokoju</button>);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   return (
     <WithMenuTemplate>
       <Wrapper>
@@ -54,12 +58,6 @@ const MainPage: FC = () => {
         </CircleLink>
         <RoomsPanel />
         <SummaryPanel />
-        {/* {isActiveRoomId && (
-          <button type="button" onClick={redirect}>
-            Przejdź do pokoju z linku
-          </button>
-        )}
-         <Dashboard /> */}
         <BackgroundImage src={cornerSVG} />
       </Wrapper>
     </WithMenuTemplate>

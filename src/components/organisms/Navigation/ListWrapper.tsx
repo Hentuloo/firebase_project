@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { Constants } from 'config/Constants';
 
 import { BarDecorator, ClearButton } from 'components/atoms';
+import { Auth } from 'fb';
 
 const Wrapper = styled.ul`
   position: absolute;
@@ -90,7 +91,9 @@ const List: FC = () => {
         </LinkElement>
       </ListElement>
       <ListElement>
-        <StyledButton>Wyloguj się</StyledButton>
+        <StyledButton onClick={Auth.init().logout}>
+          Wyloguj się
+        </StyledButton>
       </ListElement>
     </Wrapper>
   );

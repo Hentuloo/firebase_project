@@ -30,6 +30,10 @@ export const Constants = {
       path: '/app/ustawienia/profil',
       name: 'Zmień ustawienia użytkownika',
     },
+    newRoom: {
+      path: '/app/nowy-pokoj',
+      name: 'Pokój',
+    },
     room: {
       path: '/app/room',
       name: 'Pokój',

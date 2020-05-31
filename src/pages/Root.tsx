@@ -16,6 +16,7 @@ import SoloTraining from 'pages/SoloTraining/SoloTraining';
 import { withUser, redirectWhenUserLogged } from 'hoc/withUser';
 import { saveRoomPath } from 'hoc/saveRoomPath';
 import { Constants } from 'config/Constants';
+import { NewRoomPage } from './NewRoomPage/NewRoomPage';
 
 function Root() {
   return (
@@ -38,6 +39,10 @@ function Root() {
         <Route
           path={Constants.paths.settings.path}
           component={withUser(SettingsPage)}
+        />
+        <Route
+          path={`${Constants.paths.newRoom.path}`}
+          component={withUser(NewRoomPage)}
         />
         <Route
           path={`${Constants.paths.room.path}/:roomId`}
