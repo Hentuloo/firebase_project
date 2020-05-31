@@ -43,14 +43,14 @@ const StyledFilledButton = styled(FilledButton)`
   padding: 10px 20px;
 `;
 
-interface FromState {
+export interface RoomSetingsState {
   title: string;
   players: number;
   withPassword: boolean;
   password: string;
 }
 export interface RoomSetingsProps {
-  onSubmit: (state: FromState) => void;
+  onSubmit: (state: RoomSetingsState) => void;
 }
 
 export const RoomSetings: FC<RoomSetingsProps> = ({
@@ -62,7 +62,7 @@ export const RoomSetings: FC<RoomSetingsProps> = ({
     handleChange,
     handleSubmit,
     setFieldValue,
-  } = useFormik<FromState>({
+  } = useFormik<RoomSetingsState>({
     initialValues: {
       title: '',
       players: 2,

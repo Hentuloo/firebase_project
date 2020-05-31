@@ -114,11 +114,4 @@ export class Db {
     this.userSoloTrainingRef(uid).update({
       level: firebase.firestore.FieldValue.increment(1),
     });
-  // public addUserSnaps = async (uid: string, snap: Snap) => {
-  //   await this.userProfileRef(uid)
-  //     .collection('soloTraining/snaps')
-  //     .update(newFields);
-
-  //   throw new Error(err);
-  // };
 }

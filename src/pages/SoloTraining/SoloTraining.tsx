@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { typingStatus } from 'hooks/useInputSpeedTest/types';
 import { useSoloTrainingSnaps } from 'hooks/useSoloTrainingSnaps';
+import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 import TypingTab from './TypingTab/TypingTab';
 import lettersReducer, {
   types,
@@ -132,34 +133,36 @@ const SoloTraining = () => {
   }, [level, fetched, fetchedSettings, reduxDispatch, uid]);
   return (
     <WithMenuTemplate>
-      <Wrapper>
-        <LettersPanel
-          firstBlockedIndex={firstBlockedLetterIndex}
-          lastActiveIndex={lastActiveLetterIndex}
-          letters={letters}
-          toggleLetter={handleToggleLetter}
-        />
-        <TabsWrapper>
-          <TypingTab
-            ref={ref => tabRef(ref, Tabs.TYPING)}
-            firstBlockedLetterIndex={firstBlockedLetterIndex}
-            activeLetter={letters[lastActiveLetterIndex - 1].letter}
-            changeTab={() => changeTab(Tabs.CHART)}
-            addSnap={addSnap}
-            snapsLength={snaps.length}
-            levelUp={levelUp}
-            onChangeTypingSatus={handleChangeTypingStatus}
+      <WithBackgroundTemplate>
+        <Wrapper>
+          <LettersPanel
+            firstBlockedIndex={firstBlockedLetterIndex}
+            lastActiveIndex={lastActiveLetterIndex}
+            letters={letters}
+            toggleLetter={handleToggleLetter}
           />
-          <ChartTab
-            ref={ref => {
-              tabRef(ref, Tabs.CHART);
-            }}
-            changeTab={() => changeTab(Tabs.TYPING)}
-            charts={snaps}
-          />
-        </TabsWrapper>
-        <Modals />
-      </Wrapper>
+          <TabsWrapper>
+            <TypingTab
+              ref={ref => tabRef(ref, Tabs.TYPING)}
+              firstBlockedLetterIndex={firstBlockedLetterIndex}
+              activeLetter={letters[lastActiveLetterIndex - 1].letter}
+              changeTab={() => changeTab(Tabs.CHART)}
+              addSnap={addSnap}
+              snapsLength={snaps.length}
+              levelUp={levelUp}
+              onChangeTypingSatus={handleChangeTypingStatus}
+            />
+            <ChartTab
+              ref={ref => {
+                tabRef(ref, Tabs.CHART);
+              }}
+              changeTab={() => changeTab(Tabs.TYPING)}
+              charts={snaps}
+            />
+          </TabsWrapper>
+          <Modals />
+        </Wrapper>
+      </WithBackgroundTemplate>
     </WithMenuTemplate>
   );
 };

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import WithMenuTemplate from 'templates/WithMenuTemplate';
-
+import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 import UserProfile from './UserProfile/UserProfile';
 
 const Wrapper = styled.div`
@@ -14,9 +14,11 @@ const Wrapper = styled.div`
 const UserSettingsPage: FC = () => {
   return (
     <WithMenuTemplate>
-      <Wrapper>
-        <UserProfile />
-      </Wrapper>
+      <WithBackgroundTemplate>
+        <Wrapper>
+          <UserProfile />
+        </Wrapper>
+      </WithBackgroundTemplate>
     </WithMenuTemplate>
   );
 };

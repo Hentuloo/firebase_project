@@ -1,20 +1,26 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import WithMenuTemplate from 'templates/WithMenuTemplate';
-import { RoomSetings } from 'components/organisms/RoomSettings';
+import {
+  RoomSetings,
+  RoomSetingsState,
+} from 'components/organisms/RoomSettings';
+import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 
-const Wrapper = styled.div`
-  min-height: 100vh;
+const StyledWithBackgroundTemplate = styled(WithBackgroundTemplate)`
   display: grid;
   align-items: center;
 `;
 
 export const NewRoomPage: FC = () => {
+  const handleCreateRoom = (state: RoomSetingsState) => {
+    console.log(state);
+  };
   return (
     <WithMenuTemplate>
-      <Wrapper>
-        <RoomSetings onSubmit={x => console.log(x)} />
-      </Wrapper>
+      <StyledWithBackgroundTemplate>
+        <RoomSetings onSubmit={handleCreateRoom} />
+      </StyledWithBackgroundTemplate>
     </WithMenuTemplate>
   );
 };

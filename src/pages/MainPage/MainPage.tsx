@@ -7,7 +7,7 @@ import WithMenuTemplate from 'templates/WithMenuTemplate';
 import { ProfileImage } from 'components/atoms';
 import { Constants } from 'config/Constants';
 import { RoomsPanel, SummaryPanel } from 'components/organisms';
-import cornerSVG from 'assets/svg/road/corner2.svg';
+import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 
 const Wrapper = styled.div`
   display: grid;
@@ -26,18 +26,6 @@ const CircleLink = styled(Link)`
     display: none;
   }
 `;
-const BackgroundImage = styled.img`
-  position: fixed;
-  width: 800px;
-  bottom: 0%;
-  right: 0%;
-  transform: rotate(-12deg) translate(15%, 50%);
-  z-index: -5;
-  opacity: 0.3;
-  ${({ theme }) => theme.mediaQuery.md} {
-    opacity: 0.7;
-  }
-`;
 
 const MainPage: FC = () => {
   // const [isActiveRoomId, redirect] = useStoredRoom();
@@ -51,15 +39,16 @@ const MainPage: FC = () => {
 
   return (
     <WithMenuTemplate>
-      <Wrapper>
-        <CircleLink to={Constants.paths.settings.path}>
-          <span className="sr-only">Przejdź do ustawień</span>
-          <ProfileImage />
-        </CircleLink>
-        <RoomsPanel />
-        <SummaryPanel />
-        <BackgroundImage src={cornerSVG} />
-      </Wrapper>
+      <WithBackgroundTemplate type={1}>
+        <Wrapper>
+          <CircleLink to={Constants.paths.settings.path}>
+            <span className="sr-only">Przejdź do ustawień</span>
+            <ProfileImage />
+          </CircleLink>
+          <RoomsPanel />
+          <SummaryPanel />
+        </Wrapper>
+      </WithBackgroundTemplate>
     </WithMenuTemplate>
   );
 };

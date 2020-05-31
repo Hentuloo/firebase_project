@@ -1,22 +1,15 @@
 import React, { useState, FC } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
 import logoSVG from 'assets/svg/icons/logo.svg';
-import backgroundImage from 'assets/svg/road/corner1.svg';
-
 import { Constants } from 'config/Constants';
 import { GoogleLoading } from 'components/atoms';
 import { useRedirect } from 'hooks/useRedirect';
 import { Auth } from 'fb';
 import { toast } from 'react-toastify';
+import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 import Form, { InputValuesReducerState } from './Form';
 
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-`;
 const LogoWrapper = styled.div`
   position: fixed;
   left: 3%;
@@ -37,25 +30,7 @@ const LogoWrapper = styled.div`
 const LogoImage = styled.img`
   max-width: 100%;
 `;
-const BackGroundImage = styled.img`
-  position: fixed;
-  right: 0%;
-  top: 0%;
-  width: 250vw;
-  transform: translate(44%, -25%) rotate(-25deg);
-  z-index: -5;
-  opacity: 0.2;
-  ${({ theme }) => theme.mediaQuery.md} {
-    width: 100vw;
-    max-width: 1200px;
-    transform: translate(20%, -15%) rotate(-10deg);
-    opacity: 1;
-  }
-  ${({ theme }) => theme.mediaQuery.vlg} {
-    max-width: 1500px;
-    transform: translate(30%, -15%) rotate(0deg);
-  }
-`;
+
 const StyledAuthLoading = styled(GoogleLoading)`
   position: fixed;
   left: 50%;
@@ -123,7 +98,7 @@ const LoginPage: FC = () => {
   };
 
   return (
-    <Wrapper>
+    <WithBackgroundTemplate type={0}>
       <StyledAuthLoading active={authRequest === 'google'} />
       <Link to={Constants.paths.root.path}>
         <span className="sr-only">Przejdź do strony głównej</span>
@@ -140,9 +115,7 @@ const LoginPage: FC = () => {
           loginWithGoogle={handleLoginWithGoogle}
         />
       )}
-
-      <BackGroundImage src={backgroundImage} />
-    </Wrapper>
+    </WithBackgroundTemplate>
   );
 };
 
