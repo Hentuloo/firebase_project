@@ -30,7 +30,7 @@ export const listenUserProfile = (
         type: types.UPDATE_PROFILE,
         payload: {
           uid,
-          ...(snapshot.data() as UserProfileSnapResponse),
+          ...snapshot.data(),
         },
       } as UpadateUserProfileAction);
     }

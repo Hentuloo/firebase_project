@@ -1,11 +1,13 @@
-import { useReducer, useRef } from 'react';
+import { useReducer, useRef, Reducer } from 'react';
 
-export const useThunkReducer = <T,>(
+export const useThunkReducer = <T extends {}>(
   reducer: any,
   initialState: T,
 ): [T, React.Dispatch<any>] => {
-  // @ts-ignore
-  const [state, dispatch] = useReducer<T>(reducer, initialState);
+  const [state, dispatch] = useReducer<Reducer<T, any>>(
+    reducer,
+    initialState,
+  );
   const thunkDispatchRef = useRef<any>();
 
   const thunkDispatch = (action: any) =>

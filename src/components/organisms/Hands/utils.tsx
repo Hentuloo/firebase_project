@@ -1,9 +1,11 @@
 import { letters } from 'config/soloTrainingConfig';
 
-export const getSeparateFingers = (hands: Element[]) => {
-  return hands.reduceRight<[string[], string[]]>((acc, hand) => {
+export const getSeparateFingers = (hands: Element[]): string[][] => {
+  return hands.reduceRight<string[][]>((acc, hand) => {
     acc.push(
-      [...hand.children].reverse().map(fingerNode => fingerNode.id),
+      [...hand.children]
+        .reverse()
+        .map(fingerNode => fingerNode.getAttribute('id') || ''),
     );
     return acc;
     // @ts-ignore
