@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["es6", "es2015.promise"],
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "outDir": "build",
+    "sourceMap": true,
+    "target": "es6",
+    "skipLibCheck": true
+  },
+  "files": ["node_modules/typescript/lib/lib.es6.d.ts"]
+  //   "exclude": ["node_modules"]
+}
