@@ -17,6 +17,7 @@ import { withUser, redirectWhenUserLogged } from 'hoc/withUser';
 import { saveRoomPath } from 'hoc/saveRoomPath';
 import { Constants } from 'config/Constants';
 import { NewRoomPage } from './NewRoomPage/NewRoomPage';
+import { JoinRoomPage } from './JoinRoomPage/JoinRoomPage';
 
 function Root() {
   return (
@@ -43,6 +44,10 @@ function Root() {
         <Route
           path={`${Constants.paths.newRoom.path}`}
           component={withUser(NewRoomPage)}
+        />
+        <Route
+          path={`${Constants.paths.joinRoom.path}/:roomId/:title/:withPassword?`}
+          component={withUser(saveRoomPath(JoinRoomPage))}
         />
         <Route
           path={`${Constants.paths.room.path}/:roomId`}

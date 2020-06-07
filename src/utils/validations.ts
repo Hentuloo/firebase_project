@@ -1,12 +1,12 @@
 export const validateRoomName = (value?: string) => {
   if (!value) return 'Room name is required';
-  if (value.length < 3 || value.length > 9)
+  if (value.length < 3 || value.length > 17)
     return 'Invalid room name length';
 };
 export const validateRoomPasword = (value?: string) => {
   if (!value) return 'Room password is required';
 
-  if (value.length < 3 || value.length > 14)
+  if (value.length < 3 || value.length > 17)
     return 'Invalid room name length';
 };
 export const validateRoomPlayersLength = (

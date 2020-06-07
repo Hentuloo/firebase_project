@@ -1,5 +1,10 @@
 import { https } from 'firebase-functions';
 import { firestore } from 'firebase-admin';
+import { UserDocument } from '../data';
+
+export interface WithUserProfile {
+  user: UserDocument;
+}
 
 export const useUserProfile = async (
   data: any,

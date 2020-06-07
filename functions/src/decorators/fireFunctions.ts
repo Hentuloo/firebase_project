@@ -1,12 +1,5 @@
 import * as functions from 'firebase-functions';
 import { SUPPORTED_REGIONS } from 'firebase-functions';
-/***********************************************************************************************
- *                                      Method Decorators
- **********************************************************************************************/
-/**
- * @param region The region of your function, for example: 'europe-west1'
- * @param type can be onCall or onRequest
- */
 
 export type MethodOptions = {
   region: typeof SUPPORTED_REGIONS[number];

@@ -1,8 +1,15 @@
 export const fireMiddleware = (middleware: Function) => {
   return (target: object | any, key: string | symbol) => {
-    const middlewares =
-      Object.getPrototypeOf(target[key]).middleware || [];
-    const withNewMiddleware = [middleware, ...middlewares];
-    Object.getPrototypeOf(target[key]).middleware = withNewMiddleware;
+    const proto = Object.getPrototypeOf(target[key]);
+
+    // if middlewares doesn't exist
+    if (!proto.middlewares) {
+      proto.middlewares = { [key]: [middleware] };
+      return;
+    }
+
+    const existingMiddleWares = proto.middlewares[key] || [];
+    const withNewMiddleware = [middleware, ...existingMiddleWares];
+    proto.middlewares[key] = withNewMiddleware;
   };
 };

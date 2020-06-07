@@ -1,12 +1,11 @@
-import {
-  updateAvaiableRooms,
-  updateActiveRoom,
-} from 'store/actions/rooms.actions';
+import { updateAvaiableRooms } from 'store/actions/rooms.actions';
 
 import store from 'store/store';
 import { defaultUser, defaultUserSolo } from 'fb/default';
 import { Snap } from 'store/reducers/soloTraining.reducer';
 import dayjs from 'dayjs';
+import { updateGameSettings } from 'store/actions/gameSettings.actions';
+import { GameSettingsState } from 'store/reducers/gameSettings.reducer';
 import firebase from '../index';
 import { collectionsWithId } from './helpers';
 
@@ -19,12 +18,16 @@ export class Db {
     return this.collection(`rooms`);
   };
 
+  gameSettingsRef = () => {
+    return this.collection(`games`);
+  };
+
   userProfileRef = (uid: string) => {
     return this.doc(`users/${uid}`);
   };
 
   userSoloTrainingRef = (uid: string) => {
-    return this.doc(`users-solo/${uid}`);
+    return this.doc(`usersSolo/${uid}`);
   };
 
   static init = () => {
@@ -49,6 +52,20 @@ export class Db {
     });
   };
 
+  public listenGameSettings = (roomId: string) => {
+    return this.gameSettingsRef()
+      .doc(roomId)
+      .onSnapshot(gameSettingsSnap => {
+        const settings = gameSettingsSnap.data();
+        if (settings) {
+          store.dispatch(
+            updateGameSettings(settings as GameSettingsState),
+          );
+        }
+        return null;
+      });
+  };
+
   public getUserProfile = async (uid: string) => {
     const userSnap = await this.userProfileRef(uid).get();
     return { uid, ...userSnap.data() };
@@ -56,12 +73,6 @@ export class Db {
 
   public createNewRoom = (uid: string, title: string) =>
     this.roomsRef().add({ creator: uid, title, users: [] });
-
-  public listenRoom = (roomId: string): any => {
-    return this.doc(`rooms/${roomId}`).onSnapshot(({ data }) => {
-      store.dispatch(updateActiveRoom(data()));
-    });
-  };
 
   public newUser = async (uid: string, additionalProps: any) => {
     const user = Db.init().userProfileRef(uid);

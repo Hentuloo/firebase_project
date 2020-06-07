@@ -7,4 +7,10 @@ admin.initializeApp(functions.config().firebase);
 admin.firestore();
 
 // bind firebase-functions controllers
-bindFirebaseControllers([new RoomsController()]).create(exports);
+const fireFunctions = bindFirebaseControllers([
+  new RoomsController(),
+]);
+const keys = Object.keys(fireFunctions);
+keys.forEach((key: string) => {
+  exports[key] = fireFunctions[key];
+});

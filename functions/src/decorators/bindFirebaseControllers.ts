@@ -26,23 +26,22 @@ export function bindFirebaseControllers(
     let methods = Object.getOwnPropertyNames(prot);
 
     // THE LOOP THAT EXPORTS YOUR CLASS METHODS AS FIREBASE FUNCTIONS
-    for (let fn of methods) {
+    for (let fName of methods) {
       // THE CONSTRUCTOR IS COUNTED AS A METHOD SO WE NEED TO DITCH THAT HERE
-      if (fn === 'constructor') {
+      if (fName === 'constructor') {
         //
       } else {
-        // GETTING THE OPTIONS WE SAVED ON THE FUNCTION PROTOTYPE WITH THE @FireFunction DECORATOR
-        let options: MethodOptions = Object.getPrototypeOf(
-          controller[fn],
-        ).options;
-
-        // GETTING THE MIDDLEWARE WE SAVED ON THE FUNCTION PROTOTY WITH THE @CallMiddleware DECORATOR
-        let middleware = Object.getPrototypeOf(controller[fn])
-          .middleware;
+        const functionProto = Object.getPrototypeOf(
+          controller[fName],
+        );
+        const {
+          options,
+          middlewares: { [fName]: middlewares },
+        } = functionProto;
 
         // CURRENTLY JUST FOCUSING ON THE ONCALL FUNCTIONS
         if (options && options.type === 'onCall') {
-          const fireFunctionName = fn.charAt(0) + fn.slice(1);
+          const fireFunctionName = fName.charAt(0) + fName.slice(1);
 
           const fireFunctionMethod = functions
             .region(options.region)
@@ -52,13 +51,16 @@ export function bindFirebaseControllers(
                 context: functions.https.CallableContext,
               ) => {
                 try {
-                  if (middleware && middleware.length > 0) {
-                    for await (const fn of middleware) {
+                  if (middlewares && middlewares.length > 0) {
+                    for await (const fn of middlewares) {
                       await fn(data, context);
                     }
-                    return controller[fn](data, context);
+                    return controller[fName](data, context);
                   }
                 } catch ({ code, message, details, name }) {
+                  console.error(
+                    JSON.stringify({ code, message, details, name }),
+                  );
                   throw new functions.https.HttpsError(
                     'unknown',
                     code,
@@ -78,10 +80,5 @@ export function bindFirebaseControllers(
     }
   }
 
-  return {
-    create: (ex: any) => {
-      const keys = Object.keys(bindedFireFunctions);
-      keys.forEach(key => (ex[key] = bindedFireFunctions[key]));
-    },
-  };
+  return bindedFireFunctions;
 }

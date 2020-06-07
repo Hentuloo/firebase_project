@@ -1,7 +1,14 @@
 import firebase from '../index';
 
 type FirebaseFunctionsType = firebase.functions.Functions;
-
+export interface CreateRoomData {
+  title: string;
+  maxPlayersNumber: number;
+  password?: string;
+}
+export interface JoinRoomResponse {
+  data: { ok: boolean };
+}
 export class FireFunctions {
   public instance: FirebaseFunctionsType;
 
@@ -24,14 +31,27 @@ export class FireFunctions {
   public call = (functionName: string) =>
     this.instance.httpsCallable(functionName);
 
-  public joinToOpenRoom = async (roomId: string) => {
+  public joinToOpenRoom = async (roomId: string, pass?: string) => {
     const joinFunc = this.call('joinToOpenRoom');
-    const res = await joinFunc({ roomId });
-    return res;
+    const res = await joinFunc({ roomId, password: pass });
+    return (res as unknown) as JoinRoomResponse;
   };
 
   public leaveRoom = async (roomId: string) => {
     const laveFunc = this.call('leaveFromOpenRoom');
     await laveFunc({ roomId });
+  };
+
+  public createRoom = ({
+    title,
+    maxPlayersNumber,
+    password,
+  }: CreateRoomData) => {
+    const create = this.call('createRoom');
+    return create({
+      title,
+      maxPlayersNumber,
+      password,
+    });
   };
 }

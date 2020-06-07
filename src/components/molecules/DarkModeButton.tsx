@@ -70,3 +70,14 @@ export const DarkModeButton: FC<DarkModeButtonProps> = ({
     </Wrapper>
   );
 };
+
+export const DarkModeButtonFixed = styled(DarkModeButton)`
+  position: fixed;
+  left: 4px;
+  top: 4px;
+  ${({ theme }) => theme.mediaQuery.lg} {
+    top: auto;
+    left: 8px;
+    bottom: 8px;
+  }
+`;

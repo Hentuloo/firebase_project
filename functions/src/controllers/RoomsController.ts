@@ -4,25 +4,87 @@ import { fireMiddleware } from '../decorators/fireMiddleware';
 import { FunctionsIndex } from '../decorators/bindFirebaseControllers';
 import { useAuth } from '../middlewares/useAuth';
 import { useRequiredFields } from '../middlewares/useRequiredFields';
-import { useUserProfile } from '../middlewares/useUserProfile';
 
+import {
+  useUserProfile,
+  WithUserProfile,
+} from '../middlewares/useUserProfile';
 import { deleteRoomWhenEmpty } from '../utils/fbUtils';
+import { https } from 'firebase-functions';
 
-const { arrayUnion } = firestore.FieldValue;
-
-interface JoinToOpenRoomData {
+interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;
-  user: {
-    displayName: string;
-    photoURL: string;
-  };
+  password?: string;
 }
 
 interface LeaveFromOpenRoomData {
   roomId: string;
 }
 
+interface CreateRoomData extends WithUserProfile {
+  title: string;
+  maxPlayersNumber: number;
+  password?: string;
+}
+
 export class RoomsController extends FunctionsIndex {
+  @fireMiddleware(useRequiredFields('title', 'maxPlayersNumber'))
+  @fireMiddleware(useAuth)
+  @fireMiddleware(useUserProfile)
+  @fireFunction({ region: 'us-central1', type: 'onCall' })
+  async createRoom(data: CreateRoomData, context) {
+    const { uid } = context.auth;
+    const {
+      title,
+      maxPlayersNumber,
+      password,
+      user: { displayName, photoURL },
+    } = data;
+
+    const withPassword = password !== '' || password !== undefined;
+
+    const { id: newRoomId } = await firestore()
+      .collection(`games`)
+      .add({
+        registeredUsers: {
+          [uid]: { displayName, photoURL },
+        },
+        maxPlayersNumber,
+        textId: null,
+        changesLength: null,
+        startTimestamp: null,
+        endTimestamp: null,
+        cursorsStamps: [],
+        password: withPassword ? password : undefined,
+        creator: uid,
+      });
+
+    await firestore()
+      .doc(`gamesScores/${newRoomId}`)
+      .set({
+        scores: {
+          [uid]: {
+            changes: 0,
+            timestamp: 0,
+            cursor: 0,
+            wrongLength: 0,
+            goodLength: 0,
+          },
+        },
+      });
+
+    await firestore()
+      .doc(`rooms/${withPassword ? 'open' : 'protected'}`)
+      .update({
+        rooms: firestore.FieldValue.arrayUnion({
+          gameKey: newRoomId,
+          title,
+        }),
+      });
+
+    return { roomId: newRoomId, title, maxPlayersNumber, password };
+  }
+
   @fireMiddleware(useRequiredFields('roomId'))
   @fireMiddleware(useAuth)
   @fireMiddleware(useUserProfile)
@@ -31,18 +93,68 @@ export class RoomsController extends FunctionsIndex {
     const { uid } = context.auth;
     const {
       roomId,
+      password,
       user: { displayName, photoURL },
     } = data;
-    await firestore()
-      .doc(`rooms/${roomId}`)
-      .update({
-        users: arrayUnion({
-          uid,
-          displayName,
-          photoURL: photoURL || null,
-        }),
+    const gameRef = firestore().doc(`games/${roomId}`);
+    const gameSnap = await gameRef.get();
+    const gameScoreRef = firestore().doc(`gamesScores/${roomId}`);
+
+    if (!gameSnap.exists) {
+      throw new https.HttpsError(
+        'unavailable',
+        "this room does'n exist",
+      );
+    }
+    const roomData = gameSnap.data();
+    const { registeredUsers, password: roomPassword } = roomData;
+
+    //  user already exist
+    if (registeredUsers[uid]) return { ok: true };
+
+    const addPlayerToRoom = async () => {
+      await gameRef.set({
+        registeredUsers: {
+          [uid]: { displayName, photoURL },
+        },
       });
-    return { ok: true };
+      await gameScoreRef.set({
+        scores: {
+          [uid]: {
+            changes: 0,
+            timestamp: 0,
+            cursor: 0,
+            wrongLength: 0,
+            goodLength: 0,
+          },
+        },
+      });
+    };
+    // user doesn't exist
+    // check if room need password
+    if (!roomPassword) {
+      await addPlayerToRoom();
+      return {
+        ok: true,
+        code: 'You have access',
+      };
+    } else {
+      if (!password) {
+        throw new https.HttpsError(
+          'unavailable',
+          'password is required',
+        );
+      }
+      if (password !== roomPassword) {
+        throw new https.HttpsError('unavailable', 'wrong password');
+      }
+
+      await addPlayerToRoom();
+      return {
+        ok: true,
+        code: 'You have access',
+      };
+    }
   }
 
   @fireMiddleware(useRequiredFields('roomId'))

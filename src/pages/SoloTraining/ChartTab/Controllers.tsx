@@ -23,7 +23,7 @@ const ControllerWrapper = styled.div`
   position: relative;
 `;
 const StyledCircleButton = styled(CircleButton)`
-  display: grid;
+  display: block;
   font-size: ${({ theme }) => theme.fs.xl};
 `;
 

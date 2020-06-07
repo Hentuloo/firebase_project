@@ -38,6 +38,10 @@ export const Constants = {
       path: '/app/room',
       name: 'Pokój',
     },
+    joinRoom: {
+      path: '/app/joinRoom',
+      name: 'Otwieranie pokoju',
+    },
     solo: {
       path: '/app/trening',
       name: 'Tryb pojedyńczy',
