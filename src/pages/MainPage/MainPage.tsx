@@ -26,6 +26,13 @@ const CircleLink = styled(Link)`
     display: none;
   }
 `;
+const StyledSummaryPanel = styled(SummaryPanel)`
+  grid-row: 2 / span 1;
+  margin-top: 40px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    margin-top: 0px;
+  }
+`;
 
 const MainPage: FC = () => {
   // const [isActiveRoomId, redirect] = useStoredRoom();
@@ -46,7 +53,7 @@ const MainPage: FC = () => {
             <ProfileImage />
           </CircleLink>
           <RoomsPanel />
-          <SummaryPanel />
+          <StyledSummaryPanel />
         </Wrapper>
       </WithBackgroundTemplate>
     </WithMenuTemplate>

@@ -81,7 +81,7 @@ interface UserProfileProps {
   className?: string;
 }
 
-const UserProfile: FC<UserProfileProps> = ({ className = '' }) => {
+const UserProfile: FC<UserProfileProps> = ({ className }) => {
   const history = useHistory();
   const [isRequest, setIsRequest] = useState(false);
 

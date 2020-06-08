@@ -54,13 +54,13 @@ const StyledRangImage = styled(RangImage)`
   height: 100px;
   width: 100px;
 `;
-export const SummaryPanel: FC = () => {
+export const SummaryPanel: FC = ({ ...props }) => {
   const { snaps } = useSoloTrainingSnaps();
   const { times, speeds, accurances, dates } = splitSnapsArray(
     snaps.slice(-7),
   );
   return (
-    <Wrapper>
+    <Wrapper {...props}>
       <UserInfo />
       <ButtonWithRangImage>
         <LinkButton as={Link} to={Constants.paths.solo.path}>
