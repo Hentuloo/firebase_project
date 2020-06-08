@@ -6,7 +6,7 @@ interface UpdateAvaiableRoomsAction {
   type: types.UPDATE_AVAIABLE_ROOMS;
   payload: any[];
 }
-export const updateAvaiableRooms = (
+export const updateAvaiableRoomsAction = (
   rooms: any[],
 ): UpdateAvaiableRoomsAction => ({
   type: types.UPDATE_AVAIABLE_ROOMS,

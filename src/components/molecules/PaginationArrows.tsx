@@ -11,11 +11,13 @@ const ArrowsWrapper = styled.div`
 interface PaginationArrowsProps {
   next: (props: any) => any;
   prev: (props: any) => any;
+  refresh?: () => void;
 }
 
 export const PaginationArrows: FC<PaginationArrowsProps> = ({
   next,
   prev,
+  refresh = null,
 }) => {
   return (
     <ArrowsWrapper>
@@ -23,6 +25,12 @@ export const PaginationArrows: FC<PaginationArrowsProps> = ({
         <span className="sr-only">Przewiń dalej</span>
         <span className="fa fa-arrow-down" aria-hidden="true" />
       </ClearButton>
+      {refresh && (
+        <ClearButton onClick={refresh}>
+          <span className="sr-only">Odśwież</span>
+          <span className="fa fa-repeat" aria-hidden="true" />
+        </ClearButton>
+      )}
       <ClearButton onClick={prev}>
         <span className="sr-only">Przewiń wstecz</span>
         <span className="fa fa-arrow-up" aria-hidden="true" />

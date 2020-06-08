@@ -38,8 +38,13 @@ export class FireFunctions {
   };
 
   public leaveRoom = async (roomId: string) => {
-    const laveFunc = this.call('leaveFromOpenRoom');
-    await laveFunc({ roomId });
+    const fn = this.call('leaveFromOpenRoom');
+    await fn({ roomId });
+  };
+
+  public getAvaiableRooms = async (page?: number) => {
+    const fn = this.call('getAvaiableRooms');
+    return fn({ page, perPage: 5 });
   };
 
   public createRoom = ({

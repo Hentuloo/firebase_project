@@ -1,6 +1,6 @@
-import React, { useEffect, FC } from 'react';
+import React, { useEffect, FC, useCallback } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Card } from 'components/molecules';
 import {
   InputWithFA,
@@ -8,10 +8,12 @@ import {
   FilledButton,
 } from 'components/atoms';
 import { Link } from 'react-router-dom';
-import { StoreType } from 'store/store';
-import { Db } from 'fb';
+import { FireFunctions } from 'fb';
 import { Constants } from 'config/Constants';
-import ButtonsGroup from './ButtonsGroup';
+import { getRooms } from 'store/selectors/rooms.selector';
+import { updateAvaiableRoomsAction } from 'store/actions/rooms.actions';
+import { toast } from 'react-toastify';
+import RoomsList from './RoomsList';
 
 const Wrapper = styled(Card)`
   grid-column: 1/-1;
@@ -21,7 +23,7 @@ const Wrapper = styled(Card)`
   flex-direction: column;
   width: 100%;
   max-width: 290px;
-  min-height: 250px;
+  min-height: 400px;
   padding: 10px 5px 10px 0px;
   margin: 30px auto;
   ${({ theme }) => theme.mediaQuery.md} {
@@ -76,16 +78,39 @@ const StyledFilledLink = styled(FilledButton)`
 `;
 
 export const RoomsPanel: FC = () => {
-  const rooms = useSelector<StoreType, any[]>(
-    store => store.rooms.avaiableRooms,
+  const dispatch = useDispatch();
+  const { avaiableRooms } = useSelector(getRooms);
+
+  const updateRooms = useCallback(
+    async (page = 1) => {
+      try {
+        const {
+          data: { rooms },
+        } = await FireFunctions.init().getAvaiableRooms(page);
+
+        dispatch(updateAvaiableRoomsAction(rooms));
+      } catch ({ message }) {
+        toast.error(message);
+      }
+    },
+    [dispatch],
+  );
+
+  const handleRefetch = useCallback(() => {
+    dispatch(updateAvaiableRoomsAction([]));
+    updateRooms();
+  }, [dispatch, updateRooms]);
+
+  const handleFetchNextRooms = useCallback(
+    (page: number) => {
+      updateRooms(page);
+    },
+    [updateRooms],
   );
 
   useEffect(() => {
-    const unSubAvaiableRooms = Db.init().listenRooms();
-    return () => {
-      unSubAvaiableRooms();
-    };
-  }, []);
+    updateRooms();
+  }, [updateRooms]);
 
   return (
     <Wrapper>
@@ -103,9 +128,15 @@ export const RoomsPanel: FC = () => {
         />
       </Label>
       <SmallerTitle>
-        {rooms.length === 0 ? 'Nie ma pokoi' : 'Otwarte'}
+        {avaiableRooms.length === 0 ? 'Nie ma pokoi' : 'Dostępne:'}
       </SmallerTitle>
-      <ButtonsGroup />
+      {avaiableRooms.length > 0 && (
+        <RoomsList
+          list={avaiableRooms}
+          fetchNextRooms={handleFetchNextRooms}
+          refetch={handleRefetch}
+        />
+      )}
     </Wrapper>
   );
 };

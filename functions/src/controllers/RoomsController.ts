@@ -20,6 +20,10 @@ interface JoinToOpenRoomData extends WithUserProfile {
 interface LeaveFromOpenRoomData {
   roomId: string;
 }
+interface GetAvaiableRoomsData {
+  page?: number;
+  perPage?: number;
+}
 
 interface CreateRoomData extends WithUserProfile {
   title: string;
@@ -179,5 +183,28 @@ export class RoomsController extends FunctionsIndex {
       });
 
     return { ok: true };
+  }
+
+  @fireMiddleware(useAuth)
+  @fireFunction({ region: 'us-central1', type: 'onCall' })
+  async getAvaiableRooms(data: GetAvaiableRoomsData, context) {
+    const { page = 1, perPage = 5 } = data;
+    const openR = firestore().doc(`rooms/open`);
+    const protectedR = firestore().doc(`rooms/protected`);
+    const openRoomsSnap = await openR.get();
+    const { rooms: openRooms } = openRoomsSnap.data();
+
+    if (openRooms.length >= page * perPage) {
+      return {
+        rooms: openRooms,
+      };
+    }
+    const protectedRoomsSnap = await protectedR.get();
+    const { rooms: protectedRooms } = protectedRoomsSnap.data();
+    const allRooms = [...openRooms, ...protectedRooms];
+
+    return {
+      rooms: allRooms,
+    };
   }
 }

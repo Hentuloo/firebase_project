@@ -69,16 +69,16 @@ const setStepAction = (
 
 export interface UsePaginationProps {
   init: number;
-  defaultSkipCount: number;
-  activeCount: number;
-  maxCount: number;
-  minCount: number;
-  delay: number;
+  defaultSkipCount?: number;
+  activeCount?: number;
+  maxCount?: number;
+  minCount?: number;
+  delay?: number;
 }
 
 export const usePagination = ({
   init,
-  defaultSkipCount,
+  defaultSkipCount = 1,
   activeCount = 1,
   maxCount,
   minCount = 0,
@@ -96,25 +96,35 @@ export const usePagination = ({
     [activeCount, throttled, delay, dispatch],
   );
 
-  const changeStep = (newStep: number) => {
-    if (
-      maxCount !== undefined &&
-      isInRange(newStep, activeCount, maxCount, minCount)
-    ) {
-      return setNewStep(newStep);
-    }
-  };
+  const changeStep = useCallback(
+    (newStep: number) => {
+      if (
+        maxCount !== undefined &&
+        isInRange(newStep, activeCount, maxCount, minCount)
+      ) {
+        return setNewStep(newStep);
+      }
+    },
+    [activeCount, maxCount, minCount, setNewStep],
+  );
 
-  const nextStep = (skipCount?: number) => {
-    changeStep(
-      skipCount ? from + skipCount : from + defaultSkipCount,
-    );
-  };
-  const prevStep = (skipCount?: number) => {
-    changeStep(
-      skipCount ? from - skipCount : from - defaultSkipCount,
-    );
-  };
+  const nextStep = useCallback(
+    (skipCount?: number) => {
+      changeStep(
+        skipCount ? from + skipCount : from + defaultSkipCount,
+      );
+    },
+    [changeStep, defaultSkipCount, from],
+  );
+
+  const prevStep = useCallback(
+    (skipCount?: number) => {
+      changeStep(
+        skipCount ? from - skipCount : from - defaultSkipCount,
+      );
+    },
+    [changeStep, defaultSkipCount, from],
+  );
 
   return { from, to, prev, nextStep, prevStep };
 };

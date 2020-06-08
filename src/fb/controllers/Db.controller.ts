@@ -1,5 +1,3 @@
-import { updateAvaiableRooms } from 'store/actions/rooms.actions';
-
 import store from 'store/store';
 import { defaultUser, defaultUserSolo } from 'fb/default';
 import { Snap } from 'store/reducers/soloTraining.reducer';
@@ -7,7 +5,6 @@ import dayjs from 'dayjs';
 import { updateGameSettings } from 'store/actions/gameSettings.actions';
 import { GameSettingsState } from 'store/reducers/gameSettings.reducer';
 import firebase from '../index';
-import { collectionsWithId } from './helpers';
 
 type FirestoreType = firebase.firestore.Firestore;
 
@@ -43,14 +40,6 @@ export class Db {
 
   public doc = (documentName: string) =>
     this.instance.doc(documentName);
-
-  public listenRooms = () => {
-    return this.roomsRef().onSnapshot(roomsSnap => {
-      const rooms = collectionsWithId(roomsSnap);
-      store.dispatch(updateAvaiableRooms(rooms));
-      return null;
-    });
-  };
 
   public listenGameSettings = (
     roomId: string,

@@ -13,7 +13,8 @@ export const withUser = <
 ) => {
   return (props: any) => {
     const { loggedRequest, uid } = useSelector(getUser);
-
+    if (Constants.OFFLINE_MODE)
+      return <WrapperedComponent {...props} />;
     if (loggedRequest) return null;
     if (uid) return <WrapperedComponent {...props} />;
     if (OtherPage) return <OtherPage {...props} />;
@@ -38,7 +39,8 @@ export const redirectWhenUserLogged = <
         setCheckedOnce(true);
       }
     }, [loggedRequest, uid]);
-
+    if (Constants.OFFLINE_MODE)
+      return <WrapperedComponent {...props} />;
     if (loggedRequest) return null;
     if (!uid || checkedOnce) return <WrapperedComponent {...props} />;
     if (OtherPage) return <OtherPage {...props} />;

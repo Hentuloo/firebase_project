@@ -29,7 +29,7 @@ const InnerWrapper = styled.div`
 `;
 
 const collapseInit = {
-  initStep: 0,
+  init: 0,
   defaultSkipCount: 5,
   activeCount: 5,
   maxCount: 15,
