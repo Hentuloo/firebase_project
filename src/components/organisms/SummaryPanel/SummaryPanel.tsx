@@ -35,12 +35,25 @@ const LinkButton = styled(FilledButton)`
 `;
 const ButtonWithRangImage = styled.div`
   display: grid;
-  height: 40px;
-  grid-template-columns: 1fr 30%;
-  justify-content: space-around;
-`;
-const StyledTypingSnapsChart = styled(TypingSnapsChart)``;
 
+  ${({ theme }) => theme.mediaQuery.md} {
+    height: auto;
+    grid-template-columns: 1fr 30%;
+  }
+`;
+const StyledTypingSnapsChart = styled(TypingSnapsChart)`
+  display: none;
+  ${({ theme }) => theme.mediaQuery.md} {
+    display: block;
+  }
+`;
+const StyledRangImage = styled(RangImage)`
+  position: absolute;
+  top: 2%;
+  right: 8%;
+  height: 100px;
+  width: 100px;
+`;
 export const SummaryPanel: FC = () => {
   const { snaps } = useSoloTrainingSnaps();
   const { times, speeds, accurances, dates } = splitSnapsArray(
@@ -53,7 +66,7 @@ export const SummaryPanel: FC = () => {
         <LinkButton as={Link} to={Constants.paths.solo.path}>
           Tryb pojedyńczy
         </LinkButton>
-        <RangImage />
+        <StyledRangImage />
       </ButtonWithRangImage>
       {snaps.length > 1 && (
         <StyledTypingSnapsChart

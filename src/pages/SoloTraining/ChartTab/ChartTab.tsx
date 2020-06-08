@@ -33,7 +33,7 @@ export const ChartTab = forwardRef<HTMLDivElement, ChartTabProps>(
   ({ changeTab, charts, ...props }, ref) => {
     const isMobile = useIsMobile();
     const { times, speeds, accurances, dates } = splitSnapsArray(
-      charts.slice(isMobile ? -7 : -15),
+      charts.slice(isMobile ? -3 : -15),
     );
     return (
       <Wrapper ref={ref} {...props}>

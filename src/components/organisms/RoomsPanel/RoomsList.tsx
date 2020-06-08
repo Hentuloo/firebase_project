@@ -6,7 +6,10 @@ import { useCollapseAnimation } from 'hooks/useCollapseAnimation';
 import { PaginationArrows } from 'components/molecules';
 
 const Wrapper = styled.div`
-  width: 85%;
+  width: 91%;
+  ${({ theme }) => theme.mediaQuery.md} {
+    width: 85%;
+  }
 `;
 const GroupWrapper = styled.div`
   width: 100%;

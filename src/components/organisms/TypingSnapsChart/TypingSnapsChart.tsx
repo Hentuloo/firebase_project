@@ -1,11 +1,16 @@
 import React, { FC, useRef, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Line } from 'react-chartjs-2';
+import useIsMobile from 'hooks/useIsMobile';
 
 const Wrapper = styled.div`
   position: relative;
   width: calc(100% - 10px);
   max-width: 800px;
+  min-height: 270px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    min-height: auto;
+  }
 `;
 
 export interface TypingSnapsChartProps {
@@ -24,6 +29,7 @@ export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
 }) => {
   const ref = useRef<Line>(null);
   const theme = useTheme();
+  const isMoblie = useIsMobile();
 
   useEffect(() => {
     const chart = ref.current;
@@ -49,6 +55,7 @@ export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
     <Wrapper {...props}>
       <Line
         options={{
+          maintainAspectRatio: !isMoblie,
           tooltips: {
             mode: 'x',
             intersect: false,

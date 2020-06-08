@@ -21,7 +21,7 @@ const Wrapper = styled(Card)`
   align-items: center;
   justify-content: start;
   flex-direction: column;
-  width: 100%;
+  width: 80%;
   max-width: 290px;
   min-height: 400px;
   padding: 10px 5px 10px 0px;

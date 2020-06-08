@@ -14,9 +14,9 @@ const Image = styled.img`
   transform: translate(-50%, -50%);
 `;
 
-export const RangImage: FC = () => {
+export const RangImage: FC = ({ ...props }) => {
   return (
-    <Wrapper>
+    <Wrapper {...props}>
       <Image src={level1} alt="Ranga" />
     </Wrapper>
   );
