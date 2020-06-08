@@ -52,10 +52,13 @@ export class Db {
     });
   };
 
-  public listenGameSettings = (roomId: string) => {
+  public listenGameSettings = (
+    roomId: string,
+    onErr?: (e: Error) => void,
+  ) => {
     return this.gameSettingsRef()
       .doc(roomId)
-      .onSnapshot(gameSettingsSnap => {
+      .onSnapshot(async gameSettingsSnap => {
         const settings = gameSettingsSnap.data();
         if (settings) {
           store.dispatch(
@@ -63,7 +66,7 @@ export class Db {
           );
         }
         return null;
-      });
+      }, onErr);
   };
 
   public getUserProfile = async (uid: string) => {

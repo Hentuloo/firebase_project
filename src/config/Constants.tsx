@@ -55,6 +55,7 @@ export const Constants = {
     'auth/user-not-found': 'Nie znaleziono użytkownika',
     'auth/email-already-in-use': 'Email jest aktualnie już używany',
     'auth/wrong-password': 'Podane hasło jest niepoprawne',
+    FirebaseError: 'Coś poszło nie tak',
   },
   default: {
     profilePicture: defaultProfilePicture,
