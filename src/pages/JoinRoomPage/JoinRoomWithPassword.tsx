@@ -1,12 +1,21 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { BarDecorator, Input, FilledButton } from 'components/atoms';
+import {
+  BarDecorator,
+  Input,
+  FilledButton,
+  CircleButton,
+} from 'components/atoms';
 import { useFormik } from 'formik';
+import exitDoor from 'assets/svg/icons/exitDoor.svg';
+import { Constants } from 'config/Constants';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: grid;
-  grid-row-gap: 15px;
+  grid-row-gap: 20px;
   text-align: center;
+  justify-items: center;
 `;
 const RoomTitle = styled.span`
   ${BarDecorator}
@@ -14,9 +23,23 @@ const RoomTitle = styled.span`
   display: block;
   margin: 0px auto;
 `;
-const StyledButton = styled(FilledButton)`
+const CloseDoorImage = styled.img``;
+const StyledFilledButton = styled(FilledButton)`
   min-width: 150px;
+  text-transform: uppercase;
+  font-weight: ${({ theme }) => theme.fw[1]} !important;
 `;
+const StyledCircledButton = styled(CircleButton)`
+  display: grid;
+  justify-items: center;
+  align-items: center;
+`;
+const ButtonsWrapper = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-column-gap: 15px;
+`;
+
 export interface JoinWithPasswordForm {
   password: string;
 }
@@ -38,6 +61,7 @@ export const JoinRoomWithPassword: FC<JoinRoomWithPasswordProps> = ({
     },
     onSubmit: submit,
   });
+
   return (
     <Wrapper {...props}>
       <RoomTitle>{roomTitle}</RoomTitle>
@@ -48,7 +72,17 @@ export const JoinRoomWithPassword: FC<JoinRoomWithPasswordProps> = ({
         placeholder="Wprowadź hasło..."
         type="password"
       />
-      <StyledButton onClick={handleSubmit}>Dołącz</StyledButton>
+      <ButtonsWrapper>
+        <StyledFilledButton onClick={handleSubmit}>
+          Dołącz
+        </StyledFilledButton>
+        <StyledCircledButton
+          as={Link}
+          to={Constants.paths.dashboard.path}
+        >
+          <CloseDoorImage src={exitDoor} alt="Menu główne" />
+        </StyledCircledButton>
+      </ButtonsWrapper>
     </Wrapper>
   );
 };
