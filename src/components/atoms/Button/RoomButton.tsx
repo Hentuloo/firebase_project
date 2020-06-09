@@ -1,15 +1,20 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 
+import { Link } from 'react-router-dom';
 import { RoundButton } from './Button.styled';
 
-const Wrapper = styled(RoundButton)`
+interface WrapperProps {
+  to?: string;
+}
+const Wrapper = styled(RoundButton)<WrapperProps>`
   position: relative;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 45px;
   padding: 6px 6px 8px;
   font-size: ${({ theme }) => theme.fs.xs};
+  text-decoration: none;
 `;
 export const ButtonText = styled.span`
   width: calc(100% - 55px);
@@ -53,16 +58,23 @@ interface RoomButtonProps {
   title: string;
   number?: number;
   withKey?: boolean;
+  to?: string;
 }
 
 export const RoomButton: FC<RoomButtonProps> = ({
   title,
   number = null,
   withKey = false,
+  to,
   ...props
 }) => {
   return (
-    <Wrapper {...props} title={title}>
+    <Wrapper
+      as={to ? Link : 'button'}
+      to={to}
+      {...props}
+      title={title}
+    >
       <ButtonText>
         {title.length < 18 ? title : `${title.slice(0, 16)}...`}
       </ButtonText>

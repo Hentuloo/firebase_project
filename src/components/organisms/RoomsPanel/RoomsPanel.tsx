@@ -1,4 +1,4 @@
-import React, { useEffect, FC, useCallback } from 'react';
+import React, { useEffect, FC, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card } from 'components/molecules';
@@ -80,6 +80,7 @@ const StyledFilledLink = styled(FilledButton)`
 export const RoomsPanel: FC = () => {
   const dispatch = useDispatch();
   const { avaiableRooms } = useSelector(getRooms);
+  const [fetching, setFetching] = useState(false);
 
   const updateRooms = useCallback(
     async (page = 1) => {
@@ -89,6 +90,7 @@ export const RoomsPanel: FC = () => {
         } = await FireFunctions.init().getAvaiableRooms(page);
 
         dispatch(updateAvaiableRoomsAction(rooms));
+        setFetching(false);
       } catch ({ message }) {
         toast.error(message);
       }
@@ -98,6 +100,7 @@ export const RoomsPanel: FC = () => {
 
   const handleRefetch = useCallback(() => {
     dispatch(updateAvaiableRoomsAction([]));
+    setFetching(true);
     updateRooms();
   }, [dispatch, updateRooms]);
 
@@ -109,6 +112,7 @@ export const RoomsPanel: FC = () => {
   );
 
   useEffect(() => {
+    setFetching(true);
     updateRooms();
   }, [updateRooms]);
 
@@ -128,7 +132,9 @@ export const RoomsPanel: FC = () => {
         />
       </Label>
       <SmallerTitle>
-        {avaiableRooms.length === 0 ? 'Nie ma pokoi' : 'Dostępne:'}
+        {fetching && 'Aktualizuje...'}
+        {avaiableRooms.length === 0 && !fetching && 'Nie ma pokoi'}
+        {avaiableRooms.length > 0 && !fetching && 'Dostępne:'}
       </SmallerTitle>
       {avaiableRooms.length > 0 && (
         <RoomsList

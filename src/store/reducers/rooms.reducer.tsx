@@ -1,3 +1,4 @@
+import { AvaiableRoomInterface } from 'types/RoomsController';
 import { types, Action } from '../actions/types';
 
 const init = {
@@ -6,7 +7,7 @@ const init = {
 };
 
 export interface RoomsReducerState {
-  avaiableRooms: any[];
+  avaiableRooms: AvaiableRoomInterface[];
   activeRoomId: string | null;
 }
 

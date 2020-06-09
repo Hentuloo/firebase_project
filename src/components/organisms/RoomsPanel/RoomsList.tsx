@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { RoomButton } from 'components/atoms';
 import { useCollapseAnimation } from 'hooks/useCollapseAnimation';
 import { PaginationArrows } from 'components/molecules';
+import { Constants } from 'config/Constants';
+import { AvaiableRoomInterface } from 'types/RoomsController';
 
 const Wrapper = styled.div`
   width: 91%;
@@ -33,14 +35,8 @@ const useCollapseAnimationInit = {
   minCount: 0,
 };
 
-interface RoomI {
-  password?: string;
-  title: string;
-  gameKey: string;
-}
-
 export interface RoomsListProps {
-  list: RoomI[];
+  list: AvaiableRoomInterface[];
   fetchNextRooms: (page: number) => void;
   refetch: () => void;
 }
@@ -76,14 +72,18 @@ const RoomsList: FC<RoomsListProps> = ({
   return (
     <Wrapper>
       <GroupWrapper ref={ref}>
-        {list.map(({ title, gameKey, password }) => {
+        {list.map(({ title, gameKey, password, playersNumber }) => {
           const withPassword = !!password;
+          const to = `${
+            Constants.paths.joinRoom.path
+          }/${gameKey}/${title}${withPassword ? '/pass' : ''}`;
           return (
             <StyledRoomButton
               key={gameKey}
-              number={withPassword ? undefined : 3}
+              number={withPassword ? undefined : playersNumber}
               title={title}
               withKey={withPassword}
+              to={to}
             />
           );
         })}

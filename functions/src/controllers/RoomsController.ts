@@ -45,7 +45,8 @@ export class RoomsController extends FunctionsIndex {
       user: { displayName, photoURL },
     } = data;
 
-    const withPassword = password !== '' || password !== undefined;
+    const withPassword =
+      password !== '' && password !== undefined && password !== null;
 
     const { id: newRoomId } = await firestore()
       .collection(`games`)
@@ -59,7 +60,7 @@ export class RoomsController extends FunctionsIndex {
         startTimestamp: null,
         endTimestamp: null,
         cursorsStamps: [],
-        password: withPassword ? password : undefined,
+        password: withPassword ? password : false,
         creator: uid,
       });
 
@@ -78,11 +79,13 @@ export class RoomsController extends FunctionsIndex {
       });
 
     await firestore()
-      .doc(`rooms/${withPassword ? 'open' : 'protected'}`)
+      .doc(`rooms/${withPassword ? 'protected' : 'open'}`)
       .update({
         rooms: firestore.FieldValue.arrayUnion({
-          gameKey: newRoomId,
           title,
+          gameKey: newRoomId,
+          password: withPassword,
+          playersNumber: maxPlayersNumber,
         }),
       });
 
