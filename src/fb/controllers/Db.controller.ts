@@ -3,7 +3,10 @@ import { defaultUser, defaultUserSolo } from 'fb/default';
 import { Snap } from 'store/reducers/soloTraining.reducer';
 import dayjs from 'dayjs';
 import { updateGameSettings } from 'store/actions/gameSettings.actions';
-import { GameSettingsState } from 'store/reducers/gameSettings.reducer';
+import {
+  GameSettingsWithPassword,
+  GameSettings,
+} from 'types/GameSettings';
 import firebase from '../index';
 
 type FirestoreType = firebase.firestore.Firestore;
@@ -48,10 +51,15 @@ export class Db {
     return this.gameSettingsRef()
       .doc(roomId)
       .onSnapshot(async gameSettingsSnap => {
-        const settings = gameSettingsSnap.data();
-        if (settings) {
+        const {
+          password,
+          ...settingsWithoutPassword
+        } = gameSettingsSnap.data() as GameSettingsWithPassword;
+        if (settingsWithoutPassword) {
           store.dispatch(
-            updateGameSettings(settings as GameSettingsState),
+            updateGameSettings(
+              settingsWithoutPassword as GameSettings,
+            ),
           );
         }
         return null;

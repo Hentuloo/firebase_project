@@ -36,12 +36,7 @@ const RoomPage: FC = () => {
     return () => unSub();
   }, [subscribeRoom, redirect, roomId]);
 
-  return (
-    <Wrapper>
-      {JSON.stringify(settings)}
-      {/* <RoomDetailsBar /> */}
-    </Wrapper>
-  );
+  return <Wrapper>{JSON.stringify(settings)}</Wrapper>;
 };
 
 export default RoomPage;
