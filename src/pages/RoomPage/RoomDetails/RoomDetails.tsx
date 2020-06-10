@@ -10,9 +10,15 @@ import { RoomControllers } from './RoomControllers';
 
 const Wrapper = styled.div`
   display: grid;
+  width: 90%;
   max-width: 300px;
-  grid-row-gap: 18px;
+  grid-row-gap: 40px;
   text-align: center;
+  margin: 0px auto;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
 `;
 const RoomTitle = styled.h2`
   ${BarDecorator};

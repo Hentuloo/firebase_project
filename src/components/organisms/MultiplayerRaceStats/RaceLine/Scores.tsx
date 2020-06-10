@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   grid-row-gap: 5px;
   justify-items: center;
   align-items: center;
+
   ${({ theme }) => theme.mediaQuery.md} {
     position: absolute;
     left: 100%;
@@ -24,7 +25,11 @@ const Points = styled.span`
 const Speed = styled.span``;
 const Accuracy = styled.span``;
 
-export interface ScoresProps {}
+export interface ScoresProps {
+  wpmSpeed: number;
+  accurancy: number;
+  points: number;
+}
 
 export const Scores: FC<ScoresProps> = ({ ...props }) => {
   return (

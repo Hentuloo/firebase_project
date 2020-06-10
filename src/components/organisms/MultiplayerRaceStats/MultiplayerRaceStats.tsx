@@ -5,6 +5,9 @@ import { LineImage } from './RaceLine/RoadImages';
 
 const Wrapper = styled.div`
   width: 90%;
+  ${({ theme }) => theme.mediaQuery.md} {
+    padding-right: 100px;
+  }
   & > div:last-child {
     ${LineImage} {
       display: none;
@@ -12,48 +15,25 @@ const Wrapper = styled.div`
   }
 `;
 
-export interface Scores {
-  [uid: string]: {
-    displayName: string;
-    wpmSpeed: number;
-    accurancy: number;
-    points: number;
-    progress: number;
-  };
+export interface MultiplayerRaceScores {
+  displayName: string;
+  wpmSpeed: number;
+  accurancy: number;
+  points: number;
+  progress: number;
+  uid: string;
+}
+export interface MultiplayerRaceStatsProps {
+  scores: MultiplayerRaceScores[];
 }
 
-const exampleScores = [
-  {
-    displayName: 'adam',
-    accurancy: 98,
-    wpmSpeed: 60,
-    points: 4,
-    progress: 10,
-  },
-  {
-    displayName: 'asdfasdf',
-    accurancy: 80,
-    wpmSpeed: 43,
-    points: -10,
-    progress: 1,
-  },
-  {
-    displayName: 'nie ma to ',
-    accurancy: 98,
-    wpmSpeed: 90,
-    points: 22,
-    progress: 22,
-  },
-];
-
-export interface MultiplayerRaceStatsProps {}
-
 export const MultiplayerRaceStats: FC<MultiplayerRaceStatsProps> = ({
+  scores,
   ...props
 }) => {
   return (
     <Wrapper {...props}>
-      {exampleScores.map(
+      {scores.map(
         ({ displayName, accurancy, points, progress, wpmSpeed }) => (
           <RaceLine
             key={displayName}

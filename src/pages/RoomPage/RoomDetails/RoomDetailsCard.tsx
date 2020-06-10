@@ -8,11 +8,12 @@ interface WrapperProps {
 }
 
 const Wrapper = styled.div<WrapperProps>`
+  ${stickyModal};
   display: none;
   max-width: 270px;
+  min-height: 250px;
   grid-row-gap: 15px;
   padding: 15px 20px;
-  ${stickyModal};
   ${({ theme }) => theme.mediaQuery.md} {
     display: grid;
     align-self: center;

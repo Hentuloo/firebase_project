@@ -12,14 +12,38 @@ import { Beforeunload } from 'react-beforeunload';
 import { clearRoomFromAvaiable } from 'store/actions/rooms.actions';
 import { MultiplayerRaceStats } from 'components/organisms/MultiplayerRaceStats/MultiplayerRaceStats';
 import { DarkModeButtonFixed } from 'components/molecules/DarkModeButton';
+import { TypingInput } from 'components/organisms';
 import RoomDetails from './RoomDetails/RoomDetails';
 
 const Wrapper = styled.div`
   display: grid;
-  width: 80%;
+  width: 90%;
+  max-width: 1400px;
+
   margin: 20px auto;
+  ${({ theme }) => theme.mediaQuery.md} {
+    min-height: 100vh;
+    grid-template-columns: 1fr 200px;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    grid-column-gap: 80px;
+    grid-template-columns: 1fr 250px;
+  }
 `;
 
+const StyledMultiplayerRaceStats = styled(MultiplayerRaceStats)`
+  margin: 40px auto;
+  max-width: 800px;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 1;
+  }
+`;
+const StyledTypingInput = styled(TypingInput)`
+  width: 100%;
+  max-width: 700px;
+  margin: 0px auto;
+`;
 const RoomPage: FC = () => {
   const { listen } = useHistory();
   const dispatch = useDispatch();
@@ -97,12 +121,43 @@ const RoomPage: FC = () => {
 
   return (
     <Wrapper>
-      <Beforeunload onBeforeunload={() => onUserExitRoom()} />
-      <MultiplayerRaceStats />
       <RoomDetails
         users={usersArray}
         title={title}
         copyToClipboard={copyRoomLinkToClipboard}
+      />
+      <Beforeunload onBeforeunload={() => onUserExitRoom()} />
+      <StyledMultiplayerRaceStats
+        scores={[
+          {
+            uid: 'asasdf',
+            displayName: 'adam',
+            accurancy: 98,
+            wpmSpeed: 60,
+            points: 4,
+            progress: 10,
+          },
+          {
+            uid: 'afdsdf',
+            displayName: 'asdfasdf',
+            accurancy: 80,
+            wpmSpeed: 43,
+            points: -10,
+            progress: 1,
+          },
+          {
+            uid: 'asgdsdf',
+            displayName: 'nie ma to ',
+            accurancy: 98,
+            wpmSpeed: 90,
+            points: 22,
+            progress: 22,
+          },
+        ]}
+      />
+      <StyledTypingInput
+        text="some nice training text"
+        withoutCounters
       />
       <DarkModeButtonFixed small />
     </Wrapper>

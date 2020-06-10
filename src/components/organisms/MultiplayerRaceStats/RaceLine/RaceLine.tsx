@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { RoadImages } from './RoadImages';
-import { Scores } from './Scores';
+import { RoadImages, RoadImagesProps } from './RoadImages';
+import { Scores, ScoresProps } from './Scores';
 
 const PlayerName = styled.div`
   font-weight: ${({ theme }) => theme.fw[1]};
@@ -16,12 +16,13 @@ const PlayerName = styled.div`
 `;
 const Wrapper = styled.div`
   position: relative;
-  min-height: 100px;
+  min-height: 60px;
   display: grid;
   grid-auto-flow: column;
   justify-items: center;
   align-items: center;
   ${({ theme }) => theme.mediaQuery.md} {
+    min-height: 100px;
     display: block;
   }
   &:hover {
@@ -30,20 +31,27 @@ const Wrapper = styled.div`
     }
   }
 `;
-export interface RaceLineProps {
+export interface RaceLineProps extends RoadImagesProps, ScoresProps {
   displayName: string;
-  wpmSpeed: number;
-  accurancy: number;
-  points: number;
-  progress: number;
 }
 
-export const RaceLine: FC<RaceLineProps> = ({ ...props }) => {
+export const RaceLine: FC<RaceLineProps> = ({
+  displayName,
+  accurancy,
+  points,
+  progress,
+  wpmSpeed,
+  ...props
+}) => {
   return (
     <Wrapper {...props}>
-      <PlayerName>Adasdfjas</PlayerName>
-      <RoadImages />
-      <Scores />
+      <PlayerName>{displayName}</PlayerName>
+      <RoadImages progress={progress} />
+      <Scores
+        accurancy={accurancy}
+        points={points}
+        wpmSpeed={wpmSpeed}
+      />
     </Wrapper>
   );
 };

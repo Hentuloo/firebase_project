@@ -33,17 +33,14 @@ const CarImage = styled.img`
   transform-origin: 50% 50%;
 `;
 
-export interface RaceLineProps {
-  displayName: string;
-  wpmSpeed: number;
-  accurancy: number;
-  points: number;
+export interface RoadImagesProps {
   progress: number;
 }
 
-export interface RoadImagesProps {}
-
-export const RoadImages: FC<RoadImagesProps> = ({ ...props }) => {
+export const RoadImages: FC<RoadImagesProps> = ({
+  progress,
+  ...props
+}) => {
   return (
     <Wrapper {...props}>
       <CarImage src={carSvg} />
