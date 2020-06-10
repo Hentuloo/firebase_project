@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import { copyToClipBoard } from 'utils';
 import { Beforeunload } from 'react-beforeunload';
 import { clearRoomFromAvaiable } from 'store/actions/rooms.actions';
+import { MultiplayerRaceStats } from 'components/organisms/MultiplayerRaceStats/MultiplayerRaceStats';
+import { DarkModeButtonFixed } from 'components/molecules/DarkModeButton';
 import RoomDetails from './RoomDetails/RoomDetails';
 
 const Wrapper = styled.div`
@@ -89,18 +91,20 @@ const RoomPage: FC = () => {
   }, [onUserExitRoom]);
 
   useEffect(() => {
-    const unSub = subscribeRoom();
-    return () => unSub();
+    // const unSub = subscribeRoom();
+    // return () => unSub();
   }, [subscribeRoom]);
 
   return (
     <Wrapper>
       <Beforeunload onBeforeunload={() => onUserExitRoom()} />
+      <MultiplayerRaceStats />
       <RoomDetails
         users={usersArray}
         title={title}
         copyToClipboard={copyRoomLinkToClipboard}
       />
+      <DarkModeButtonFixed small />
     </Wrapper>
   );
 };
