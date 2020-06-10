@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import { GameScoreWithUserData } from 'types/GameScore';
 import { RaceLine } from './RaceLine/RaceLine';
 import { LineImage } from './RaceLine/RoadImages';
 
@@ -15,16 +16,8 @@ const Wrapper = styled.div`
   }
 `;
 
-export interface MultiplayerRaceScores {
-  displayName: string;
-  wpmSpeed: number;
-  accurancy: number;
-  points: number;
-  progress: number;
-  uid: string;
-}
 export interface MultiplayerRaceStatsProps {
-  scores: MultiplayerRaceScores[];
+  scores: GameScoreWithUserData[];
 }
 
 export const MultiplayerRaceStats: FC<MultiplayerRaceStatsProps> = ({

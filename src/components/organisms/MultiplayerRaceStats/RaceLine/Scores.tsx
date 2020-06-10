@@ -31,12 +31,17 @@ export interface ScoresProps {
   points: number;
 }
 
-export const Scores: FC<ScoresProps> = ({ ...props }) => {
+export const Scores: FC<ScoresProps> = ({
+  wpmSpeed,
+  accurancy,
+  points,
+  ...props
+}) => {
   return (
     <Wrapper {...props}>
-      <Points>2P</Points>
-      <Speed>23WPM</Speed>
-      <Accuracy>97%</Accuracy>
+      <Points>{wpmSpeed}P</Points>
+      <Speed>{accurancy}WPM</Speed>
+      <Accuracy>{points}%</Accuracy>
     </Wrapper>
   );
 };

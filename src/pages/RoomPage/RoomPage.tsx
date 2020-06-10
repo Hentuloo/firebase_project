@@ -1,9 +1,12 @@
-import React, { useEffect, FC, useCallback, useMemo } from 'react';
+import React, { useEffect, FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 import { Db, FireFunctions } from 'fb';
 import { useSelector, useDispatch } from 'react-redux';
-import { getGameSettings } from 'store/selectors/gameSettings.selector';
+import {
+  getGameSettings,
+  getRegisteredUserInArray,
+} from 'store/selectors/gameSettings.selector';
 import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
 import { toast } from 'react-toastify';
@@ -14,6 +17,7 @@ import { MultiplayerRaceStats } from 'components/organisms/MultiplayerRaceStats/
 import { DarkModeButtonFixed } from 'components/molecules/DarkModeButton';
 import { TypingInput } from 'components/organisms';
 import { getUser } from 'store/selectors/user.selector';
+import { getGameScoresByRegisteredUsers } from 'store/selectors/gameScores.selector';
 import RoomDetails from './RoomDetails/RoomDetails';
 
 const Wrapper = styled.div`
@@ -26,17 +30,23 @@ const Wrapper = styled.div`
     grid-template-columns: 1fr 200px;
   }
   ${({ theme }) => theme.mediaQuery.lg} {
-    grid-column-gap: 80px;
+    grid-template-columns: 1fr 270px;
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
     grid-template-columns: 1fr 320px;
+    grid-column-gap: 80px;
   }
 `;
 
 const StyledMultiplayerRaceStats = styled(MultiplayerRaceStats)`
+  max-width: 650px;
   margin: 40px auto;
-  max-width: 800px;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-column: 1 / span 1;
     grid-row: 1 / span 1;
+  }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    max-width: 800px;
   }
 `;
 const StyledTypingInput = styled(TypingInput)`
@@ -49,13 +59,12 @@ const RoomPage: FC = () => {
   const dispatch = useDispatch();
   const redirect = useRedirect();
   const { roomId } = useParams();
-  const {
-    registeredUsers,
-    title,
-    withPassword,
-    creator,
-  } = useSelector(getGameSettings);
+  const { title, withPassword, creator } = useSelector(
+    getGameSettings,
+  );
+  const regiteredUsers = useSelector(getRegisteredUserInArray);
   const { uid } = useSelector(getUser);
+  const scores = useSelector(getGameScoresByRegisteredUsers);
 
   const subscribeRoom = useCallback(() => {
     return Db.init().listenGameSettings(
@@ -83,13 +92,6 @@ const RoomPage: FC = () => {
     },
     [dispatch, roomId],
   );
-
-  const usersArray = useMemo(() => Object.keys(registeredUsers), [
-    registeredUsers,
-  ]).map(playerId => ({
-    ...registeredUsers[playerId],
-    uid: playerId,
-  }));
 
   const copyRoomLinkToClipboard = useCallback(async () => {
     try {
@@ -122,47 +124,20 @@ const RoomPage: FC = () => {
   }, [onUserExitRoom]);
 
   useEffect(() => {
-    // const unSub = subscribeRoom();
-    // return () => unSub();
+    const unSub = subscribeRoom();
+    return () => unSub();
   }, [subscribeRoom]);
 
   return (
     <Wrapper>
       <RoomDetails
-        users={usersArray}
+        users={regiteredUsers}
         title={title}
         copyToClipboard={copyRoomLinkToClipboard}
         isCreator={creator === uid}
       />
       <Beforeunload onBeforeunload={() => onUserExitRoom()} />
-      <StyledMultiplayerRaceStats
-        scores={[
-          {
-            uid: 'asasdf',
-            displayName: 'adam',
-            accurancy: 98,
-            wpmSpeed: 60,
-            points: 4,
-            progress: 10,
-          },
-          {
-            uid: 'afdsdf',
-            displayName: 'asdfasdf',
-            accurancy: 80,
-            wpmSpeed: 43,
-            points: -10,
-            progress: 1,
-          },
-          {
-            uid: 'asgdsdf',
-            displayName: 'nie ma to ',
-            accurancy: 98,
-            wpmSpeed: 90,
-            points: 22,
-            progress: 22,
-          },
-        ]}
-      />
+      <StyledMultiplayerRaceStats scores={scores} />
       <StyledTypingInput
         text="some nice training text"
         withoutCounters

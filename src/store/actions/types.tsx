@@ -2,12 +2,14 @@ import { RoomsActions } from './rooms.actions';
 import { UserActions } from './user.actions';
 import { SoloTrainingActions } from './soloTraining.actions';
 import { GameSettnigsActions } from './gameSettings.actions';
+import { GameScoresActions } from './gameScore.actions';
 
 export type Action =
   | RoomsActions
   | UserActions
   | SoloTrainingActions
-  | GameSettnigsActions;
+  | GameSettnigsActions
+  | GameScoresActions;
 
 export enum types {
   USER_NOT_LOGGED = 'USER_NOT_LOGGED',
@@ -26,4 +28,7 @@ export enum types {
   UPDATE_AVAIABLE_ROOMS = 'UPDATE_AVAIABLE_ROOMS',
   JOIN_ROOM_WITHOUT_PASS = 'JOIN_ROOM_WITHOUT_PASS',
   CLEAR_ROOM_FROM_AVAIABLE = 'CLEAR_ROOM_FROM_AVAIABLE',
+
+  // GAME SCORES
+  UPDATE_GAME_SCORES = 'UPDATE_GAME_SCORES',
 }

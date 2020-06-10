@@ -5,13 +5,14 @@ import { Scores, ScoresProps } from './Scores';
 
 const PlayerName = styled.div`
   font-weight: ${({ theme }) => theme.fw[1]};
+  font-size: ${({ theme }) => theme.fs.xxs};
   color: ${({ theme }) => theme.color.gray[1]};
   opacity: 0.4;
   ${({ theme }) => theme.mediaQuery.md} {
     position: absolute;
     top: 50%;
     left: 0%;
-    transform: translate(-120%, -50%);
+    transform: translate(calc(-100% - 10px), -50%);
   }
 `;
 const Wrapper = styled.div`
