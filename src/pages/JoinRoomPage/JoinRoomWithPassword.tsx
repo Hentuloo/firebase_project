@@ -6,6 +6,7 @@ import exitDoor from 'assets/svg/icons/exitDoor.svg';
 import { Constants } from 'config/Constants';
 import { Link } from 'react-router-dom';
 import { CircledButtonWithImage } from 'components/atoms/Button/CircledButtonWithImage';
+import Spiner from 'components/atoms/Spiner';
 
 const Wrapper = styled.div`
   display: grid;
@@ -29,6 +30,9 @@ const ButtonsWrapper = styled.div`
   grid-auto-flow: column;
   grid-column-gap: 15px;
 `;
+const StyledSpiner = styled(Spiner)`
+  margin: 10px auto 0px;
+`;
 
 export interface JoinWithPasswordForm {
   password: string;
@@ -36,11 +40,12 @@ export interface JoinWithPasswordForm {
 export interface JoinRoomWithPasswordProps {
   roomTitle: string;
   submit: (values: JoinWithPasswordForm) => void;
+  fetching: boolean;
 }
-
 export const JoinRoomWithPassword: FC<JoinRoomWithPasswordProps> = ({
   roomTitle,
   submit,
+  fetching,
   ...props
 }) => {
   const { values, handleSubmit, handleChange } = useFormik<
@@ -63,7 +68,10 @@ export const JoinRoomWithPassword: FC<JoinRoomWithPasswordProps> = ({
         type="password"
       />
       <ButtonsWrapper>
-        <StyledFilledButton onClick={handleSubmit}>
+        <StyledFilledButton
+          onClick={handleSubmit}
+          disabled={fetching || undefined}
+        >
           Dołącz
         </StyledFilledButton>
         <CircledButtonWithImage
@@ -74,6 +82,7 @@ export const JoinRoomWithPassword: FC<JoinRoomWithPasswordProps> = ({
           alt="Menu główne"
         />
       </ButtonsWrapper>
+      {fetching && <StyledSpiner />}
     </Wrapper>
   );
 };

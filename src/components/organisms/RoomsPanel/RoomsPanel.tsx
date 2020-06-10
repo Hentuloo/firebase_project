@@ -14,6 +14,7 @@ import { Constants } from 'config/Constants';
 import { getRooms } from 'store/selectors/rooms.selector';
 import { updateAvaiableRoomsAction } from 'store/actions/rooms.actions';
 import { toast } from 'react-toastify';
+import Spiner from 'components/atoms/Spiner';
 import RoomsList from './RoomsList';
 
 const Wrapper = styled(Card)`
@@ -57,7 +58,7 @@ const Title = styled.h2`
 const SmallerTitle = styled.h2`
   font-weight: 600;
   text-transform: uppercase;
-  margin: 10px 0px 5px;
+  margin: 10px 0px 10px;
   font-size: ${({ theme }) => theme.fs.xs};
 `;
 const Label = styled.label`
@@ -132,11 +133,13 @@ export const RoomsPanel: FC = () => {
           placeholder="Nazwa pokoju"
         />
       </Label>
+
       <SmallerTitle>
         {fetching && 'Aktualizuje...'}
         {avaiableRooms.length === 0 && !fetching && 'Nie ma pokoi'}
         {avaiableRooms.length > 0 && !fetching && 'Dostępne:'}
       </SmallerTitle>
+      {fetching && <Spiner />}
       {avaiableRooms.length === 0 && !fetching && (
         <ClearButton onClick={handleRefetch}>
           <span className="sr-only">Odśwież</span>

@@ -1,4 +1,4 @@
-import React, { useEffect, FC, useCallback } from 'react';
+import React, { useEffect, FC, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useRedirect } from 'hooks/useRedirect';
@@ -25,6 +25,7 @@ export interface JoinRoomPageProps {}
 
 export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
   const redirect = useRedirect();
+  const [fetching, isFetching] = useState(false);
   const { roomId, title, withPassword } = useParams();
 
   const joinRoom = useCallback(
@@ -46,8 +47,10 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
           redirect(
             `${Constants.paths.joinRoom.path}/${roomId}/${title}/password`,
           );
-        if (message === 'wrong password')
+        if (message === 'wrong password') {
+          isFetching(false);
           toast.error('Podane hasło jest nieprawidłowe');
+        }
       }
     },
     [redirect, roomId, title],
@@ -55,10 +58,12 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
 
   useEffect(() => {
     if (withPassword !== undefined) return;
+    isFetching(true);
     joinRoom();
   }, [joinRoom, redirect, roomId, withPassword]);
 
   const handlePasswordButton = (formValues: JoinWithPasswordForm) => {
+    isFetching(true);
     joinRoom(formValues);
   };
 
@@ -69,6 +74,7 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
           <JoinRoomWithPassword
             roomTitle={title}
             submit={handlePasswordButton}
+            fetching={fetching}
           />
         </Wrapper>
         <DarkModeButtonFixed small />
@@ -79,7 +85,10 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
   return (
     <WithBackgroundTemplate>
       <Wrapper {...props}>
-        <JoinRoomWithoutPassword roomTitle={title} />
+        <JoinRoomWithoutPassword
+          roomTitle={title}
+          fetching={fetching}
+        />
       </Wrapper>
       <DarkModeButtonFixed small />
     </WithBackgroundTemplate>
