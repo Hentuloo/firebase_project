@@ -41,8 +41,15 @@ export class RoomsController extends FunctionsIndex {
       title,
       maxPlayersNumber,
       password,
-      user: { displayName, photoURL },
+      user: { displayName, photoURL, lastCreatedRoom },
     } = data;
+
+    if (lastCreatedRoom) {
+      throw new https.HttpsError(
+        'permission-denied',
+        'your previous room still exists',
+      );
+    }
 
     const withPassword =
       password !== '' && password !== undefined && password !== null;
@@ -88,6 +95,9 @@ export class RoomsController extends FunctionsIndex {
           playersNumber: maxPlayersNumber,
         },
       });
+    await firestore()
+      .doc(`users/${uid}`)
+      .update({ lastCreatedRoom: newRoomId });
 
     return { roomId: newRoomId, title, maxPlayersNumber, password };
   }
@@ -193,6 +203,9 @@ export class RoomsController extends FunctionsIndex {
         .update({
           [roomId]: firestore.FieldValue.delete(),
         });
+      await firestore()
+        .doc(`users/${uid}`)
+        .update({ lastCreatedRoom: firestore.FieldValue.delete() });
       return {
         ok: true,
         code: 'You deleted room',

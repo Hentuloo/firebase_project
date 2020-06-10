@@ -15,6 +15,7 @@ import {
   validateRoomPasword,
 } from 'utils/validations';
 import { toast } from 'react-toastify';
+import Spiner from 'components/atoms/Spiner';
 
 const Wrapper = styled.div`
   ${stickyModal};
@@ -51,10 +52,12 @@ export interface RoomSetingsState {
 }
 export interface RoomSetingsProps {
   onSubmit: (state: RoomSetingsState) => void;
+  isFetching: boolean;
 }
 
 export const RoomSetings: FC<RoomSetingsProps> = ({
   onSubmit,
+  isFetching,
   ...props
 }) => {
   const {
@@ -142,9 +145,13 @@ export const RoomSetings: FC<RoomSetingsProps> = ({
           />
         </Label>
       )}
-      <StyledFilledButton onClick={handleSubmit}>
+      <StyledFilledButton
+        onClick={handleSubmit}
+        disabled={isFetching}
+      >
         Stwórz pokój
       </StyledFilledButton>
+      {isFetching && <Spiner />}
     </Wrapper>
   );
 };

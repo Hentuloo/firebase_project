@@ -79,6 +79,16 @@ const RoomPage: FC = () => {
   }, [listen, onUserExitRoom]);
 
   useEffect(() => {
+    // on user click "prev-page" button in browser
+    const onPrevPage = () => {
+      onUserExitRoom();
+    };
+
+    window.addEventListener('popstate', onPrevPage);
+    return () => window.removeEventListener('popstate', onPrevPage);
+  }, [onUserExitRoom]);
+
+  useEffect(() => {
     const unSub = subscribeRoom();
     return () => unSub();
   }, [subscribeRoom]);

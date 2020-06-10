@@ -2,6 +2,7 @@ export interface UserDocument {
   created: string;
   displayName: string;
   photoURL: string;
+  lastCreatedRoom?: string;
 }
 export interface RoomDocument {
   players: {

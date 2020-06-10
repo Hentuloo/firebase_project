@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import WithMenuTemplate from 'templates/WithMenuTemplate';
 import {
@@ -19,8 +19,10 @@ const StyledWithBackgroundTemplate = styled(WithBackgroundTemplate)`
 
 export const NewRoomPage: FC = () => {
   const history = useHistory();
+  const [isFetching, setIsFetching] = useState(false);
   const handleCreateRoom = async (state: RoomSetingsState) => {
     const { title, players, password, withPassword } = state;
+    setIsFetching(true);
     try {
       const { data } = await FireFunctions.init().createRoom({
         title,
@@ -33,16 +35,21 @@ export const NewRoomPage: FC = () => {
           data.roomId
         }/${encodedTitle}${withPassword ? '/pass' : ''}`,
       );
+
       toast.info('Skopiowano link do schowka');
       history.push(`${Constants.paths.room.path}/${data.roomId}`);
     } catch ({ message, ...d }) {
+      setIsFetching(false);
       toast.error(message);
     }
   };
   return (
     <WithMenuTemplate>
       <StyledWithBackgroundTemplate>
-        <RoomSetings onSubmit={handleCreateRoom} />
+        <RoomSetings
+          onSubmit={handleCreateRoom}
+          isFetching={isFetching}
+        />
       </StyledWithBackgroundTemplate>
     </WithMenuTemplate>
   );
