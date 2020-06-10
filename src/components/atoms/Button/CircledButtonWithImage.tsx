@@ -29,7 +29,7 @@ export const CircledButtonWithImage: FC<CircledButtonWithImageProps> = ({
   src,
   title = 'Przycisk',
   alt = '',
-  disabled = undefined,
+  disabled = false,
   as,
   to,
   ...props

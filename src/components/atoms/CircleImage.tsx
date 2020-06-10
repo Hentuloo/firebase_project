@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-
 import { BarDecorator } from 'components/atoms';
-import { useImage } from 'hooks/useImage';
 import { useSelector } from 'react-redux';
 
 import defaultPicture from 'assets/svg/icons/defaultProfilePicture.svg';
@@ -38,14 +36,16 @@ interface CircleImageProps {
 }
 
 export const CircleImage: FC<CircleImageProps> = ({
-  src,
+  src = defaultPicture,
   className = '',
   ...props
 }) => {
-  const [image] = useImage(src);
   return (
     <Wrapper className={className} {...props}>
-      <Image src={image === undefined ? defaultPicture : src} />
+      <Image
+        src={src === null ? defaultPicture : src}
+        alt="ikona użytkownika"
+      />
     </Wrapper>
   );
 };
