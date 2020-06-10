@@ -13,13 +13,13 @@ import { clearRoomFromAvaiable } from 'store/actions/rooms.actions';
 import { MultiplayerRaceStats } from 'components/organisms/MultiplayerRaceStats/MultiplayerRaceStats';
 import { DarkModeButtonFixed } from 'components/molecules/DarkModeButton';
 import { TypingInput } from 'components/organisms';
+import { getUser } from 'store/selectors/user.selector';
 import RoomDetails from './RoomDetails/RoomDetails';
 
 const Wrapper = styled.div`
   display: grid;
   width: 90%;
   max-width: 1400px;
-
   margin: 20px auto;
   ${({ theme }) => theme.mediaQuery.md} {
     min-height: 100vh;
@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   }
   ${({ theme }) => theme.mediaQuery.lg} {
     grid-column-gap: 80px;
-    grid-template-columns: 1fr 250px;
+    grid-template-columns: 1fr 320px;
   }
 `;
 
@@ -49,9 +49,13 @@ const RoomPage: FC = () => {
   const dispatch = useDispatch();
   const redirect = useRedirect();
   const { roomId } = useParams();
-  const { registeredUsers, title, withPassword } = useSelector(
-    getGameSettings,
-  );
+  const {
+    registeredUsers,
+    title,
+    withPassword,
+    creator,
+  } = useSelector(getGameSettings);
+  const { uid } = useSelector(getUser);
 
   const subscribeRoom = useCallback(() => {
     return Db.init().listenGameSettings(
@@ -82,7 +86,10 @@ const RoomPage: FC = () => {
 
   const usersArray = useMemo(() => Object.keys(registeredUsers), [
     registeredUsers,
-  ]).map(uid => ({ ...registeredUsers[uid], uid }));
+  ]).map(playerId => ({
+    ...registeredUsers[playerId],
+    uid: playerId,
+  }));
 
   const copyRoomLinkToClipboard = useCallback(async () => {
     try {
@@ -125,6 +132,7 @@ const RoomPage: FC = () => {
         users={usersArray}
         title={title}
         copyToClipboard={copyRoomLinkToClipboard}
+        isCreator={creator === uid}
       />
       <Beforeunload onBeforeunload={() => onUserExitRoom()} />
       <StyledMultiplayerRaceStats
