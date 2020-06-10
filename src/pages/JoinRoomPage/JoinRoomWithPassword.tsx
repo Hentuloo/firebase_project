@@ -1,15 +1,11 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import {
-  BarDecorator,
-  Input,
-  FilledButton,
-  CircleButton,
-} from 'components/atoms';
+import { BarDecorator, Input, FilledButton } from 'components/atoms';
 import { useFormik } from 'formik';
 import exitDoor from 'assets/svg/icons/exitDoor.svg';
 import { Constants } from 'config/Constants';
 import { Link } from 'react-router-dom';
+import { CircledButtonWithImage } from 'components/atoms/Button/CircledButtonWithImage';
 
 const Wrapper = styled.div`
   display: grid;
@@ -23,16 +19,10 @@ const RoomTitle = styled.span`
   display: block;
   margin: 0px auto;
 `;
-const CloseDoorImage = styled.img``;
 const StyledFilledButton = styled(FilledButton)`
   min-width: 150px;
   text-transform: uppercase;
   font-weight: ${({ theme }) => theme.fw[1]} !important;
-`;
-const StyledCircledButton = styled(CircleButton)`
-  display: grid;
-  justify-items: center;
-  align-items: center;
 `;
 const ButtonsWrapper = styled.div`
   display: grid;
@@ -76,12 +66,13 @@ export const JoinRoomWithPassword: FC<JoinRoomWithPasswordProps> = ({
         <StyledFilledButton onClick={handleSubmit}>
           Dołącz
         </StyledFilledButton>
-        <StyledCircledButton
+        <CircledButtonWithImage
+          onClick={() => null}
           as={Link}
           to={Constants.paths.dashboard.path}
-        >
-          <CloseDoorImage src={exitDoor} alt="Menu główne" />
-        </StyledCircledButton>
+          src={exitDoor}
+          alt="Menu główne"
+        />
       </ButtonsWrapper>
     </Wrapper>
   );

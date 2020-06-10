@@ -1,14 +1,14 @@
-import { GameSettings } from 'types/GameSettings';
+import { GameSettingsState } from 'store/reducers/gameSettings.reducer';
 import { types } from './types';
 
 export type GameSettnigsActions = UpdateGameSettingsAction;
 
 interface UpdateGameSettingsAction {
   type: types.UPDATE_GAME_SETTINGS;
-  payload: GameSettings;
+  payload: GameSettingsState;
 }
 export const updateGameSettings = (
-  st: GameSettings,
+  st: GameSettingsState,
 ): UpdateGameSettingsAction => ({
   type: types.UPDATE_GAME_SETTINGS,
   payload: st,

@@ -29,9 +29,9 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
 
   const joinRoom = useCallback(
     async (formValues?: JoinWithPasswordForm) => {
-      const { joinToOpenRoom } = FireFunctions.init();
+      const { joinFireRoom } = FireFunctions.init();
       try {
-        const { data } = await joinToOpenRoom(
+        const { data } = await joinFireRoom(
           roomId,
           formValues && formValues.password,
         );

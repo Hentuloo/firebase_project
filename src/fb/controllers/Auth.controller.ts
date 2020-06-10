@@ -61,6 +61,7 @@ export class Auth {
     if (!user) return;
     const userRef = await Db.init().newUser(user.uid, {
       displayName,
+      photoURL: null,
       ...additionalProps,
     });
     return userRef;

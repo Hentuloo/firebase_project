@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { CircleButton } from 'components/atoms';
-
 import exitDoor from 'assets/svg/icons/exitDoor.svg';
+import { CircledButtonWithImage } from 'components/atoms/Button/CircledButtonWithImage';
 
 const Wrapper = styled.div`
   display: grid;
@@ -19,19 +18,6 @@ const Wrapper = styled.div`
     align-self: center;
   }
 `;
-const ControllerWrapper = styled.div`
-  position: relative;
-`;
-const StyledCircleButton = styled(CircleButton)`
-  display: block;
-  font-size: ${({ theme }) => theme.fs.xl};
-`;
-
-const StyledCharts = styled(StyledCircleButton)``;
-const ButtonImage = styled.img`
-  display: block;
-  margin: 0px auto;
-`;
 
 export interface ControllersProps {
   changeTab: () => void;
@@ -43,11 +29,12 @@ export const Controllers: FC<ControllersProps> = ({
 }) => {
   return (
     <Wrapper {...props}>
-      <ControllerWrapper>
-        <StyledCharts title="Powrót" onClick={changeTab}>
-          <ButtonImage src={exitDoor} alt="Powrót" />
-        </StyledCharts>
-      </ControllerWrapper>
+      <CircledButtonWithImage
+        title="Powrót"
+        onClick={changeTab}
+        src={exitDoor}
+        alt="Powrót"
+      />
     </Wrapper>
   );
 };

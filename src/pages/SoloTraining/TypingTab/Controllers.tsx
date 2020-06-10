@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { InputNumber, CircleButton } from 'components/atoms';
-
+import { InputNumber } from 'components/atoms';
 import repeatIcon from 'assets/svg/icons/repeatIcon.svg';
 import chartIcon from 'assets/svg/icons/chartIcon.svg';
 import circles from 'assets/svg/circles1.svg';
 import { typingStatus } from 'hooks/useInputSpeedTest/types';
 import gsap from 'gsap';
+import { CircledButtonWithImage } from 'components/atoms/Button/CircledButtonWithImage';
 import { AddSnap } from '../types';
 
 const Wrapper = styled.div`
@@ -24,14 +24,10 @@ const Wrapper = styled.div`
     align-self: center;
   }
 `;
-const ControllerWrapper = styled.div`
+const ClockWrapper = styled.div`
   position: relative;
 `;
-const StyledCircleButton = styled(CircleButton)`
-  display: block;
-  font-size: ${({ theme }) => theme.fs.xl};
-  background-color: ${({ theme }) => theme.color.white[0]};
-`;
+
 const ClockIcon = styled.span`
   position: absolute;
   top: 0%;
@@ -54,13 +50,7 @@ const StyledInputNumber = styled(InputNumber)`
   }
 `;
 
-const StyledRepeat = styled(StyledCircleButton)``;
-const StyledCharts = styled(StyledCircleButton)``;
-const ButtonImage = styled.img`
-  display: block;
-  margin: 0px auto;
-`;
-const AttentionCircles = styled.img`
+const NewScoreAnimationImage = styled.img`
   position: absolute;
   display: block;
   top: 0%;
@@ -127,7 +117,7 @@ export const Controllers: FC<ControllersProps> = ({
 
   return (
     <Wrapper>
-      <ControllerWrapper>
+      <ClockWrapper>
         <StyledInputNumber
           insertBefore={[0.5]}
           min={1}
@@ -138,27 +128,28 @@ export const Controllers: FC<ControllersProps> = ({
           disable={gameStatus === typingStatus.TYPING}
         />
         <ClockIcon className="fa fa-clock-o" aria-hidden="true" />
-      </ControllerWrapper>
-      <ControllerWrapper>
-        <StyledRepeat onClick={reset} title="Zresetuj [CTR+R]">
-          <ButtonImage src={repeatIcon} alt="Zresetuj stan gry " />
-        </StyledRepeat>
-      </ControllerWrapper>
-      <ControllerWrapper>
-        <StyledCharts
+      </ClockWrapper>
+      <CircledButtonWithImage
+        onClick={reset}
+        title="Zresetuj [CTR+R]"
+        alt="Zresetuj stan gry"
+        src={repeatIcon}
+      />
+      <div>
+        <CircledButtonWithImage
           disabled={
             disableCharts || gameStatus === typingStatus.TYPING
           }
-          title="Wykresy"
           onClick={handleChangeTab}
-        >
-          <ButtonImage
-            src={chartIcon}
-            alt="Pokaż historie na wykresie"
-          />
-        </StyledCharts>
-        <AttentionCircles ref={chartAttentionCircles} src={circles} />
-      </ControllerWrapper>
+          title="Wykresy"
+          src={chartIcon}
+          alt="Pokaż historie na wykresie"
+        />
+        <NewScoreAnimationImage
+          ref={chartAttentionCircles}
+          src={circles}
+        />
+      </div>
     </Wrapper>
   );
 };

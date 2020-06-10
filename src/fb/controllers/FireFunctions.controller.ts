@@ -31,20 +31,19 @@ export class FireFunctions {
   public call = (functionName: string) =>
     this.instance.httpsCallable(functionName);
 
-  public joinToOpenRoom = async (roomId: string, pass?: string) => {
-    const joinFunc = this.call('joinToOpenRoom');
-    const res = await joinFunc({ roomId, password: pass });
-    return (res as unknown) as JoinRoomResponse;
+  public joinFireRoom = async (roomId: string, pass?: string) => {
+    const joinFunc = this.call('joinRoom');
+    return joinFunc({ roomId, password: pass });
   };
 
-  public leaveRoom = async (roomId: string) => {
-    const fn = this.call('leaveFromOpenRoom');
-    await fn({ roomId });
-  };
-
-  public getAvaiableRooms = async (page?: number) => {
+  public getAvaiableRooms = (page?: number) => {
     const fn = this.call('getAvaiableRooms');
     return fn({ page, perPage: 5 });
+  };
+
+  public leaveRoom = (roomId: string) => {
+    const fn = this.call('leaveFromRoom');
+    return fn({ roomId });
   };
 
   public createRoom = ({

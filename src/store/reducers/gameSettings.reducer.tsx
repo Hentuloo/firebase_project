@@ -1,7 +1,7 @@
-import { GameSettings } from 'types/GameSettings';
+import { GameSettingsWithPasswordFlag } from 'types/GameSettings';
 import { types, Action } from '../actions/types';
 
-export type GameSettingsState = GameSettings;
+export type GameSettingsState = GameSettingsWithPasswordFlag;
 
 const init: GameSettingsState = {
   registeredUsers: {},
@@ -9,8 +9,12 @@ const init: GameSettingsState = {
   changesLength: null,
   startTimestamp: null,
   endTimestamp: null,
-  cursorsStamps: null,
-  maxPlayersNumber: null,
+  cursorsStamps: [],
+  maxPlayersNumber: 0,
+  creator: '',
+  title: 'my fancy room',
+  withPassword: false,
+  created: '',
 };
 
 export default (state = init, action: Action): GameSettingsState => {

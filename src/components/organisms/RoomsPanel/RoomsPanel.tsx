@@ -6,6 +6,7 @@ import {
   InputWithFA,
   BarDecorator,
   FilledButton,
+  ClearButton,
 } from 'components/atoms';
 import { Link } from 'react-router-dom';
 import { FireFunctions } from 'fb';
@@ -136,6 +137,12 @@ export const RoomsPanel: FC = () => {
         {avaiableRooms.length === 0 && !fetching && 'Nie ma pokoi'}
         {avaiableRooms.length > 0 && !fetching && 'Dostępne:'}
       </SmallerTitle>
+      {avaiableRooms.length === 0 && !fetching && (
+        <ClearButton onClick={handleRefetch}>
+          <span className="sr-only">Odśwież</span>
+          <span className="fa fa-repeat" aria-hidden="true" />
+        </ClearButton>
+      )}
       {avaiableRooms.length > 0 && (
         <RoomsList
           list={avaiableRooms}

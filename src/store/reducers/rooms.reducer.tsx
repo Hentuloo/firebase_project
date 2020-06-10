@@ -18,6 +18,13 @@ export default (
   switch (action.type) {
     case types.UPDATE_AVAIABLE_ROOMS:
       return { ...state, avaiableRooms: action.payload };
+    case types.CLEAR_ROOM_FROM_AVAIABLE:
+      return {
+        ...state,
+        avaiableRooms: state.avaiableRooms.filter(
+          ({ gameKey }) => gameKey !== action.payload,
+        ),
+      };
     case types.JOIN_ROOM_WITHOUT_PASS:
       return { ...state, activeRoomId: action.payload };
     default:
