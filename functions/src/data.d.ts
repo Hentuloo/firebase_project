@@ -2,7 +2,10 @@ export interface UserDocument {
   created: string;
   displayName: string;
   photoURL: string;
+  deleteRoomCloudTaskExist?: boolean;
+  state: string;
   lastCreatedRoom?: string;
+  lastJoinedRoom?: string;
 }
 export interface RoomDocument {
   players: {

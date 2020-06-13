@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Constants } from 'config/Constants';
 import { getUser } from 'store/selectors/user.selector';
+import { Db } from 'fb';
 
 export const withUser = <
   P extends object = object,
@@ -13,6 +14,13 @@ export const withUser = <
 ) => {
   return (props: any) => {
     const { loggedRequest, uid } = useSelector(getUser);
+
+    useEffect(() => {
+      if (uid) {
+        Db.init().listenConnectedInfo(uid);
+      }
+    }, [uid]);
+
     if (Constants.OFFLINE_MODE)
       return <WrapperedComponent {...props} />;
     if (loggedRequest) return null;
@@ -39,6 +47,7 @@ export const redirectWhenUserLogged = <
         setCheckedOnce(true);
       }
     }, [loggedRequest, uid]);
+
     if (Constants.OFFLINE_MODE)
       return <WrapperedComponent {...props} />;
     if (loggedRequest) return null;

@@ -10,6 +10,11 @@ import {
   WithUserProfile,
 } from '../middlewares/useUserProfile';
 import { https } from 'firebase-functions';
+import {
+  exitRoomAsCreator,
+  exitRoomAsPlayer,
+  addPlayerToRoom,
+} from '../utils/rooms.utils';
 
 interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;
@@ -34,7 +39,7 @@ export class RoomsController extends FunctionsIndex {
   @fireMiddleware(useRequiredFields('title', 'maxPlayersNumber'))
   @fireMiddleware(useAuth)
   @fireMiddleware(useUserProfile)
-  @fireFunction({ region: 'us-central1', type: 'onCall' })
+  @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async createRoom(data: CreateRoomData, context) {
     const { uid } = context.auth;
     const {
@@ -88,7 +93,7 @@ export class RoomsController extends FunctionsIndex {
 
     await firestore()
       .doc(`rooms/${withPassword ? 'protected' : 'open'}`)
-      .set({
+      .update({
         [newRoomId]: {
           title,
           password: withPassword,
@@ -105,17 +110,22 @@ export class RoomsController extends FunctionsIndex {
   @fireMiddleware(useRequiredFields('roomId'))
   @fireMiddleware(useAuth)
   @fireMiddleware(useUserProfile)
-  @fireFunction({ region: 'us-central1', type: 'onCall' })
+  @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async joinRoom(data: JoinToOpenRoomData, context) {
     const { uid } = context.auth;
     const {
       roomId,
       password,
-      user: { displayName, photoURL },
+      user: {
+        displayName,
+        photoURL,
+        lastJoinedRoom,
+        lastCreatedRoom,
+      },
     } = data;
+
     const gameRef = firestore().doc(`games/${roomId}`);
     const gameSnap = await gameRef.get();
-    const gameScoreRef = firestore().doc(`gamesScores/${roomId}`);
 
     if (!gameSnap.exists) {
       throw new https.HttpsError(
@@ -123,6 +133,7 @@ export class RoomsController extends FunctionsIndex {
         "this room does'n exist",
       );
     }
+
     const {
       registeredUsers,
       password: roomPassword,
@@ -131,25 +142,15 @@ export class RoomsController extends FunctionsIndex {
     //  user already exist
     if (registeredUsers[uid]) return { ok: true };
 
-    const addPlayerToRoom = async () => {
-      await gameRef.update({
-        [`registeredUsers.${uid}`]: { displayName, photoURL },
-      });
+    if (lastJoinedRoom)
+      exitRoomAsPlayer({ roomId: lastJoinedRoom, uid });
+    if (lastCreatedRoom)
+      exitRoomAsCreator({ roomId: lastCreatedRoom, uid });
 
-      await gameScoreRef.update({
-        [`scores.${uid}`]: {
-          changes: 0,
-          timestamp: 0,
-          cursor: 0,
-          wrongLength: 0,
-          goodLength: 0,
-        },
-      });
-    };
     // user doesn't exist
     // check if room need password
     if (roomPassword === false) {
-      await addPlayerToRoom();
+      await addPlayerToRoom({ uid, displayName, photoURL, roomId });
       return {
         ok: true,
         code: 'You have access',
@@ -165,7 +166,7 @@ export class RoomsController extends FunctionsIndex {
         throw new https.HttpsError('unavailable', 'wrong password');
       }
 
-      await addPlayerToRoom();
+      await addPlayerToRoom({ uid, displayName, photoURL, roomId });
       return {
         ok: true,
         code: 'You have access',
@@ -175,7 +176,7 @@ export class RoomsController extends FunctionsIndex {
 
   @fireMiddleware(useRequiredFields('roomId'))
   @fireMiddleware(useAuth)
-  @fireFunction({ region: 'us-central1', type: 'onCall' })
+  @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async leaveFromRoom(data: LeaveFromOpenRoomData, context) {
     const { uid } = context.auth;
     const { roomId } = data;
@@ -187,49 +188,22 @@ export class RoomsController extends FunctionsIndex {
 
     // user is a creator -> delete all dependencies
     if (creator === uid) {
-      await firestore()
-        .doc(`games/${roomId}`)
-        .delete();
-      await firestore()
-        .doc(`gamesScores/${roomId}`)
-        .delete();
-      await firestore()
-        .doc(`rooms/protected`)
-        .update({
-          [roomId]: firestore.FieldValue.delete(),
-        });
-      await firestore()
-        .doc(`rooms/open`)
-        .update({
-          [roomId]: firestore.FieldValue.delete(),
-        });
-      await firestore()
-        .doc(`users/${uid}`)
-        .update({ lastCreatedRoom: firestore.FieldValue.delete() });
+      await exitRoomAsCreator({ roomId, uid });
       return {
         ok: true,
         code: 'You deleted room',
       };
     } else {
-      await firestore()
-        .doc(`games/${roomId}`)
-        .update({
-          [`registeredUsers.${uid}`]: firestore.FieldValue.delete(),
-        });
-      await firestore()
-        .doc(`gamesScores/${roomId}`)
-        .update({
-          [`scores.${uid}`]: firestore.FieldValue.delete(),
-        });
+      exitRoomAsPlayer({ roomId, uid });
       return {
         ok: true,
-        code: 'You deleted room',
+        code: 'You exit room',
       };
     }
   }
 
   @fireMiddleware(useAuth)
-  @fireFunction({ region: 'us-central1', type: 'onCall' })
+  @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async getAvaiableRooms(data: GetAvaiableRoomsData, context) {
     const { page = 1, perPage = 5 } = data;
     const openR = firestore().doc(`rooms/open`);

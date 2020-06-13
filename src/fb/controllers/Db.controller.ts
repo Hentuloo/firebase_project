@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { updateGameSettings } from 'store/actions/gameSettings.actions';
 import { GameSettingsWithPassword } from 'types/GameSettings';
 import { GameSettingsState } from 'store/reducers/gameSettings.reducer';
+import { Constants } from 'config/Constants';
 import firebase from '../index';
 
 type FirestoreType = firebase.firestore.Firestore;
@@ -26,6 +27,18 @@ export class Db {
 
   userSoloTrainingRef = (uid: string) => {
     return this.doc(`usersSolo/${uid}`);
+  };
+
+  userStatusRef = (uid: string) => {
+    return firebase.firestore().doc(`/users/${uid}`);
+  };
+
+  userDatabaseStatusRef = (uid: string) => {
+    return firebase.database().ref(`/status/${uid}`);
+  };
+
+  userDatabaseConnectedInfosRef = () => {
+    return firebase.database().ref('.info/connected');
   };
 
   static init = () => {
@@ -124,4 +137,21 @@ export class Db {
     this.userSoloTrainingRef(uid).update({
       level: firebase.firestore.FieldValue.increment(1),
     });
+
+  public listenConnectedInfo = (uid: string) => {
+    if (Constants.OFF_ONLINE_STATUS) return;
+    const onlineState = { state: 'online' };
+
+    this.userDatabaseConnectedInfosRef().on('value', snapshot => {
+      if (snapshot.val() === false) return;
+
+      this.userDatabaseStatusRef(uid)
+        .onDisconnect()
+        .update({ state: 'offline' })
+        .then(() => {
+          this.userDatabaseStatusRef(uid).set(onlineState);
+          this.userStatusRef(uid).update(onlineState);
+        });
+    });
+  };
 }

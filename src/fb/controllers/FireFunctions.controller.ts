@@ -20,12 +20,14 @@ export class FireFunctions {
     functionName: string,
     firestore?: FirebaseFunctionsType,
   ) => {
-    const functionsInstance = firestore || firebase.functions();
+    const functionsInstance =
+      firestore || firebase.app().functions('europe-west1');
     functionsInstance.httpsCallable(functionName);
   };
 
   constructor(firestore?: FirebaseFunctionsType) {
-    this.instance = firestore || firebase.functions();
+    this.instance =
+      firestore || firebase.app().functions('europe-west1');
   }
 
   public call = (functionName: string) =>

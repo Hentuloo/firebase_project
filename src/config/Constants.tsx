@@ -2,6 +2,7 @@ import defaultProfilePicture from 'assets/svg/icons/defaultProfilePicture.svg';
 
 export const Constants = {
   OFFLINE_MODE: false,
+  OFF_ONLINE_STATUS: false,
   paths: {
     root: {
       path: '/',

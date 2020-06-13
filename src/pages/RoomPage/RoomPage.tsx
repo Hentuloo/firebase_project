@@ -11,7 +11,6 @@ import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
 import { toast } from 'react-toastify';
 import { copyToClipBoard } from 'utils';
-import { Beforeunload } from 'react-beforeunload';
 import { clearRoomFromAvaiable } from 'store/actions/rooms.actions';
 import { MultiplayerRaceStats } from 'components/organisms/MultiplayerRaceStats/MultiplayerRaceStats';
 import { DarkModeButtonFixed } from 'components/molecules/DarkModeButton';
@@ -79,12 +78,16 @@ const RoomPage: FC = () => {
   }, [redirect, roomId]);
 
   const onUserExitRoom = useCallback(
-    async (clearRoomInStore?: boolean) => {
+    (clearRoomInStore?: boolean) => {
       // remove user from players list
       try {
         if (clearRoomInStore) dispatch(clearRoomFromAvaiable(roomId));
-        await FireFunctions.init().leaveRoom(roomId);
-        if (clearRoomInStore) dispatch(clearRoomFromAvaiable(roomId));
+        FireFunctions.init()
+          .leaveRoom(roomId)
+          .then(() => {
+            if (clearRoomInStore)
+              dispatch(clearRoomFromAvaiable(roomId));
+          });
       } catch ({ message }) {
         if (message === 'INTERNAL') return;
         toast.error(message);
@@ -109,19 +112,11 @@ const RoomPage: FC = () => {
 
   useEffect(() => {
     // on route change remove user from game
-    const unsubRouteChange = listen(() => onUserExitRoom(true));
+    const unsubRouteChange = listen(() => {
+      onUserExitRoom(true);
+    });
     return () => unsubRouteChange();
   }, [listen, onUserExitRoom]);
-
-  useEffect(() => {
-    // on user click "prev-page" button in browser
-    const onPrevPage = () => {
-      onUserExitRoom();
-    };
-
-    window.addEventListener('popstate', onPrevPage);
-    return () => window.removeEventListener('popstate', onPrevPage);
-  }, [onUserExitRoom]);
 
   useEffect(() => {
     const unSub = subscribeRoom();
@@ -136,7 +131,6 @@ const RoomPage: FC = () => {
         copyToClipboard={copyRoomLinkToClipboard}
         isCreator={creator === uid}
       />
-      <Beforeunload onBeforeunload={() => onUserExitRoom()} />
       <StyledMultiplayerRaceStats scores={scores} />
       <StyledTypingInput
         text="some nice training text"
