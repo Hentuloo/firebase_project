@@ -17,7 +17,7 @@ export const callFunctionByCloudTask = ({
   functionName,
   payload,
 }) => {
-  console.info(`Create task: call ${functionName} function`);
+  console.info(`CREATE: cloud task ${functionName}`);
   const tasksClient = new CloudTasksClient();
   const queuePath: string = tasksClient.queuePath(
     projectId,
@@ -36,4 +36,16 @@ export const callFunctionByCloudTask = ({
     scheduleTime: { seconds: time },
   };
   return tasksClient.createTask({ parent: queuePath, task });
+};
+export interface DeleteCloudTaskProps {
+  functionName?: string;
+  taskName: string;
+}
+export const deleteCloudTask = ({
+  functionName,
+  taskName,
+}: DeleteCloudTaskProps) => {
+  console.info(`CANCEL: cloud task ${functionName || '-'}`);
+  const tasksClient = new CloudTasksClient();
+  return tasksClient.deleteTask({ name: taskName });
 };

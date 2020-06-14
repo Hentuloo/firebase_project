@@ -150,7 +150,6 @@ export class Db {
         .update({ state: 'offline' })
         .then(() => {
           this.userDatabaseStatusRef(uid).set(onlineState);
-          this.userStatusRef(uid).update(onlineState);
         });
     });
   };

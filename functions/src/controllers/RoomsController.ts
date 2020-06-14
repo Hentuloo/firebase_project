@@ -213,7 +213,7 @@ export class RoomsController {
 
     if (!lastCreatedRoom && !lastJoinedRoom) {
       userRef.update({
-        deleteRoomCloudTaskExist: firestore.FieldValue.delete(),
+        cloudTaskRelatedRoom: firestore.FieldValue.delete(),
       });
       return;
     }
@@ -222,15 +222,11 @@ export class RoomsController {
     if (state === 'offline') {
       if (lastCreatedRoom) await exitRoomAsCreator({ roomId, uid });
       if (lastJoinedRoom) await exitRoomAsPlayer({ roomId, uid });
-    } else {
-      //cancel delete room task
-      await userRef.update({
-        deleteRoomCloudTaskExist: firestore.FieldValue.delete(),
-      });
     }
+
     res.send({
       ok: true,
-      code: 'You have access',
+      code: 'Room deleted',
     });
   }
 

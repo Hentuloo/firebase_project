@@ -20,7 +20,7 @@ export const exitRoomAsPlayer = ({
     [`scores.${uid}`]: firestore.FieldValue.delete(),
   });
   const usersPromise = userRef.update({
-    deleteRoomCloudTaskExist: firestore.FieldValue.delete(),
+    cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete(),
     lastJoinedRoom: firestore.FieldValue.delete(),
   });
 
@@ -50,7 +50,7 @@ export const exitRoomAsCreator = ({
   });
   const userPromise = userRef.update({
     lastCreatedRoom: firestore.FieldValue.delete(),
-    deleteRoomCloudTaskExist: firestore.FieldValue.delete(),
+    cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete(),
   });
 
   return Promise.all([

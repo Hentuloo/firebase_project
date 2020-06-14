@@ -1,5 +1,8 @@
 import { firestore } from 'firebase-admin';
-import { callFunctionByCloudTask } from '../utils/cloudTask.utils';
+import {
+  callFunctionByCloudTask,
+  deleteCloudTask,
+} from '../utils/cloudTask.utils';
 import { UserDocument } from '../data';
 import { listenDatabase } from '../decorators/listenDatabase';
 
@@ -8,35 +11,52 @@ export class StatusController {
   async onUserStatusChanged(change, context) {
     const uid = context.params.userId;
     const userRef = firestore().doc(`users/${uid}`);
+
     const statusSnapshot = await change.after.ref.once('value');
     const { state } = statusSnapshot.val();
+
+    const userSnap = await userRef.get();
+    const {
+      lastCreatedRoom,
+      lastJoinedRoom,
+      cloudTaskDeleteRelatedRoom,
+    } = {
+      ...userSnap.data(),
+    } as UserDocument;
+
     if (state === 'offline') {
-      const userSnap = await userRef.get();
-      const {
-        lastCreatedRoom,
-        lastJoinedRoom,
-        deleteRoomCloudTaskExist,
-      } = {
-        ...userSnap.data(),
-      } as UserDocument;
-
-      userRef.update({
-        state: 'offline',
-        lastChanged: firestore.FieldValue.serverTimestamp(),
-      });
-
+      let cloudTaskName: string;
       if (
-        !deleteRoomCloudTaskExist &&
+        !cloudTaskDeleteRelatedRoom &&
         (lastCreatedRoom || lastJoinedRoom)
       ) {
-        await callFunctionByCloudTask({
+        const [response] = await callFunctionByCloudTask({
           functionName: 'userExitRoom',
           payload: {
             roomId: lastCreatedRoom || lastJoinedRoom,
             uid,
           },
         });
+        cloudTaskName = response.name;
       }
+      userRef.update({
+        state: 'offline',
+        lastChanged: firestore.FieldValue.serverTimestamp(),
+        cloudTaskDeleteRelatedRoom: cloudTaskName,
+      });
+    }
+    if (state === 'online') {
+      if (cloudTaskDeleteRelatedRoom) {
+        deleteCloudTask({
+          functionName: 'userExitRoom',
+          taskName: cloudTaskDeleteRelatedRoom,
+        });
+      }
+      userRef.update({
+        state: 'online',
+        lastChanged: firestore.FieldValue.serverTimestamp(),
+        cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete(),
+      });
     }
   }
 }

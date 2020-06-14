@@ -2,7 +2,7 @@ export interface UserDocument {
   created: string;
   displayName: string;
   photoURL: string;
-  deleteRoomCloudTaskExist?: boolean;
+  cloudTaskDeleteRelatedRoom?: string;
   state: string;
   lastCreatedRoom?: string;
   lastJoinedRoom?: string;
