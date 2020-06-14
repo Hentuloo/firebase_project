@@ -1,7 +1,7 @@
 import { firestore } from 'firebase-admin';
 import { https } from 'firebase-functions';
 import { fireFunction } from '../decorators/fireFunctions';
-import { useAuth } from '../middlewares/useAuth';
+import { useAuth, useBearerAuth } from '../middlewares/useAuth';
 import { useRequiredFields } from '../middlewares/useRequiredFields';
 import {
   useUserProfile,
@@ -201,6 +201,7 @@ export class RoomsController {
     };
   }
 
+  @use(useBearerAuth({ allowInternallKey: true }))
   @fireFunction({ region: 'europe-west1', type: 'onRequest' })
   async userExitRoom(req, res) {
     const { uid, roomId } = req.body as ClearRoomPayload;

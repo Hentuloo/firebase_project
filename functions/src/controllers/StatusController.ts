@@ -5,6 +5,7 @@ import {
 } from '../utils/cloudTask.utils';
 import { UserDocument } from '../data';
 import { listenDatabase } from '../decorators/listenDatabase';
+import { config } from 'firebase-functions';
 
 export class StatusController {
   @listenDatabase({ type: 'onUpdate', ref: '/status/{userId}' })
@@ -36,6 +37,7 @@ export class StatusController {
             roomId: lastCreatedRoom || lastJoinedRoom,
             uid,
           },
+          headers: { internallcall: config().internallcall.key },
         });
         cloudTaskName = response.name;
       }

@@ -48,6 +48,11 @@ export class FireFunctions {
     return fn({ roomId });
   };
 
+  public startGame = (roomId: string) => {
+    const fn = this.call('startGame');
+    return fn({ roomId });
+  };
+
   public createRoom = ({
     title,
     maxPlayersNumber,

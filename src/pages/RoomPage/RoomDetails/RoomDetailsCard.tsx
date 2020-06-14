@@ -47,12 +47,14 @@ export interface RoomDetailsCardProps {
   }[];
   showPlayersOnMobile: boolean;
   isCreator: boolean;
+  onStartGame: () => void;
 }
 
 export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
   users,
   showPlayersOnMobile,
   isCreator,
+  onStartGame,
   ...props
 }) => {
   return (
@@ -70,9 +72,11 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
           Aby rozpocząć potrzeba minimum dwóch graczy.
         </SmallText>
       )}
-      {users.length > 1 && isCreator && (
-        <StyledFilledButton>Start!</StyledFilledButton>
-      )}
+      {/* {users.length > 1 && isCreator && ( */}
+      <StyledFilledButton onClick={onStartGame}>
+        Start!
+      </StyledFilledButton>
+      {/* )} */}
     </Wrapper>
   );
 };

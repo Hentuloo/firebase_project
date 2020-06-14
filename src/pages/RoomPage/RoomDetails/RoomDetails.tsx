@@ -36,6 +36,7 @@ const RoomDetails: FC<RoomDetailsProps> = ({
   title,
   copyToClipboard,
   isCreator,
+  onStartGame,
 }) => {
   const [showPlayersOnMobile, setShowPlayersOnMobile] = useState(
     false,
@@ -60,6 +61,7 @@ const RoomDetails: FC<RoomDetailsProps> = ({
         users={users}
         showPlayersOnMobile={showPlayersOnMobile}
         isCreator={isCreator}
+        onStartGame={onStartGame}
       />
       <RoomControllers
         onExit={() => null}

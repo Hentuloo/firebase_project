@@ -96,6 +96,14 @@ const RoomPage: FC = () => {
     [dispatch, roomId],
   );
 
+  const handleStartGame = useCallback(async () => {
+    try {
+      await FireFunctions.init().startGame(roomId);
+    } catch ({ message }) {
+      toast.error(message);
+    }
+  }, [roomId]);
+
   const copyRoomLinkToClipboard = useCallback(async () => {
     try {
       const encodedTitle = encodeURI(title);
@@ -119,8 +127,8 @@ const RoomPage: FC = () => {
   }, [listen, onUserExitRoom]);
 
   useEffect(() => {
-    const unSub = subscribeRoom();
-    return () => unSub();
+    // const unSub = subscribeRoom();
+    // return () => unSub();
   }, [subscribeRoom]);
 
   return (
@@ -130,6 +138,7 @@ const RoomPage: FC = () => {
         title={title}
         copyToClipboard={copyRoomLinkToClipboard}
         isCreator={creator === uid}
+        onStartGame={handleStartGame}
       />
       <StyledMultiplayerRaceStats scores={scores} />
       <StyledTypingInput

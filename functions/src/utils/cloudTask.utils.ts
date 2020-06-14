@@ -7,6 +7,7 @@ export interface CreateCloudTaskProps {
   queue?: string;
   functionName: string;
   payload: any;
+  headers?: { [key: string]: string };
 }
 
 export const callFunctionByCloudTask = ({
@@ -16,6 +17,7 @@ export const callFunctionByCloudTask = ({
   queue = 'firestore-ttl',
   functionName,
   payload,
+  headers = {},
 }) => {
   console.info(`CREATE: cloud task ${functionName}`);
   const tasksClient = new CloudTasksClient();
@@ -31,7 +33,7 @@ export const callFunctionByCloudTask = ({
       httpMethod: 'POST',
       url,
       body: Buffer.from(JSON.stringify(payload)).toString('base64'),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...headers },
     },
     scheduleTime: { seconds: time },
   };
