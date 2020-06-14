@@ -7,6 +7,8 @@ node_modules
 .cache
 # testing
 /coverage
+# secret
+*.protected.ts
 
 # production
 /build
