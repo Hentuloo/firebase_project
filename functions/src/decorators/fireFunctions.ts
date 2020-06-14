@@ -1,22 +1,22 @@
-import * as functions from 'firebase-functions';
 import { SUPPORTED_REGIONS } from 'firebase-functions';
+import 'reflect-metadata';
+import { MetadataT, FireFunctionsTypes } from './types';
 
-export type MethodOptions = {
+export type FireFunctionOptions = {
   region: typeof SUPPORTED_REGIONS[number];
-  type: 'onCall' | 'onRequest';
+  type: FireFunctionsTypes;
 };
 
-export function fireFunction(
-  options: MethodOptions,
-): MethodDecorator {
+export function fireFunction({
+  region,
+  type,
+}: FireFunctionOptions): MethodDecorator {
   return (target: object | any, key: string | symbol) => {
-    Object.getPrototypeOf(target[key]).options = options;
-    Object.getPrototypeOf(target[key]).fName = key as string;
+    Reflect.defineMetadata(
+      MetadataT.fireFunction,
+      { type, region },
+      target,
+      key,
+    );
   };
 }
-
-export interface Index {
-  [key: string]: any;
-}
-
-export type Context = functions.https.CallableContext;

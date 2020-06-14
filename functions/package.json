@@ -19,7 +19,8 @@
     "@google-cloud/tasks": "^2.0.0",
     "concurrently": "^5.2.0",
     "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0"
+    "firebase-functions": "^3.3.0",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@firebase/app-types": "^0.6.1",

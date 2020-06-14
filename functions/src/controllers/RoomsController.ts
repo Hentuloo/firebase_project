@@ -1,20 +1,19 @@
 import { firestore } from 'firebase-admin';
+import { https } from 'firebase-functions';
 import { fireFunction } from '../decorators/fireFunctions';
-import { fireMiddleware } from '../decorators/fireMiddleware';
-import { FunctionsIndex } from '../decorators/bindFirebaseControllers';
 import { useAuth } from '../middlewares/useAuth';
 import { useRequiredFields } from '../middlewares/useRequiredFields';
-
 import {
   useUserProfile,
   WithUserProfile,
 } from '../middlewares/useUserProfile';
-import { https } from 'firebase-functions';
 import {
   exitRoomAsCreator,
   exitRoomAsPlayer,
   addPlayerToRoom,
 } from '../utils/rooms.utils';
+import { use } from '../decorators/use';
+import { UserDocument } from '../data';
 
 interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;
@@ -28,17 +27,19 @@ interface GetAvaiableRoomsData {
   page?: number;
   perPage?: number;
 }
-
 interface CreateRoomData extends WithUserProfile {
   title: string;
   maxPlayersNumber: number;
   password?: string;
 }
-
-export class RoomsController extends FunctionsIndex {
-  @fireMiddleware(useRequiredFields('title', 'maxPlayersNumber'))
-  @fireMiddleware(useAuth)
-  @fireMiddleware(useUserProfile)
+interface ClearRoomPayload {
+  uid: string;
+  roomId: string;
+}
+export class RoomsController {
+  @use(useRequiredFields('title', 'maxPlayersNumber'))
+  @use(useAuth)
+  @use(useUserProfile)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async createRoom(data: CreateRoomData, context) {
     const { uid } = context.auth;
@@ -107,9 +108,9 @@ export class RoomsController extends FunctionsIndex {
     return { roomId: newRoomId, title, maxPlayersNumber, password };
   }
 
-  @fireMiddleware(useRequiredFields('roomId'))
-  @fireMiddleware(useAuth)
-  @fireMiddleware(useUserProfile)
+  @use(useRequiredFields('roomId'))
+  @use(useAuth)
+  @use(useUserProfile)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async joinRoom(data: JoinToOpenRoomData, context) {
     const { uid } = context.auth;
@@ -155,27 +156,26 @@ export class RoomsController extends FunctionsIndex {
         ok: true,
         code: 'You have access',
       };
-    } else {
-      if (!password) {
-        throw new https.HttpsError(
-          'unavailable',
-          'password is required',
-        );
-      }
-      if (password !== roomPassword) {
-        throw new https.HttpsError('unavailable', 'wrong password');
-      }
-
-      await addPlayerToRoom({ uid, displayName, photoURL, roomId });
-      return {
-        ok: true,
-        code: 'You have access',
-      };
     }
+    if (!password) {
+      throw new https.HttpsError(
+        'unavailable',
+        'password is required',
+      );
+    }
+    if (password !== roomPassword) {
+      throw new https.HttpsError('unavailable', 'wrong password');
+    }
+
+    await addPlayerToRoom({ uid, displayName, photoURL, roomId });
+    return {
+      ok: true,
+      code: 'You have access',
+    };
   }
 
-  @fireMiddleware(useRequiredFields('roomId'))
-  @fireMiddleware(useAuth)
+  @use(useRequiredFields('roomId'))
+  @use(useAuth)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async leaveFromRoom(data: LeaveFromOpenRoomData, context) {
     const { uid } = context.auth;
@@ -193,16 +193,48 @@ export class RoomsController extends FunctionsIndex {
         ok: true,
         code: 'You deleted room',
       };
-    } else {
-      exitRoomAsPlayer({ roomId, uid });
-      return {
-        ok: true,
-        code: 'You exit room',
-      };
     }
+    exitRoomAsPlayer({ roomId, uid });
+    return {
+      ok: true,
+      code: 'You exit room',
+    };
   }
 
-  @fireMiddleware(useAuth)
+  @fireFunction({ region: 'europe-west1', type: 'onRequest' })
+  async userExitRoom(req, res) {
+    const { uid, roomId } = req.body as ClearRoomPayload;
+
+    const userRef = firestore().doc(`users/${uid}`);
+    const userSnap = await userRef.get();
+    const { state, lastCreatedRoom, lastJoinedRoom } = {
+      ...userSnap.data(),
+    } as UserDocument;
+
+    if (!lastCreatedRoom && !lastJoinedRoom) {
+      userRef.update({
+        deleteRoomCloudTaskExist: firestore.FieldValue.delete(),
+      });
+      return;
+    }
+
+    //user is still offline now
+    if (state === 'offline') {
+      if (lastCreatedRoom) await exitRoomAsCreator({ roomId, uid });
+      if (lastJoinedRoom) await exitRoomAsPlayer({ roomId, uid });
+    } else {
+      //cancel delete room task
+      await userRef.update({
+        deleteRoomCloudTaskExist: firestore.FieldValue.delete(),
+      });
+    }
+    res.send({
+      ok: true,
+      code: 'You have access',
+    });
+  }
+
+  @use(useAuth)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async getAvaiableRooms(data: GetAvaiableRoomsData, context) {
     const { page = 1, perPage = 5 } = data;
@@ -232,7 +264,7 @@ export class RoomsController extends FunctionsIndex {
     }));
 
     return {
-      //All avaiable rooms
+      // All avaiable rooms
       rooms: [...openRooms, ...protectedRooms],
     };
   }
