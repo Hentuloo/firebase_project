@@ -44,10 +44,6 @@ export const FixedModal = styled.div`
   }
 `;
 
-interface FixedModalWrapperProps {
-  active?: boolean;
-}
-
 export const FixedModalWrapper = styled.div`
   &::before {
     position: fixed;
@@ -65,12 +61,27 @@ export const FixedModalWrapper = styled.div`
 
 interface ModalProps {
   children: React.ReactNode;
-  toggleActive: () => void;
+  toggleActive?: () => void;
 }
+
+export const ClearModal: FC<ModalProps> = ({
+  children,
+  toggleActive = () => null,
+  ...props
+}) => {
+  const ref = useDetectOutElementClick<HTMLDivElement>(toggleActive);
+  return (
+    <Portal>
+      <FixedModalWrapper {...props} ref={ref}>
+        {children}
+      </FixedModalWrapper>
+    </Portal>
+  );
+};
 
 export const Modal: FC<ModalProps> = ({
   children,
-  toggleActive,
+  toggleActive = () => null,
   ...props
 }) => {
   const ref = useDetectOutElementClick<HTMLDivElement>(toggleActive);

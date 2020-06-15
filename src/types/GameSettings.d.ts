@@ -1,8 +1,8 @@
 export interface GameSettings {
   registeredUsers: {
-    [uid: string]: { displayName: string; photoURL: string };
+    [uid: string]: { displayName: string; photoURL?: string };
   };
-  textId: string | null;
+  text: string | null;
   changesLength: number | null;
   startTimestamp: number | null;
   endTimestamp: number | null;
@@ -10,7 +10,7 @@ export interface GameSettings {
   maxPlayersNumber: number | null;
   creator: string;
   title: string;
-  created: string;
+  created: number;
 }
 export interface GameSettingsWithPassword extends GameSettings {
   password: string | boolean;

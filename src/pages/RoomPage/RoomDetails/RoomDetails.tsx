@@ -2,11 +2,14 @@ import React, { FC, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { BarDecorator } from 'components/atoms';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { getGameStatusRequestFlag } from 'store/selectors/gameSettings.selector';
+import Spiner from 'components/atoms/Spiner';
+import { RoomControllers } from './RoomControllers';
 import {
   RoomDetailsCard,
   RoomDetailsCardProps,
 } from './RoomDetailsCard';
-import { RoomControllers } from './RoomControllers';
 
 const Wrapper = styled.div`
   display: grid;
@@ -38,6 +41,7 @@ const RoomDetails: FC<RoomDetailsProps> = ({
   isCreator,
   onStartGame,
 }) => {
+  const gameStartRequest = useSelector(getGameStatusRequestFlag);
   const [showPlayersOnMobile, setShowPlayersOnMobile] = useState(
     false,
   );
@@ -69,6 +73,7 @@ const RoomDetails: FC<RoomDetailsProps> = ({
         showPlayers={handleTogglePlayersViewOnMobile}
         settings={handleOpenSettingsView}
       />
+      {gameStartRequest && <Spiner />}
     </Wrapper>
   );
 };

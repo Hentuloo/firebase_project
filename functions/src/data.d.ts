@@ -8,7 +8,7 @@ export interface UserDocument {
   lastJoinedRoom?: string;
 }
 export interface RoomDocument {
-  players: {
+  registeredUsers: {
     [uid: string]: { displayName: string; photoURL: string };
   };
   scores: {
@@ -22,7 +22,8 @@ export interface RoomDocument {
   title: string;
   maxPlayersNumber: number;
   password: string;
-  startTime: string;
+  startTimestamp: string;
+  endTimestamp: string;
 }
 interface RoomsCollection {
   rooms: {

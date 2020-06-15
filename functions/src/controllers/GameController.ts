@@ -34,16 +34,30 @@ export class GameController {
         'unavailable',
         "this room does'n exist",
       );
-    const { creator } = gameSnap.data() as RoomDocument;
+    const {
+      creator,
+      startTimestamp,
+      registeredUsers,
+    } = gameSnap.data() as RoomDocument;
+    if (startTimestamp)
+      throw new https.HttpsError(
+        'unavailable',
+        'game already is runned',
+      );
+    if (Object.keys(registeredUsers).length < 2)
+      throw new https.HttpsError(
+        'unavailable',
+        'Minimum two players can start game',
+      );
     if (creator !== uid)
       throw new https.HttpsError('unavailable', 'permision denied');
 
-    const startTimestamp = Date.now() / 1000 + 10;
-    const endTimestamp = Date.now() / 1000 + 70;
+    const start = Date.now() / 1000 + 10;
+    const end = Date.now() / 1000 + 70;
 
     await gameRef.update({
-      endTimestamp,
-      startTimestamp,
+      startTimestamp: start,
+      endTimestamp: end,
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
       cursorsStamps: [10, 22, 34],
@@ -52,7 +66,7 @@ export class GameController {
     callFunctionByCloudTask({
       functionName: 'stopGame',
       payload: { uid },
-      time: endTimestamp,
+      time: end,
       headers: {
         Authorization: context.rawRequest.headers.authorization,
       },

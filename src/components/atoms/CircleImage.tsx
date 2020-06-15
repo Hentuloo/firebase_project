@@ -31,7 +31,7 @@ const Image = styled.img`
 `;
 
 interface CircleImageProps {
-  src: string;
+  src?: string;
   className?: string;
 }
 

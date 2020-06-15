@@ -1,8 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { stickyModal } from 'components/molecules';
 import { UserLabel } from 'components/molecules/UserLabel';
 import { FilledButton } from 'components/atoms';
+import { useSelector } from 'react-redux';
+import {
+  getGameStatusRequestFlag,
+  getGameStartTimestamp,
+} from 'store/selectors/gameSettings.selector';
 
 interface WrapperProps {
   showOnMobile: boolean;
@@ -43,7 +48,7 @@ export interface RoomDetailsCardProps {
   users: {
     uid: string;
     displayName: string;
-    photoURL: string;
+    photoURL?: string;
   }[];
   showPlayersOnMobile: boolean;
   isCreator: boolean;
@@ -57,6 +62,14 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
   onStartGame,
   ...props
 }) => {
+  const gameStartRequest = useSelector(getGameStatusRequestFlag);
+  const startTimestamp = useSelector(getGameStartTimestamp);
+
+  const showStartButtonFlag = useMemo(
+    () => users.length > 1 && isCreator && startTimestamp === null,
+    [isCreator, startTimestamp, users.length],
+  );
+
   return (
     <Wrapper showOnMobile={showPlayersOnMobile} {...props}>
       {users.map(({ uid, photoURL, displayName }) => (
@@ -72,11 +85,14 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
           Aby rozpocząć potrzeba minimum dwóch graczy.
         </SmallText>
       )}
-      {/* {users.length > 1 && isCreator && ( */}
-      <StyledFilledButton onClick={onStartGame}>
-        Start!
-      </StyledFilledButton>
-      {/* )} */}
+      {showStartButtonFlag && (
+        <StyledFilledButton
+          disabled={gameStartRequest === true}
+          onClick={onStartGame}
+        >
+          Start!
+        </StyledFilledButton>
+      )}
     </Wrapper>
   );
 };

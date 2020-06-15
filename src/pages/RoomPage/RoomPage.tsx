@@ -17,13 +17,20 @@ import { DarkModeButtonFixed } from 'components/molecules/DarkModeButton';
 import { TypingInput } from 'components/organisms';
 import { getUser } from 'store/selectors/user.selector';
 import { getGameScoresByRegisteredUsers } from 'store/selectors/gameScores.selector';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import { gameStartRequest } from 'store/actions/gameSettings.actions';
 import RoomDetails from './RoomDetails/RoomDetails';
+import { LigthsTimesModal } from './LigthsTimesModal';
+
+dayjs.extend(duration);
 
 const Wrapper = styled.div`
   display: grid;
   width: 90%;
   max-width: 1400px;
-  margin: 20px auto;
+  padding: 20px 0px;
+  margin: 0px auto;
   ${({ theme }) => theme.mediaQuery.md} {
     min-height: 100vh;
     grid-template-columns: 1fr 200px;
@@ -58,9 +65,13 @@ const RoomPage: FC = () => {
   const dispatch = useDispatch();
   const redirect = useRedirect();
   const { roomId } = useParams();
-  const { title, withPassword, creator } = useSelector(
-    getGameSettings,
-  );
+  const {
+    title,
+    withPassword,
+    creator,
+    timesOfLightChanges,
+    text,
+  } = useSelector(getGameSettings);
   const regiteredUsers = useSelector(getRegisteredUserInArray);
   const { uid } = useSelector(getUser);
   const scores = useSelector(getGameScoresByRegisteredUsers);
@@ -98,11 +109,13 @@ const RoomPage: FC = () => {
 
   const handleStartGame = useCallback(async () => {
     try {
+      dispatch(gameStartRequest(true));
       await FireFunctions.init().startGame(roomId);
     } catch ({ message }) {
       toast.error(message);
+      dispatch(gameStartRequest(false));
     }
-  }, [roomId]);
+  }, [dispatch, roomId]);
 
   const copyRoomLinkToClipboard = useCallback(async () => {
     try {
@@ -127,8 +140,8 @@ const RoomPage: FC = () => {
   }, [listen, onUserExitRoom]);
 
   useEffect(() => {
-    // const unSub = subscribeRoom();
-    // return () => unSub();
+    const unSub = subscribeRoom();
+    return () => unSub();
   }, [subscribeRoom]);
 
   return (
@@ -142,8 +155,14 @@ const RoomPage: FC = () => {
       />
       <StyledMultiplayerRaceStats scores={scores} />
       <StyledTypingInput
-        text="some nice training text"
+        text={text || 'some nice training text'}
         withoutCounters
+        render={({ resetGameState }) => (
+          <LigthsTimesModal
+            timesOfLightChanges={timesOfLightChanges}
+            onLigthsFilled={resetGameState}
+          />
+        )}
       />
       <DarkModeButtonFixed small />
     </Wrapper>

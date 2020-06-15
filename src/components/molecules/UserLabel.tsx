@@ -14,7 +14,7 @@ const StyledCircleImage = styled(CircleImage)`
 `;
 
 export interface UserLabelProps {
-  photoURL: string;
+  photoURL?: string;
   displayName: string;
   id: string;
 }
