@@ -3,4 +3,5 @@ export interface AvaiableRoomInterface {
   title: string;
   gameKey: string;
   playersNumber: number;
+  created: number;
 }

@@ -1,7 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 
 import { Link } from 'react-router-dom';
+import Tippy from '@tippyjs/react';
+import dayjs from 'dayjs';
 import { RoundButton } from './Button.styled';
 
 interface WrapperProps {
@@ -56,6 +58,7 @@ export const LockIcon = styled.span`
 
 interface RoomButtonProps {
   title: string;
+  created?: number;
   number?: number;
   withKey?: boolean;
   to?: string;
@@ -66,23 +69,34 @@ export const RoomButton: FC<RoomButtonProps> = ({
   number = null,
   withKey = false,
   to,
+  created,
   ...props
 }) => {
+  const createdTime = useMemo(
+    () => `Utworzono ${dayjs().from(dayjs(created), true)} temu`,
+    [created],
+  );
   return (
-    <Wrapper
-      as={to ? Link : 'button'}
-      to={to}
-      {...props}
-      title={title}
+    <Tippy
+      content={createdTime}
+      delay={300}
+      disabled={created === undefined}
     >
-      <ButtonText>
-        {title.length < 18 ? title : `${title.slice(0, 16)}...`}
-      </ButtonText>
-      <ArrowIcon className="fa fa-arrow-right" aria-hidden="true" />
-      {number && <NumberIcon>{number}</NumberIcon>}
-      {withKey && (
-        <LockIcon className="fa fa-lock" aria-hidden="true" />
-      )}
-    </Wrapper>
+      <Wrapper
+        as={to ? Link : 'button'}
+        to={to}
+        {...props}
+        title={title}
+      >
+        <ButtonText>
+          {title.length < 18 ? title : `${title.slice(0, 16)}...`}
+        </ButtonText>
+        <ArrowIcon className="fa fa-arrow-right" aria-hidden="true" />
+        {number && <NumberIcon>{number}</NumberIcon>}
+        {withKey && (
+          <LockIcon className="fa fa-lock" aria-hidden="true" />
+        )}
+      </Wrapper>
+    </Tippy>
   );
 };

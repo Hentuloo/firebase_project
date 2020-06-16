@@ -33,6 +33,7 @@ interface RoomsCollection {
         max: number;
         name: string;
         gameKey: string; // remove by function
+        created: number;
       };
     };
 
@@ -43,6 +44,7 @@ interface RoomsCollection {
         name: string;
         password: string; // remove by function
         gameKey: string; // remove by function
+        created: number;
       };
     };
   };

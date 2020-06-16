@@ -99,6 +99,7 @@ export class RoomsController {
           title,
           password: withPassword,
           playersNumber: maxPlayersNumber,
+          created: Date.now(),
         },
       });
     await firestore()

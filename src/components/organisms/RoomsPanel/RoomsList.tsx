@@ -72,21 +72,24 @@ const RoomsList: FC<RoomsListProps> = ({
   return (
     <Wrapper>
       <GroupWrapper ref={ref}>
-        {list.map(({ title, gameKey, password, playersNumber }) => {
-          const withPassword = !!password;
-          const to = `${
-            Constants.paths.joinRoom.path
-          }/${gameKey}/${title}${withPassword ? '/pass' : ''}`;
-          return (
-            <StyledRoomButton
-              key={gameKey}
-              number={withPassword ? undefined : playersNumber}
-              title={title}
-              withKey={withPassword}
-              to={to}
-            />
-          );
-        })}
+        {list.map(
+          ({ title, gameKey, password, playersNumber, created }) => {
+            const withPassword = !!password;
+            const to = `${
+              Constants.paths.joinRoom.path
+            }/${gameKey}/${title}${withPassword ? '/pass' : ''}`;
+            return (
+              <StyledRoomButton
+                key={gameKey}
+                number={withPassword ? undefined : playersNumber}
+                title={title}
+                withKey={withPassword}
+                to={to}
+                created={created}
+              />
+            );
+          },
+        )}
       </GroupWrapper>
       <PaginationArrows
         next={handleNextStep}
