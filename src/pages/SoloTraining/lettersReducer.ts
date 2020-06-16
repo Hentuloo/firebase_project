@@ -2,7 +2,7 @@ import {
   letters as initialLettersObject,
   LetterProperties,
 } from 'config/soloTrainingConfig';
-import { typingStatus } from 'hooks/useInputSpeedTest/types';
+import { TypingStatus } from 'hooks/useInputSpeedTest/types';
 
 export enum types {
   TOGGLE_LETTER,
@@ -16,7 +16,7 @@ export interface LetterObject extends LetterProperties {
   blocked: boolean;
 }
 export type StateType = {
-  typingStatus: typingStatus;
+  typingStatus: TypingStatus;
   fetchedSettings: boolean;
   letters: LetterObject[];
   firstBlockedLetterIndex: number;
@@ -31,7 +31,7 @@ const initialLetters = Object.keys(initialLettersObject).map(
 );
 
 export const lettersReducerInit: StateType = {
-  typingStatus: typingStatus.BEGINING,
+  typingStatus: TypingStatus.BEGINING,
   fetchedSettings: false,
   letters: initialLetters,
   lastActiveLetterIndex: 6,
@@ -43,7 +43,7 @@ export default (
   action: any,
 ): StateType => {
   if (action.type === types.TOGGLE_LETTER) {
-    if (state.typingStatus === typingStatus.TYPING) return state;
+    if (state.typingStatus === TypingStatus.TYPING) return state;
 
     const index = action.payload;
     if (index >= state.firstBlockedLetterIndex) return state;

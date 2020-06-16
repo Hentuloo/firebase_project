@@ -13,7 +13,7 @@ import {
 import { getUser } from 'store/selectors/user.selector';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
-import { typingStatus } from 'hooks/useInputSpeedTest/types';
+import { TypingStatus } from 'hooks/useInputSpeedTest/types';
 import { useSoloTrainingSnaps } from 'hooks/useSoloTrainingSnaps';
 import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 import TypingTab from './TypingTab/TypingTab';
@@ -84,7 +84,7 @@ const SoloTraining = () => {
     [fetchedSettings],
   );
   const handleChangeTypingStatus = useCallback(
-    (newStatus: typingStatus) =>
+    (newStatus: TypingStatus) =>
       dispatch({
         type: types.CHANGE_TYPING_STATUS,
         payload: newStatus,

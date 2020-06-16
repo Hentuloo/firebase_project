@@ -10,10 +10,13 @@ import {
   generateNewWords,
   updateSourceTextAction,
   changeTextAssetsAction,
+  startScheudleGame,
+  newMultiplayerGame,
+  NewMultiplayerGamePayload,
 } from './actions';
 
 import { typingObserver } from './observables/typingObserver';
-import { typingStatus } from './types';
+import { TypingStatus, TypingMood } from './types';
 import { timeObserver } from './observables/timeObserver';
 import { hotkeyObserver } from './observables/hotkeyObserver';
 import { timeStepsConfig } from './config';
@@ -27,7 +30,7 @@ const initValue = {
   wrongLength: 0,
   goodLength: 0,
   cursor: 0,
-  gameStatus: typingStatus.BEGINING,
+  gameStatus: TypingStatus.BEGINING,
   initialTimeSteps: timeStepsConfig.defaultTimeSteps,
   timeSteps: timeStepsConfig.defaultTimeSteps,
   accuracy: 100,
@@ -39,14 +42,16 @@ export interface UseInputSpeedTestProps {
   text: string;
   textAssets?: string[];
   time?: number;
+  gameType?: TypingMood;
   onTimeStepChange?: (props: UseInputSpeedTestReturnApi) => void;
-  onChangeGameStatus?: (status: typingStatus) => void;
+  onChangeGameStatus?: (status: TypingStatus) => void;
 }
 
 export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
   const {
     textAssets,
     text,
+    gameType = TypingMood.TIME,
     time: initialTimeSteps,
     onTimeStepChange,
     onChangeGameStatus,
@@ -60,6 +65,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     sourceTextInArray: text.split(' '),
     lengthsOfSourceText: text.split(' ').map(word => word.length),
     initialTimeSteps: initialTimeSteps || initValue.initialTimeSteps,
+    gameType,
   });
   const generateNewWordsFlag =
     textAssets &&
@@ -81,6 +87,12 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     [],
   );
 
+  const startNewMultiplayerGame = useCallback(
+    (settings: NewMultiplayerGamePayload) =>
+      dispatch(newMultiplayerGame(settings)),
+    [],
+  );
+
   const resetGameState = useCallback(
     () => dispatch(resetGameStateAction()),
     [],
@@ -93,7 +105,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
 
   useEffect(() => {
     // update text and textAsset
-    if (state.gameStatus === typingStatus.TYPING) return;
+    if (state.gameStatus === TypingStatus.TYPING) return;
 
     dispatch(updateSourceTextAction(text, textAssets));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,7 +113,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
 
   useEffect(() => {
     // update textAsset after level-changed
-    if (state.gameStatus === typingStatus.TYPING) {
+    if (state.gameStatus === TypingStatus.TYPING) {
       dispatch(changeTextAssetsAction(textAssets));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,20 +125,49 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     if (!el) return;
 
     const sub = typingObserver(el, dispatch);
-    sub.add(hotkeyObserver(dispatch));
     return () => sub.unsubscribe();
   }, []);
 
   useEffect(() => {
+    // hotkeyListener
+    const el = ref.current;
+    if (!el || state.gameType === TypingMood.MULTIPLAYER) return;
+
+    const sub = hotkeyObserver(dispatch);
+    return () => sub.unsubscribe();
+  }, [state.gameType]);
+
+  useEffect(() => {
     // time listener
     let timeSub: undefined | Subscription;
-    if (state.gameStatus === typingStatus.TYPING) {
+    if (state.gameStatus === TypingStatus.TYPING) {
       timeSub = timeObserver(dispatch);
     }
     return () => {
       if (timeSub) timeSub.unsubscribe();
     };
   }, [state.gameStatus]);
+
+  useEffect(() => {
+    // schedule time runner
+    if (!state.startTimestamp) return;
+    const timeToStart =
+      state.startTimestamp * 1000 - new Date().getTime() - 100;
+
+    if (timeToStart < 0) {
+      dispatch(startScheudleGame());
+      return;
+    }
+
+    const timeoutId = setTimeout(
+      () => dispatch(startScheudleGame()),
+      timeToStart,
+    );
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [state.startTimestamp]);
 
   useEffect(() => {
     // generate new text from textAssets
@@ -142,7 +183,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
   useEffect(() => {
     // reset input after game end
     let tmID: number;
-    if (state.gameStatus === typingStatus.END) {
+    if (state.gameStatus === TypingStatus.END) {
       tmID = setTimeout(() => resetGameState(), 4000);
     }
     return () => clearTimeout(tmID);
@@ -160,6 +201,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
       setNewInitialTime,
       resetGameState,
       timeConfig: timeStepsConfig,
+      startNewMultiplayerGame,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,6 +224,7 @@ export const useInputSpeedTest = (props: UseInputSpeedTestProps) => {
     setNewInitialTime,
     resetGameState,
     timeConfig: timeStepsConfig,
+    startNewMultiplayerGame,
   };
 };
 

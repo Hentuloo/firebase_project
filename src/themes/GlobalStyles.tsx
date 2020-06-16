@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import Toastify from './Toastify.styled';
+import tippyStyles from './tippy.styled';
 
 export default createGlobalStyle`
  html {
@@ -69,4 +70,5 @@ ul {
     }
 }
 ${Toastify}
+${tippyStyles}
 `;

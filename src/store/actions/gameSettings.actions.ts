@@ -3,7 +3,8 @@ import { types } from './types';
 
 export type GameSettnigsActions =
   | UpdateGameSettingsAction
-  | SetGameStartRequest;
+  | SetGameStartRequestAction
+  | ClearGameSettingsAction;
 
 interface UpdateGameSettingsAction {
   type: types.UPDATE_GAME_SETTINGS;
@@ -15,13 +16,19 @@ export const updateGameSettings = (
   type: types.UPDATE_GAME_SETTINGS,
   payload: st,
 });
-interface SetGameStartRequest {
+interface SetGameStartRequestAction {
   type: types.SET_GAME_START_REQUEST;
   payload: boolean;
 }
 export const gameStartRequest = (
   flag: boolean,
-): SetGameStartRequest => ({
+): SetGameStartRequestAction => ({
   type: types.SET_GAME_START_REQUEST,
   payload: flag,
+});
+interface ClearGameSettingsAction {
+  type: types.CLEAR_GAME_SETTINGS;
+}
+export const clearGameSettings = (): ClearGameSettingsAction => ({
+  type: types.CLEAR_GAME_SETTINGS,
 });

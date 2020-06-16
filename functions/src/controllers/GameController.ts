@@ -1,5 +1,5 @@
 import { firestore } from 'firebase-admin';
-import { https } from 'firebase-functions';
+import { https, Response } from 'firebase-functions';
 import { fireFunction } from '../decorators/fireFunctions';
 import { useAuth, useBearerAuth } from '../middlewares/useAuth';
 import { useRequiredFields } from '../middlewares/useRequiredFields';
@@ -27,6 +27,7 @@ export class GameController {
     const { uid } = context.auth;
     const { roomId } = data;
     const gameRef = firestore().doc(`games/${roomId}`);
+    const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
 
     const gameSnap = await gameRef.get();
     if (!gameSnap.exists)
@@ -60,10 +61,13 @@ export class GameController {
       endTimestamp: end,
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
+    });
+    await gameScoresRef.update({
+      startTimestamp: start,
       cursorsStamps: [10, 22, 34],
     });
 
-    callFunctionByCloudTask({
+    await callFunctionByCloudTask({
       functionName: 'stopGame',
       payload: { uid },
       time: end,
@@ -78,10 +82,10 @@ export class GameController {
   }
   @use(useBearerAuth)
   @fireFunction({ region: 'europe-west1', type: 'onRequest' })
-  async stopGame(data: StartGameProps, context) {
-    console.log('Zatrzymuje !!!!!!!!!');
-    return {
+  async stopGame(req: Request, res: Response) {
+    res.send({
       ok: true,
-    };
+      code: 'Zatrzymu22e !!!!!!!!!',
+    });
   }
 }

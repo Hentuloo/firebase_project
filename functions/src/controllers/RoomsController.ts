@@ -72,7 +72,6 @@ export class RoomsController {
         changesLength: null,
         startTimestamp: null,
         endTimestamp: null,
-        cursorsStamps: [],
         password: withPassword ? password : false,
         creator: uid,
         created: Date.now(),
@@ -90,6 +89,8 @@ export class RoomsController {
             goodLength: 0,
           },
         },
+        cursorsStamps: [],
+        startTimestamp: null,
       });
 
     await firestore()

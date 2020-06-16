@@ -4,7 +4,7 @@ import { InputNumber } from 'components/atoms';
 import repeatIcon from 'assets/svg/icons/repeatIcon.svg';
 import chartIcon from 'assets/svg/icons/chartIcon.svg';
 import circles from 'assets/svg/circles1.svg';
-import { typingStatus } from 'hooks/useInputSpeedTest/types';
+import { TypingStatus } from 'hooks/useInputSpeedTest/types';
 import gsap from 'gsap';
 import { CircledButtonWithImage } from 'components/atoms/Button/CircledButtonWithImage';
 import { AddSnap } from '../types';
@@ -67,7 +67,7 @@ export interface ControllersProps {
   timeStep: number;
   setTime: (props: number) => any;
   reset: () => any;
-  gameStatus: typingStatus;
+  gameStatus: TypingStatus;
   stepsInOneMinute?: number;
   changeTab: () => void;
   addSnap: AddSnap;
@@ -90,7 +90,7 @@ export const Controllers: FC<ControllersProps> = ({
   const chartAttentionCircles = useRef<HTMLImageElement>(null);
 
   const handleChangeTab = () => {
-    if (gameStatus === typingStatus.TYPING) return;
+    if (gameStatus === TypingStatus.TYPING) return;
     changeTab();
   };
   const newChartAnim = () => {
@@ -108,7 +108,7 @@ export const Controllers: FC<ControllersProps> = ({
   };
 
   useEffect(() => {
-    if (gameStatus === typingStatus.END) {
+    if (gameStatus === TypingStatus.END) {
       addSnap(initTime, accuracy, speed);
       newChartAnim();
     }
@@ -125,7 +125,7 @@ export const Controllers: FC<ControllersProps> = ({
           value={timeStep}
           onChange={handleSetTime}
           title="Ustaw czas [CTR+&uarr;&darr;]"
-          disable={gameStatus === typingStatus.TYPING}
+          disable={gameStatus === TypingStatus.TYPING}
         />
         <ClockIcon className="fa fa-clock-o" aria-hidden="true" />
       </ClockWrapper>
@@ -138,7 +138,7 @@ export const Controllers: FC<ControllersProps> = ({
       <div>
         <CircledButtonWithImage
           disabled={
-            disableCharts || gameStatus === typingStatus.TYPING
+            disableCharts || gameStatus === TypingStatus.TYPING
           }
           onClick={handleChangeTab}
           title="Wykresy"

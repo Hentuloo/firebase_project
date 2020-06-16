@@ -7,7 +7,9 @@ export type ActionCreatorsBasicTypse =
   | ResetGameStateAction
   | GenerateNewWordsAction
   | UpdateSourceTextAction
-  | ChangeTextAssetsAction;
+  | ChangeTextAssetsAction
+  | NewMultiplayerGame
+  | StartScheudleGame;
 
 export type GenerateNewWordsAction = {
   type: types.GENERATE_WORDS;
@@ -44,14 +46,32 @@ export const changeTextAssetsAction = (
   type: types.CHANGE_TEXT_ASSETS,
   payload: textAssets,
 });
-
 export type ResetGameStateAction = {
   type: types.RESET_GAME;
 };
 export const resetGameStateAction = (): ResetGameStateAction => ({
   type: types.RESET_GAME,
 });
-
+export interface NewMultiplayerGamePayload {
+  secondsToEnd: number;
+  startTimestamp: number;
+}
+export type NewMultiplayerGame = {
+  type: types.NEW_MULTIPLAYER_GAME;
+  payload: NewMultiplayerGamePayload;
+};
+export const newMultiplayerGame = (
+  settings: NewMultiplayerGamePayload,
+): NewMultiplayerGame => ({
+  type: types.NEW_MULTIPLAYER_GAME,
+  payload: settings,
+});
+export type StartScheudleGame = {
+  type: types.START_SCHEUDLE_GAME;
+};
+export const startScheudleGame = (): StartScheudleGame => ({
+  type: types.START_SCHEUDLE_GAME,
+});
 export type SetGeneralTextAction = {
   type: types.SET_GENERAL_TEXT;
   payload: string;

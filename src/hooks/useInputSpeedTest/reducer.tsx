@@ -4,7 +4,7 @@ import {
   getStatePieceWithNewLetter,
   generateRandomWords,
 } from './utils';
-import { types, Action, typingStatus } from './types';
+import { types, Action, TypingStatus, TypingMood } from './types';
 import { timeStepsConfig } from './config';
 
 export type StateType = {
@@ -20,20 +20,23 @@ export type StateType = {
   sourceText: string;
   sourceTextInArray: string[];
   lengthsOfSourceText: number[];
-  gameStatus: typingStatus;
+  gameStatus: TypingStatus;
   timeSteps: number;
   initialTimeSteps: number;
   accuracy: number;
   speed: number;
+  gameType: TypingMood;
+  startTimestamp?: number;
 };
 
 export const reducer = (
   state: StateType,
   action: Action,
 ): StateType => {
-  const isBegining = state.gameStatus === typingStatus.BEGINING;
-  const isTyping = state.gameStatus === typingStatus.TYPING;
-  const isEnd = state.gameStatus === typingStatus.END;
+  const isBegining = state.gameStatus === TypingStatus.BEGINING;
+  const isTyping = state.gameStatus === TypingStatus.TYPING;
+  const isEnd = state.gameStatus === TypingStatus.END;
+  const isMultiplayer = state.gameType === TypingMood.MULTIPLAYER;
 
   switch (action.type) {
     case types.SET_GENERAL_TEXT:
@@ -95,12 +98,13 @@ export const reducer = (
         speed,
         timeSteps: newTimeStep,
         gameStatus:
-          newTimeStep === 0 ? typingStatus.END : state.gameStatus,
+          newTimeStep === 0 ? TypingStatus.END : state.gameStatus,
       };
     }
 
     case types.INPUT_NEW_LETTER: {
       if (isEnd) return state;
+      if (isBegining && isMultiplayer) return state;
       const {
         payload,
         payload: { inputValue },
@@ -113,13 +117,14 @@ export const reducer = (
         ...state,
         ...getStatePieceWithNewLetter(state, payload),
         gameStatus: isLastLetter
-          ? typingStatus.END
-          : typingStatus.TYPING,
+          ? TypingStatus.END
+          : TypingStatus.TYPING,
       };
     }
 
     case types.INPUT_BACKSPACE: {
       if (isEnd) return state;
+      if (isBegining && isMultiplayer) return state;
       return {
         ...state,
         writtenWords: removeLeterFromLastWord(state.writtenWords),
@@ -145,7 +150,7 @@ export const reducer = (
         wrongLength: 0,
         goodLength: 0,
         cursor: 0,
-        gameStatus: typingStatus.BEGINING,
+        gameStatus: TypingStatus.BEGINING,
         timeSteps: state.initialTimeSteps,
         accuracy: 100,
         speed: 0,
@@ -213,6 +218,33 @@ export const reducer = (
         sourceTextInArray,
         lengthsOfSourceText,
         textAssets: newTextAssets,
+      };
+    }
+    case types.NEW_MULTIPLAYER_GAME: {
+      const { secondsToEnd, startTimestamp } = action.payload;
+      return {
+        ...state,
+        inputValue: '',
+        writtenWords: [] as string[],
+        letterWasAddedFlag: true,
+        goodText: '',
+        wrongText: '',
+        wrongLength: 0,
+        goodLength: 0,
+        cursor: 0,
+        gameStatus: TypingStatus.BEGINING,
+        gameType: TypingMood.MULTIPLAYER,
+        timeSteps: secondsToEnd,
+        accuracy: 100,
+        speed: 0,
+        startTimestamp,
+      };
+    }
+    case types.START_SCHEUDLE_GAME: {
+      console.log('Start game!!!!!!');
+      return {
+        ...state,
+        gameStatus: TypingStatus.TYPING,
       };
     }
 

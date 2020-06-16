@@ -13,7 +13,7 @@ import { soloTrainingWords } from 'config/soloTrainingWords';
 import { shuffleArray } from 'utils';
 import { Subject } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
-import { typingStatus } from 'hooks/useInputSpeedTest/types';
+import { TypingStatus } from 'hooks/useInputSpeedTest/types';
 import { useHistory } from 'react-router-dom';
 import { Constants } from 'config/Constants';
 import { UseInputSpeedTestReturnApi } from 'hooks/useInputSpeedTest/useInputSpeedTest';
@@ -70,7 +70,7 @@ export interface TypingTabProps {
   snapsLength: number;
   levelUp: () => void;
   firstBlockedLetterIndex: number;
-  onChangeTypingSatus: (status: typingStatus) => void;
+  onChangeTypingSatus: (status: TypingStatus) => void;
 }
 
 const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(

@@ -1,6 +1,6 @@
 import React, { useEffect, FC, useCallback } from 'react';
 import styled from 'styled-components';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Db, FireFunctions } from 'fb';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -14,14 +14,16 @@ import { copyToClipBoard } from 'utils';
 import { clearRoomFromAvaiable } from 'store/actions/rooms.actions';
 import { MultiplayerRaceStats } from 'components/organisms/MultiplayerRaceStats/MultiplayerRaceStats';
 import { DarkModeButtonFixed } from 'components/molecules/DarkModeButton';
-import { TypingInput } from 'components/organisms';
 import { getUser } from 'store/selectors/user.selector';
 import { getGameScoresByRegisteredUsers } from 'store/selectors/gameScores.selector';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { gameStartRequest } from 'store/actions/gameSettings.actions';
+import {
+  gameStartRequest,
+  clearGameSettings,
+} from 'store/actions/gameSettings.actions';
 import RoomDetails from './RoomDetails/RoomDetails';
-import { LigthsTimesModal } from './LigthsTimesModal';
+import { GameInput } from './GameInput';
 
 dayjs.extend(duration);
 
@@ -55,23 +57,14 @@ const StyledMultiplayerRaceStats = styled(MultiplayerRaceStats)`
     max-width: 800px;
   }
 `;
-const StyledTypingInput = styled(TypingInput)`
-  width: 100%;
-  max-width: 700px;
-  margin: 0px auto;
-`;
+
 const RoomPage: FC = () => {
-  const { listen } = useHistory();
   const dispatch = useDispatch();
   const redirect = useRedirect();
   const { roomId } = useParams();
-  const {
-    title,
-    withPassword,
-    creator,
-    timesOfLightChanges,
-    text,
-  } = useSelector(getGameSettings);
+  const { title, withPassword, creator } = useSelector(
+    getGameSettings,
+  );
   const regiteredUsers = useSelector(getRegisteredUserInArray);
   const { uid } = useSelector(getUser);
   const scores = useSelector(getGameScoresByRegisteredUsers);
@@ -132,17 +125,17 @@ const RoomPage: FC = () => {
   }, [roomId, title, withPassword]);
 
   useEffect(() => {
-    // on route change remove user from game
-    const unsubRouteChange = listen(() => {
-      onUserExitRoom(true);
-    });
-    return () => unsubRouteChange();
-  }, [listen, onUserExitRoom]);
-
-  useEffect(() => {
     const unSub = subscribeRoom();
     return () => unSub();
   }, [subscribeRoom]);
+
+  useEffect(() => {
+    // clear room (in store and cloud) on route change
+    return () => {
+      onUserExitRoom(true);
+      dispatch(clearGameSettings());
+    };
+  }, [dispatch, onUserExitRoom]);
 
   return (
     <Wrapper>
@@ -154,16 +147,7 @@ const RoomPage: FC = () => {
         onStartGame={handleStartGame}
       />
       <StyledMultiplayerRaceStats scores={scores} />
-      <StyledTypingInput
-        text={text || 'some nice training text'}
-        withoutCounters
-        render={({ resetGameState }) => (
-          <LigthsTimesModal
-            timesOfLightChanges={timesOfLightChanges}
-            onLigthsFilled={resetGameState}
-          />
-        )}
-      />
+      <GameInput />
       <DarkModeButtonFixed small />
     </Wrapper>
   );

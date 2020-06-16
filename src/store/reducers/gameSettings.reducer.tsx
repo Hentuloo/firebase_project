@@ -89,6 +89,25 @@ export default (state = init, action: Action): GameSettingsState => {
     case types.SET_GAME_START_REQUEST: {
       return { ...state, gameStartRequest: action.payload };
     }
+    case types.CLEAR_GAME_SETTINGS: {
+      return {
+        registeredUsers: {},
+        text:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
+        changesLength: null,
+        startTimestamp: null,
+        endTimestamp: null,
+        cursorsStamps: [],
+        maxPlayersNumber: 0,
+        creator: '',
+        title: 'my fancy room',
+        withPassword: false,
+        created: new Date().getDate(),
+        timesOfLightChanges: null,
+        gameAlreadyStated: false,
+        gameStartRequest: false,
+      };
+    }
     default:
       return state;
   }

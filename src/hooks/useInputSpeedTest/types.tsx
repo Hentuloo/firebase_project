@@ -13,14 +13,17 @@ export enum types {
   GENERATE_WORDS = 'GENERATE_WORDS',
   UPDATE_SOURCE_TEXT = 'UPDATE_SOURCE_TEXT',
   CHANGE_TEXT_ASSETS = 'CHANGE_TEXT_ASSETS',
+  NEW_MULTIPLAYER_GAME = 'NEW_MULTIPLAYER_GAME',
+  START_SCHEUDLE_GAME = 'START_SCHEUDLE_GAME',
 }
 
-export enum typingMood {
+export enum TypingMood {
   TIME,
   TEXT,
+  MULTIPLAYER,
 }
 
-export enum typingStatus {
+export enum TypingStatus {
   BEGINING,
   TYPING,
   END,

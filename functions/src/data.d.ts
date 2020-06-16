@@ -57,7 +57,6 @@ export interface GameSettingsDoc {
   changesLength: number;
   startTimestamp: number | null;
   endTimestamp: number | null;
-  cursorsStamps: number[];
   password: string;
   maxPlayersNumber: number;
 }
@@ -71,6 +70,8 @@ export interface GameScoresDoc {
       goodLength: number;
     };
   };
+  cursorsStamps: string | null;
+  startTimestamp: number | null;
 }
 /*
 1. admin create new room
