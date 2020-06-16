@@ -77,7 +77,7 @@ export class RoomsController {
         created: Date.now(),
       });
 
-    await firestore()
+    firestore()
       .doc(`gamesScores/${newRoomId}`)
       .set({
         scores: {
@@ -93,7 +93,7 @@ export class RoomsController {
         startTimestamp: null,
       });
 
-    await firestore()
+    firestore()
       .doc(`rooms/${withPassword ? 'protected' : 'open'}`)
       .update({
         [newRoomId]: {
@@ -103,7 +103,7 @@ export class RoomsController {
           created: Date.now(),
         },
       });
-    await firestore()
+    firestore()
       .doc(`users/${uid}`)
       .update({ lastCreatedRoom: newRoomId });
 
@@ -153,7 +153,7 @@ export class RoomsController {
     // user doesn't exist
     // check if room need password
     if (roomPassword === false) {
-      await addPlayerToRoom({ uid, displayName, photoURL, roomId });
+      addPlayerToRoom({ uid, displayName, photoURL, roomId });
       return {
         ok: true,
         code: 'You have access',
@@ -169,7 +169,7 @@ export class RoomsController {
       throw new https.HttpsError('unavailable', 'wrong password');
     }
 
-    await addPlayerToRoom({ uid, displayName, photoURL, roomId });
+    addPlayerToRoom({ uid, displayName, photoURL, roomId });
     return {
       ok: true,
       code: 'You have access',
@@ -190,7 +190,7 @@ export class RoomsController {
 
     // user is a creator -> delete all dependencies
     if (creator === uid) {
-      await exitRoomAsCreator({ roomId, uid });
+      exitRoomAsCreator({ roomId, uid });
       return {
         ok: true,
         code: 'You deleted room',
@@ -218,13 +218,16 @@ export class RoomsController {
       userRef.update({
         cloudTaskRelatedRoom: firestore.FieldValue.delete(),
       });
-      return;
+      res.send({
+        ok: true,
+        code: 'Room deleted',
+      });
     }
 
     //user is still offline now
     if (state === 'offline') {
-      if (lastCreatedRoom) await exitRoomAsCreator({ roomId, uid });
-      if (lastJoinedRoom) await exitRoomAsPlayer({ roomId, uid });
+      if (lastCreatedRoom) exitRoomAsCreator({ roomId, uid });
+      if (lastJoinedRoom) exitRoomAsPlayer({ roomId, uid });
     }
 
     res.send({

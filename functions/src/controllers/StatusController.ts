@@ -8,7 +8,10 @@ import { listenDatabase } from '../decorators/listenDatabase';
 import { config } from 'firebase-functions';
 
 export class StatusController {
-  @listenDatabase({ type: 'onUpdate', ref: '/status/{userId}' })
+  @listenDatabase({
+    type: 'onUpdate',
+    ref: '/status/{userId}',
+  })
   async onUserStatusChanged(change, context) {
     const uid = context.params.userId;
     const userRef = firestore().doc(`users/${uid}`);
@@ -37,14 +40,17 @@ export class StatusController {
             roomId: lastCreatedRoom || lastJoinedRoom,
             uid,
           },
-          headers: { internallcall: config().internallcall.key },
+          headers: {
+            internallcall: config().internallcall.key,
+          },
         });
         cloudTaskName = response.name;
       }
+
       userRef.update({
         state: 'offline',
         lastChanged: firestore.FieldValue.serverTimestamp(),
-        cloudTaskDeleteRelatedRoom: cloudTaskName,
+        cloudTaskDeleteRelatedRoom: cloudTaskName || null,
       });
     }
     if (state === 'online') {
@@ -60,5 +66,6 @@ export class StatusController {
         cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete(),
       });
     }
+    return { ok: true };
   }
 }
