@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tippyjs/react": "^4.0.2",
     "@types/chart.js": "^2.9.20",
     "@types/react-beforeunload": "^2.1.0",
     "chart.js": "^2.9.3",
@@ -25,6 +26,7 @@
     "reselect": "^4.0.0",
     "rxjs": "^6.5.5",
     "styled-components": "^5.0.1",
+    "tippy.js": "^6.2.3",
     "typescript": "^3.8.3"
   },
   "scripts": {

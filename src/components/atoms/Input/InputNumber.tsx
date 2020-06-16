@@ -10,6 +10,7 @@ import {
   checkIfNumberIsInComprtment,
   getNumbersFromCompartment,
 } from 'utils';
+import Tippy from '@tippyjs/react';
 import gsap, { Draggable } from 'gsap/all';
 
 const circleSize = 50;
@@ -72,6 +73,7 @@ export const InputNumber: FC<InputNumberProps> = ({
   max = 10,
   min = 1,
   disable = false,
+  title,
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -134,23 +136,26 @@ export const InputNumber: FC<InputNumberProps> = ({
   }, [numbers, onChange, disable]);
 
   return (
-    <Wrapper {...props}>
-      <input
-        className="sr-only"
-        type="number"
-        onChange={handleChangeNumber}
-        value={value}
-        min={min}
-        max={max}
-      />
+    <Tippy content={title} delay={300} disabled={title === undefined}>
+      <Wrapper {...props}>
+        {title && <span className="sr-only">{title}</span>}
+        <input
+          className="sr-only"
+          type="number"
+          onChange={handleChangeNumber}
+          value={value}
+          min={min}
+          max={max}
+        />
 
-      <NumbersWrapper ref={ref}>
-        {numbers.map(number => (
-          <NumberElement key={number} off={disable}>
-            {number}
-          </NumberElement>
-        ))}
-      </NumbersWrapper>
-    </Wrapper>
+        <NumbersWrapper ref={ref}>
+          {numbers.map(number => (
+            <NumberElement key={number} off={disable}>
+              {number}
+            </NumberElement>
+          ))}
+        </NumbersWrapper>
+      </Wrapper>
+    </Tippy>
   );
 };

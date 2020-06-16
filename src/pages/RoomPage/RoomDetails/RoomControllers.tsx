@@ -42,7 +42,7 @@ export const RoomControllers: FC<RoomControllersProps> = ({
   return (
     <Wrapper {...props}>
       <StyledSettingsButton
-        title="Pokaż ustawienia pokoju"
+        title="Pokaż ustawienia pokoju(coming soon)"
         onClick={settings}
         src={moreIcon}
         alt="Ustawienia"

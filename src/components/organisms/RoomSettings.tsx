@@ -129,8 +129,11 @@ export const RoomSetings: FC<RoomSetingsProps> = ({
       <Label>
         Wymagane hasło:
         <InputCheckbox
-          checked={values.withPassword}
-          onChange={checked => setFieldValue('withPassword', checked)}
+          title="Wymagane hasło?"
+          checked={!values.withPassword}
+          onChange={checked =>
+            setFieldValue('withPassword', !checked)
+          }
         />
       </Label>
       {values.withPassword && (

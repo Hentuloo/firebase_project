@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import Tippy from '@tippyjs/react';
 import { CircleButton, ButtonProps } from './Button.styled';
 
 const Wrapper = styled.div``;
@@ -27,7 +28,7 @@ export interface CircledButtonWithImageProps extends ButtonProps {
 export const CircledButtonWithImage: FC<CircledButtonWithImageProps> = ({
   onClick,
   src,
-  title = 'Przycisk',
+  title,
   alt = '',
   disabled = undefined,
   as,
@@ -35,16 +36,18 @@ export const CircledButtonWithImage: FC<CircledButtonWithImageProps> = ({
   ...props
 }) => {
   return (
-    <Wrapper {...props}>
-      <StyledCircleButton
-        as={as}
-        to={to}
-        onClick={onClick}
-        title={title}
-        disabled={disabled}
-      >
-        <Image src={src} alt={alt} />
-      </StyledCircleButton>
-    </Wrapper>
+    <Tippy content={title} delay={300} disabled={title === undefined}>
+      <Wrapper {...props}>
+        <StyledCircleButton
+          as={as}
+          to={to}
+          onClick={onClick}
+          disabled={disabled}
+        >
+          {title && <span className="sr-only">{title}</span>}
+          <Image src={src} alt={alt} />
+        </StyledCircleButton>
+      </Wrapper>
+    </Tippy>
   );
 };

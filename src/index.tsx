@@ -12,6 +12,7 @@ import { WithStylesTheme } from 'hoc/WithStylesTheme';
 
 // Other
 import { ToastContainer } from 'react-toastify';
+import 'tippy.js/dist/tippy.css';
 import 'config/config';
 import Root from './pages/Root';
 

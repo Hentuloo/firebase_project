@@ -1,5 +1,6 @@
 import React, { FC, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import Tippy from '@tippyjs/react';
 
 const Wrapper = styled.div`
   display: grid;
@@ -30,6 +31,7 @@ export const InputCheckbox: FC<InputCheckboxProps> = ({
   checked,
   onChange,
   inputProps,
+  title,
   ...props
 }) => {
   const [isChecked, setChecked] = useState(checked);
@@ -41,15 +43,17 @@ export const InputCheckbox: FC<InputCheckboxProps> = ({
   }, [isChecked, onChange]);
 
   return (
-    <Wrapper {...props}>
-      <Input
-        className="sr-only"
-        type="checkbox"
-        onChange={handleChange}
-        checked={isChecked}
-        {...inputProps}
-      />
-      <span className={`fa fa-${isChecked ? 'times' : 'check'}`} />
-    </Wrapper>
+    <Tippy content={title} delay={300} disabled={title === undefined}>
+      <Wrapper {...props}>
+        <Input
+          className="sr-only"
+          type="checkbox"
+          onChange={handleChange}
+          checked={isChecked}
+          {...inputProps}
+        />
+        <span className={`fa fa-${isChecked ? 'times' : 'check'}`} />
+      </Wrapper>
+    </Tippy>
   );
 };
