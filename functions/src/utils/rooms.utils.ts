@@ -86,10 +86,12 @@ export const addPlayerToRoom = async ({
   const scoresPromise = gameScoreRef.update({
     [`scores.${uid}`]: {
       changes: 0,
-      timestamp: 0,
       cursor: 0,
-      wrongLength: 0,
-      goodLength: 0,
+      lastChangesDate: 0,
+      wpmSpeed: 0,
+      accurancy: 0,
+      points: 0,
+      progress: 0,
     },
   });
 

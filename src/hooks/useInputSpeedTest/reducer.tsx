@@ -103,13 +103,12 @@ export const reducer = (
     }
 
     case types.INPUT_NEW_LETTER: {
-      if (isEnd) return state;
-      if (isBegining && isMultiplayer) return state;
+      if (isEnd || isBegining) return state;
+
       const {
         payload,
         payload: { inputValue },
       } = action;
-
       const isLastLetter =
         inputValue.length === state.sourceText.length;
 
@@ -135,12 +134,14 @@ export const reducer = (
       };
     }
     case types.RESET_GAME: {
+      if (isMultiplayer)
+        return { ...state, gameStatus: TypingStatus.BEGINING };
+
       const {
         randomWords,
         sourceText,
         lengths,
       } = generateRandomWords(state.textAssets);
-
       return {
         ...state,
         inputValue: '',
@@ -241,7 +242,6 @@ export const reducer = (
       };
     }
     case types.START_SCHEUDLE_GAME: {
-      console.log('Start game!!!!!!');
       return {
         ...state,
         gameStatus: TypingStatus.TYPING,

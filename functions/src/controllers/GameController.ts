@@ -4,17 +4,16 @@ import { fireFunction } from '../decorators/fireFunctions';
 import { useAuth, useBearerAuth } from '../middlewares/useAuth';
 import { useRequiredFields } from '../middlewares/useRequiredFields';
 import { use } from '../decorators/use';
-import { RoomDocument } from '../data';
+import { RoomDocument, GameScoresDoc } from '../data';
 import { callFunctionByCloudTask } from '../utils/cloudTask.utils';
 
 interface StartGameProps {
   roomId: string;
 }
 
-interface StartGameCountingProps {
-  uid: string;
+interface CallPointReachedProps {
   roomId: string;
-  tickToStart: number;
+  accuracy: number;
 }
 export class GameController {
   @use(useRequiredFields('roomId'))
@@ -53,18 +52,25 @@ export class GameController {
     if (creator !== uid)
       throw new https.HttpsError('unavailable', 'permision denied');
 
+    // text and cursors get from db
+    const text =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.';
+    const pointsNumber = text.length / 20; //5
+    // const cursorsStamp = Array.from(6)
+    const cursorsStamps = [20, 40, 60, 80, 100, 118];
+    const writtenWordsOnCursorPoint = [6, 10, 14, 20, 25, 33];
     const start = Date.now() / 1000 + 10;
     const end = Date.now() / 1000 + 70;
-
-    await gameRef.update({
+    gameRef.update({
       startTimestamp: start,
       endTimestamp: end,
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
+      text,
+      cursorsStamps,
     });
-    await gameScoresRef.update({
+    gameScoresRef.update({
       startTimestamp: start,
-      cursorsStamps: [10, 22, 34],
+      cursorsStamps,
+      writtenWordsOnCursorPoint,
     });
 
     await callFunctionByCloudTask({
@@ -78,6 +84,70 @@ export class GameController {
 
     return {
       ok: true,
+    };
+  }
+  @use(useRequiredFields('roomId', 'accuracy'))
+  @use(useAuth)
+  @fireFunction({ region: 'europe-west1', type: 'onCall' })
+  async callGamePointReached(
+    data: CallPointReachedProps,
+    context: https.CallableContext,
+  ) {
+    const { uid } = context.auth;
+    const { roomId, accuracy } = data;
+
+    const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
+
+    const scoreSnap = await gameScoresRef.get();
+    if (!scoreSnap.exists)
+      throw new https.HttpsError(
+        'unavailable',
+        "this room does'n exist",
+      );
+    const score = scoreSnap.data() as GameScoresDoc;
+    const {
+      cursorsStamps,
+      startTimestamp,
+      scores: { [uid]: userScores },
+    } = score;
+    if (!userScores)
+      throw new https.HttpsError(
+        'unavailable',
+        "You don't have permisions to this room",
+      );
+    if (startTimestamp > Date.now())
+      throw new https.HttpsError(
+        'unavailable',
+        'the game is not yet available',
+      );
+
+    if (
+      (!userScores.lastChangesDate &&
+        Date.now() - startTimestamp * 1000 < 400) ||
+      (userScores.lastChangesDate &&
+        Date.now() - userScores.lastChangesDate < 300)
+    )
+      throw new https.HttpsError('unavailable', 'too fast!!');
+
+    const activeCursorPoint = cursorsStamps[userScores.changes];
+
+    const userNewScore = {
+      changes: userScores.changes + 1,
+      cursor: activeCursorPoint,
+      lastChangesDate: Date.now(),
+      wpmSpeed:
+        activeCursorPoint / startTimestamp - Date.now() / 1000,
+      accuracy,
+      points: activeCursorPoint + accuracy - 90 * 1.5,
+      progress: cursorsStamps.length / (userScores.changes + 1),
+    };
+    await gameScoresRef.update({ [`scores.${uid}`]: userNewScore });
+    return {
+      ...score,
+      scores: {
+        ...score.scores,
+        [uid]: userNewScore,
+      },
     };
   }
   @use(useBearerAuth)

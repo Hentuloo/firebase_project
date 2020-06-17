@@ -1,4 +1,7 @@
 export interface GameScore {
+  changes: number;
+  cursor: number;
+  lastChangesDate: null | number;
   wpmSpeed: number;
   accurancy: number;
   points: number;

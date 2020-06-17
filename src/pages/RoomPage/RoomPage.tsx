@@ -23,7 +23,7 @@ import {
   clearGameSettings,
 } from 'store/actions/gameSettings.actions';
 import RoomDetails from './RoomDetails/RoomDetails';
-import { GameInput } from './GameInput';
+import { GameInput } from './GameInput/GameInput';
 
 dayjs.extend(duration);
 
@@ -147,7 +147,7 @@ const RoomPage: FC = () => {
         onStartGame={handleStartGame}
       />
       <StyledMultiplayerRaceStats scores={scores} />
-      <GameInput />
+      <GameInput roomId={roomId} />
       <DarkModeButtonFixed small />
     </Wrapper>
   );

@@ -9,6 +9,8 @@ export interface GameSettingsState
   gameAlreadyStated: boolean;
   gameStartRequest: boolean;
 }
+// const tt = new Date().getTime() / 1000 + 10;
+// const now = tt * 1000 - new Date().getTime();
 
 // const exampleState: GameSettingsState = {
 //   registeredUsers: {
@@ -23,7 +25,7 @@ export interface GameSettingsState
 //     },
 //   },
 //   changesLength: null,
-//   startTimestamp: 1592154839.903,
+//   startTimestamp: tt,
 //   endTimestamp: 1592154899.903,
 //   cursorsStamps: [10, 22, 34],
 //   maxPlayersNumber: 2,
@@ -33,7 +35,15 @@ export interface GameSettingsState
 //   created: 1592154558155,
 //   text:
 //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
-//   timesOfLightChanges: [1000, 3000, 5000, 7000, 7400],
+//   timesOfLightChanges: [
+//     now * 0.1,
+//     now * 0.3,
+//     now * 0.75,
+//     now * 0.95,
+//     now * 1,
+//   ],
+//   gameAlreadyStated: false,
+//   gameStartRequest: false,
 // };
 
 const init: GameSettingsState = {

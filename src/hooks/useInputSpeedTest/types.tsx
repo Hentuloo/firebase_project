@@ -18,15 +18,15 @@ export enum types {
 }
 
 export enum TypingMood {
-  TIME,
-  TEXT,
-  MULTIPLAYER,
+  TIME = 'TIME',
+  TEXT = 'TEXT',
+  MULTIPLAYER = 'MULTIPLAYER',
 }
 
 export enum TypingStatus {
-  BEGINING,
-  TYPING,
-  END,
+  BEGINING = 'BEGINING',
+  TYPING = 'TYPING',
+  END = 'END',
 }
 
 export type Action =

@@ -53,6 +53,11 @@ export class FireFunctions {
     return fn({ roomId });
   };
 
+  public callPointReached = (roomId: string, accuracy: number) => {
+    const fn = this.call('callGamePointReached');
+    return fn({ roomId, accuracy });
+  };
+
   public createRoom = ({
     title,
     maxPlayersNumber,

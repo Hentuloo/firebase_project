@@ -64,13 +64,15 @@ export interface GameScoresDoc {
   scores: {
     [uid: string]: {
       changes: number;
-      timestamp: string;
       cursor: number;
-      wrongLength: number;
-      goodLength: number;
+      lastChangesDate: null | number;
+      wpmSpeed: number;
+      accurancy: number;
+      points: number;
+      progress: number;
     };
   };
-  cursorsStamps: string | null;
+  cursorsStamps: number[] | null;
   startTimestamp: number | null;
 }
 /*

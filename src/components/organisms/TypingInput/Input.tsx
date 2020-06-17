@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, forwardRef } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  forwardRef,
+  useCallback,
+} from 'react';
 import styled from 'styled-components';
 import { stickyModal } from 'components/molecules';
 
 import gsap from 'gsap';
+import { TypingStatus } from 'hooks/useInputSpeedTest/types';
 import { MemomizedWrittenWord } from './WrittenWord';
 
 import {
@@ -45,6 +51,7 @@ interface InputCmpProps {
   inputValue: string;
   inputWordsInArray: string[];
   letterWasAdded: boolean;
+  gameStatus: TypingStatus;
 }
 
 const InputCmp = forwardRef<HTMLInputElement, InputCmpProps>(
@@ -54,6 +61,7 @@ const InputCmp = forwardRef<HTMLInputElement, InputCmpProps>(
       inputValue,
       inputWordsInArray,
       letterWasAdded,
+      gameStatus,
     } = props;
     const inputTextRef = useRef<HTMLDivElement>(null);
 
@@ -82,10 +90,14 @@ const InputCmp = forwardRef<HTMLInputElement, InputCmpProps>(
       }
     }, [inputWordsInArray.length, letterWasAdded]);
 
-    const setInputFocus = () => {
+    const setInputFocus = useCallback(() => {
       // @ts-ignore
       ref.current.focus();
-    };
+    }, [ref]);
+
+    useEffect(() => {
+      if (gameStatus === TypingStatus.TYPING) setInputFocus();
+    }, [gameStatus, setInputFocus]);
 
     return (
       <InputWrapper onClick={setInputFocus}>

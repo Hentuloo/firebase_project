@@ -76,6 +76,7 @@ export const TypingInput: FC<TypingInput> = ({
     speed,
     sourceTextInArray,
     sourceText,
+    gameStatus,
   } = inputState;
 
   return (
@@ -99,6 +100,7 @@ export const TypingInput: FC<TypingInput> = ({
             inputValue={inputValue}
             inputWordsInArray={writtenWords}
             letterWasAdded={letterWasAddedFlag}
+            gameStatus={gameStatus}
           />
         </InnerWrapper>
       </Wrapper>

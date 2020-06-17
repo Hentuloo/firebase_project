@@ -7,7 +7,7 @@ interface UpdateGameScoreAction {
   type: types.UPDATE_GAME_SCORES;
   payload: GameScoreState;
 }
-export const updateGameSettings = (
+export const updateGameScores = (
   st: GameScoreState,
 ): UpdateGameScoreAction => ({
   type: types.UPDATE_GAME_SCORES,

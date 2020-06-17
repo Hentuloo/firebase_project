@@ -13,11 +13,11 @@ const Wrapper = styled.div`
   transform: translate(-50%, -50%);
   z-index: 5;
 `;
-export interface LigthsTimesModalProps {
+export interface LigthsCountingModalProps {
   typingInputState: UseInputSpeedTestReturnApi;
 }
 
-export const LigthsTimesModal: FC<LigthsTimesModalProps> = ({
+export const LigthsCountingModal: FC<LigthsCountingModalProps> = ({
   typingInputState: { startNewMultiplayerGame },
   ...props
 }) => {
