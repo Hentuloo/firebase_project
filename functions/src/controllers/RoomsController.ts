@@ -13,7 +13,13 @@ import {
   addPlayerToRoom,
 } from '../utils/rooms.utils';
 import { use } from '../decorators/use';
-import { UserDocument } from '../data';
+import {
+  UserDocument,
+  UpdateGameSettingsDoc,
+  UpdateGameScoresDoc,
+  UpdateAvaiableRoomsCollection,
+  UpdateUserDocument,
+} from '../data';
 
 interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;
@@ -75,7 +81,7 @@ export class RoomsController {
         password: withPassword ? password : false,
         creator: uid,
         created: Date.now(),
-      });
+      } as UpdateGameSettingsDoc);
 
     firestore()
       .doc(`gamesScores/${newRoomId}`)
@@ -93,7 +99,7 @@ export class RoomsController {
         },
         cursorsStamps: [],
         startTimestamp: null,
-      });
+      } as UpdateGameScoresDoc);
 
     firestore()
       .doc(`rooms/${withPassword ? 'protected' : 'open'}`)
@@ -104,10 +110,10 @@ export class RoomsController {
           playersNumber: maxPlayersNumber,
           created: Date.now(),
         },
-      });
+      } as UpdateAvaiableRoomsCollection);
     firestore()
       .doc(`users/${uid}`)
-      .update({ lastCreatedRoom: newRoomId });
+      .update({ lastCreatedRoom: newRoomId } as UpdateUserDocument);
 
     return { roomId: newRoomId, title, maxPlayersNumber, password };
   }

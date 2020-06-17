@@ -1,4 +1,10 @@
 import { firestore } from 'firebase-admin';
+import {
+  UpdateGameScoresDoc,
+  UpdateGameSettingsDoc,
+  UpdateAvaiableRoomsCollection,
+  UserDocument,
+} from '../data';
 
 export interface ExitRoomAsPlayerProps {
   roomId: string;
@@ -15,14 +21,14 @@ export const exitRoomAsPlayer = ({
 
   const gamePromise = gamesRef.update({
     [`registeredUsers.${uid}`]: firestore.FieldValue.delete(),
-  });
+  } as UpdateGameSettingsDoc);
   const scoresPromise = scoresRef.update({
     [`scores.${uid}`]: firestore.FieldValue.delete(),
-  });
+  } as UpdateGameScoresDoc);
   const usersPromise = userRef.update({
-    cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete(),
-    lastJoinedRoom: firestore.FieldValue.delete(),
-  });
+    cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete() as undefined,
+    lastJoinedRoom: firestore.FieldValue.delete() as undefined,
+  } as UserDocument);
 
   return Promise.all([gamePromise, scoresPromise, usersPromise]);
 };
@@ -44,14 +50,14 @@ export const exitRoomAsCreator = ({
   const scoresPromise = scoresRef.delete();
   const protectedRoomsPromise = protectedRoomsRef.update({
     [roomId]: firestore.FieldValue.delete(),
-  });
+  } as UpdateAvaiableRoomsCollection);
   const openRoomsPromise = openRoomsRef.update({
     [roomId]: firestore.FieldValue.delete(),
-  });
+  } as UpdateAvaiableRoomsCollection);
   const userPromise = userRef.update({
-    lastCreatedRoom: firestore.FieldValue.delete(),
-    cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete(),
-  });
+    lastCreatedRoom: firestore.FieldValue.delete() as undefined,
+    cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete() as undefined,
+  } as UserDocument);
 
   return Promise.all([
     gamePromise,
@@ -82,7 +88,7 @@ export const addPlayerToRoom = async ({
   });
   const gamePromise = gameRef.update({
     [`registeredUsers.${uid}`]: { displayName, photoURL },
-  });
+  } as UpdateGameSettingsDoc);
   const scoresPromise = gameScoreRef.update({
     [`scores.${uid}`]: {
       changes: 0,
@@ -93,7 +99,7 @@ export const addPlayerToRoom = async ({
       points: 0,
       progress: 0,
     },
-  });
+  } as UpdateGameScoresDoc);
 
   return Promise.all([gamePromise, scoresPromise, userPromise]);
 };

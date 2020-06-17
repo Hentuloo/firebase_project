@@ -3,7 +3,7 @@ import {
   callFunctionByCloudTask,
   deleteCloudTask,
 } from '../utils/cloudTask.utils';
-import { UserDocument } from '../data';
+import { UserDocument, UpdateUserDocument } from '../data';
 import { listenDatabase } from '../decorators/listenDatabase';
 import { config } from 'firebase-functions';
 
@@ -49,9 +49,9 @@ export class StatusController {
 
       userRef.update({
         state: 'offline',
-        lastChanged: firestore.FieldValue.serverTimestamp(),
+        lastChanged: (firestore.FieldValue.serverTimestamp() as unknown) as number,
         cloudTaskDeleteRelatedRoom: cloudTaskName || null,
-      });
+      } as UpdateUserDocument);
     }
     if (state === 'online') {
       if (cloudTaskDeleteRelatedRoom) {
@@ -62,9 +62,9 @@ export class StatusController {
       }
       userRef.update({
         state: 'online',
-        lastChanged: firestore.FieldValue.serverTimestamp(),
-        cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete(),
-      });
+        lastChanged: (firestore.FieldValue.serverTimestamp() as unknown) as number,
+        cloudTaskDeleteRelatedRoom: firestore.FieldValue.delete() as undefined,
+      } as UpdateUserDocument);
     }
     return { ok: true };
   }

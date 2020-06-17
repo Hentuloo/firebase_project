@@ -4,7 +4,12 @@ import { fireFunction } from '../decorators/fireFunctions';
 import { useAuth, useBearerAuth } from '../middlewares/useAuth';
 import { useRequiredFields } from '../middlewares/useRequiredFields';
 import { use } from '../decorators/use';
-import { RoomDocument, GameScoresDoc } from '../data';
+import {
+  GameScoresDoc,
+  UpdateGameScoresDoc,
+  UpdateGameSettingsDoc,
+  UpdateGameScore,
+} from '../data';
 import { callFunctionByCloudTask } from '../utils/cloudTask.utils';
 
 interface StartGameProps {
@@ -66,12 +71,12 @@ export class GameController {
       endTimestamp: end,
       text,
       cursorsStamps,
-    });
+    } as UpdateGameSettingsDoc);
     gameScoresRef.update({
       startTimestamp: start,
       cursorsStamps,
       writtenWordsOnCursorPoint,
-    });
+    } as UpdateGameScoresDoc);
 
     await callFunctionByCloudTask({
       functionName: 'stopGame',
@@ -140,7 +145,7 @@ export class GameController {
       accuracy,
       points: activeCursorPoint + accuracy - 90 * 1.5,
       progress: cursorsStamps.length / (userScores.changes + 1),
-    };
+    } as UpdateGameScore;
     await gameScoresRef.update({ [`scores.${uid}`]: userNewScore });
     return {
       ...score,
