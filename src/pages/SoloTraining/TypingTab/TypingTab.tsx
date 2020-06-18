@@ -106,7 +106,7 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
         const { accuracy, speed, resetGameState } = props;
 
         if (accuracy < 75) {
-          history.push(Constants.paths.soloBadAccurancy.path);
+          history.push(Constants.paths.soloBadAccuracy.path);
           resetGameState();
           return;
         }

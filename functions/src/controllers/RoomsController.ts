@@ -92,12 +92,13 @@ export class RoomsController {
             cursor: 0,
             lastChangesDate: 0,
             wpmSpeed: 0,
-            accurancy: 0,
+            accuracy: 0,
             points: 0,
             progress: 0,
           },
         },
-        cursorsStamps: [],
+        writtenWordsByCursorsPoints: null,
+        cursorPoints: [],
         startTimestamp: null,
       } as UpdateGameScoresDoc);
 

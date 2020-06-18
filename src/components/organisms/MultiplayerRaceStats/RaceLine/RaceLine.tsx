@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { RoadImages, RoadImagesProps } from './RoadImages';
 import { Scores, ScoresProps } from './Scores';
@@ -32,26 +32,39 @@ const Wrapper = styled.div`
     }
   }
 `;
-export interface RaceLineProps extends RoadImagesProps, ScoresProps {
+export interface RaceLineProps
+  extends Omit<RoadImagesProps, 'wrapperWidth'>,
+    ScoresProps {
   displayName: string;
 }
 
 export const RaceLine: FC<RaceLineProps> = ({
   displayName,
-  accurancy,
+  accuracy,
   points,
   progress,
   wpmSpeed,
+  difference,
   ...props
 }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const wrapperWidth = useMemo(() => {
+    const el = wrapperRef.current;
+    if (!el) return null;
+    return el.clientWidth;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wrapperRef.current]);
+
   return (
-    <Wrapper {...props}>
+    <Wrapper ref={wrapperRef} {...props}>
       <PlayerName>{displayName}</PlayerName>
-      <RoadImages progress={progress} />
+      <RoadImages progress={progress} wrapperWidth={wrapperWidth} />
       <Scores
-        accurancy={accurancy}
+        accuracy={accuracy}
         points={points}
         wpmSpeed={wpmSpeed}
+        difference={difference}
       />
     </Wrapper>
   );

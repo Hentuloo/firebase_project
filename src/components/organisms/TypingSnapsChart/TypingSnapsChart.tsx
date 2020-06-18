@@ -17,14 +17,14 @@ export interface TypingSnapsChartProps {
   dates: string[];
   time: number[];
   speed: number[];
-  accurancy: number[];
+  accuracy: number[];
 }
 
 export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
   dates,
   time,
   speed,
-  accurancy,
+  accuracy,
   ...props
 }) => {
   const ref = useRef<Line>(null);
@@ -67,7 +67,7 @@ export const TypingSnapsChart: FC<TypingSnapsChartProps> = ({
           datasets: [
             {
               label: 'Accuracy',
-              data: accurancy,
+              data: accuracy,
               ...dataSetProps(0),
             },
             {

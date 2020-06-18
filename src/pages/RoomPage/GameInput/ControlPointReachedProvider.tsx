@@ -17,11 +17,11 @@ export const ControlPointReachedProvider: FC<UpdateReachedCursorProviderProps> =
   render,
 }) => {
   const dispatch = useDispatch();
-  const { cursorsStamps } = useSelector(getGameSettings);
+  const { cursorPoints } = useSelector(getGameSettings);
 
   useEffect(() => {
-    if (!cursorsStamps || !cursor) return;
-    const index = cursorsStamps.findIndex(
+    if (!cursorPoints || !cursor) return;
+    const index = cursorPoints.findIndex(
       cursorPosition => cursorPosition === cursor,
     );
     if (index !== -1) {
@@ -37,7 +37,7 @@ export const ControlPointReachedProvider: FC<UpdateReachedCursorProviderProps> =
       updateCursor();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cursor, cursorsStamps, dispatch, roomId]);
+  }, [cursor, cursorPoints, dispatch, roomId]);
 
   return render();
 };

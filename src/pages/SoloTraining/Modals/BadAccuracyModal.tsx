@@ -20,11 +20,11 @@ const StyledFilledButton = styled(FilledButton)`
   padding: 8px 20px;
 `;
 
-export interface BadAccurancyModalProps {
+export interface BadAccuracyModalProps {
   close: () => void;
 }
 
-export const BadAccurancyModal: FC<BadAccurancyModalProps> = ({
+export const BadAccuracyModal: FC<BadAccuracyModalProps> = ({
   close,
   ...props
 }) => {

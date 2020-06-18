@@ -1,14 +1,14 @@
-import { GameScoreState } from 'store/reducers/gameScores.reducer';
+import { GameScorebyUsers } from 'types/GameScore';
 import { types } from './types';
 
 export type GameScoresActions = UpdateGameScoreAction;
 
 interface UpdateGameScoreAction {
   type: types.UPDATE_GAME_SCORES;
-  payload: GameScoreState;
+  payload: GameScorebyUsers;
 }
 export const updateGameScores = (
-  st: GameScoreState,
+  st: GameScorebyUsers,
 ): UpdateGameScoreAction => ({
   type: types.UPDATE_GAME_SCORES,
   payload: st,

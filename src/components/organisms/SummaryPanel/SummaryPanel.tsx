@@ -73,7 +73,7 @@ export const SummaryPanel: FC = ({ ...props }) => {
           dates={dates}
           time={times}
           speed={speeds}
-          accurancy={accurances}
+          accuracy={accurances}
         />
       )}
     </Wrapper>

@@ -60,3 +60,23 @@ export const getNumbersFromCompartment = (
   }
   return numArray.concat(insertAfter);
 };
+
+export const secondMaxInArray = (arr: number[]) => {
+  const copyOfArray = arr;
+  const max = Math.max.apply(null, copyOfArray); // get the max of the array
+  const maxi = arr.indexOf(max);
+  copyOfArray[maxi] = -Infinity; // replace max in the array with -infinity
+  const secondMax = Math.max.apply(null, copyOfArray); // get the new max
+  copyOfArray[maxi] = max;
+  return secondMax;
+};
+
+export const sortByPointsDifference = (points: number[]) => {
+  const max = Math.max.apply(null, points);
+  const secondMax = secondMaxInArray(points);
+  return points.map(num => {
+    if (num === max) return max - secondMax;
+    if (num === secondMax) return -(max - secondMax);
+    return num - max;
+  });
+};

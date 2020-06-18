@@ -6,7 +6,7 @@ export interface GameSettings {
   changesLength: number | null;
   startTimestamp: number | null;
   endTimestamp: number | null;
-  cursorsStamps: number[] | null;
+  cursorPoints: number[] | null;
   maxPlayersNumber: number | null;
   creator: string;
   title: string;

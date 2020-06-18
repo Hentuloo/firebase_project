@@ -80,7 +80,7 @@ export const reducer = (
       const newTimeStep = state.timeSteps - 1;
       const gameTime = state.initialTimeSteps - newTimeStep;
 
-      // Calculate new accurancy and speed
+      // Calculate new accuracy and speed
       const writtenWords = state.writtenWords.length;
       const accuracy = Number(
         (100 - (state.wrongLength / state.cursor) * 100).toFixed(2),
@@ -103,7 +103,8 @@ export const reducer = (
     }
 
     case types.INPUT_NEW_LETTER: {
-      if (isEnd || isBegining) return state;
+      if (isEnd) return state;
+      if (isMultiplayer && isBegining) return state;
 
       const {
         payload,

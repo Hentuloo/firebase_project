@@ -27,21 +27,23 @@ const Accuracy = styled.span``;
 
 export interface ScoresProps {
   wpmSpeed: number;
-  accurancy: number;
+  accuracy: number;
   points: number;
+  difference: number;
 }
 
 export const Scores: FC<ScoresProps> = ({
   wpmSpeed,
-  accurancy,
+  accuracy,
   points,
+  difference,
   ...props
 }) => {
   return (
     <Wrapper {...props}>
-      <Points>{wpmSpeed}P</Points>
-      <Speed>{accurancy}WPM</Speed>
-      <Accuracy>{points}%</Accuracy>
+      <Points>{difference}P</Points>
+      <Speed>{wpmSpeed}WPM</Speed>
+      <Accuracy>{accuracy}%</Accuracy>
     </Wrapper>
   );
 };

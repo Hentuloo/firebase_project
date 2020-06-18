@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import lineSvg from 'assets/svg/road/line.svg';
 import ligthsLineSvg from 'assets/svg/road/ligthsLine.svg';
 import carSvg from 'assets/svg/cars/carDefault.svg';
+import gsap from 'gsap';
 
 const Wrapper = styled.div`
   display: none;
@@ -35,15 +36,29 @@ const CarImage = styled.img`
 
 export interface RoadImagesProps {
   progress: number;
+  wrapperWidth: number | null;
 }
 
 export const RoadImages: FC<RoadImagesProps> = ({
   progress,
+  wrapperWidth,
   ...props
 }) => {
+  const carRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const car = carRef.current;
+    if (!car || wrapperWidth === null) return;
+    if (progress === 0) return;
+    gsap.to(car, {
+      x: (progress / 100) * wrapperWidth - car.clientWidth,
+      duration: 1,
+    });
+  }, [progress, wrapperWidth]);
+
   return (
     <Wrapper {...props}>
-      <CarImage src={carSvg} />
+      <CarImage ref={carRef} src={carSvg} />
       <LigthsLine src={ligthsLineSvg} />
       <LineImage src={lineSvg} />
     </Wrapper>

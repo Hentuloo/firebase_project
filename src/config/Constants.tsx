@@ -48,7 +48,7 @@ export const Constants = {
       path: '/app/trening',
       name: 'Tryb pojedyńczy',
     },
-    soloBadAccurancy: {
+    soloBadAccuracy: {
       path: '/app/trening/celnosc',
       name: 'Tryb pojedyńczy',
     },

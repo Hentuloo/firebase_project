@@ -8,6 +8,7 @@ import {
   GameScoresDoc,
   UpdateGameScoresDoc,
   UpdateGameSettingsDoc,
+  GameSettingsDoc,
   UpdateGameScore,
 } from '../data';
 import { callFunctionByCloudTask } from '../utils/cloudTask.utils';
@@ -43,7 +44,7 @@ export class GameController {
       creator,
       startTimestamp,
       registeredUsers,
-    } = gameSnap.data() as RoomDocument;
+    } = gameSnap.data() as GameSettingsDoc;
     if (startTimestamp)
       throw new https.HttpsError(
         'unavailable',
@@ -60,22 +61,22 @@ export class GameController {
     // text and cursors get from db
     const text =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.';
-    const pointsNumber = text.length / 20; //5
-    // const cursorsStamp = Array.from(6)
-    const cursorsStamps = [20, 40, 60, 80, 100, 118];
-    const writtenWordsOnCursorPoint = [6, 10, 14, 20, 25, 33];
-    const start = Date.now() / 1000 + 10;
-    const end = Date.now() / 1000 + 70;
+
+    const cursorPoints = [20, 40, 60, 80, 100, 118];
+    const writtenWordsByCursorsPoints = [6, 10, 14, 20, 25, 33];
+    const start = Date.now() / 1000 + 15;
+    const end = Date.now() / 1000 + 75;
+
     gameRef.update({
       startTimestamp: start,
       endTimestamp: end,
       text,
-      cursorsStamps,
+      cursorPoints,
     } as UpdateGameSettingsDoc);
     gameScoresRef.update({
       startTimestamp: start,
-      cursorsStamps,
-      writtenWordsOnCursorPoint,
+      cursorPoints,
+      writtenWordsByCursorsPoints,
     } as UpdateGameScoresDoc);
 
     await callFunctionByCloudTask({
@@ -111,8 +112,9 @@ export class GameController {
       );
     const score = scoreSnap.data() as GameScoresDoc;
     const {
-      cursorsStamps,
+      cursorPoints,
       startTimestamp,
+      writtenWordsByCursorsPoints,
       scores: { [uid]: userScores },
     } = score;
     if (!userScores)
@@ -126,26 +128,36 @@ export class GameController {
         'the game is not yet available',
       );
 
-    if (
-      (!userScores.lastChangesDate &&
-        Date.now() - startTimestamp * 1000 < 400) ||
-      (userScores.lastChangesDate &&
-        Date.now() - userScores.lastChangesDate < 300)
-    )
+    const activeCursorPoint = cursorPoints[userScores.changes];
+    const writtenWords =
+      writtenWordsByCursorsPoints[userScores.changes];
+    const wpmSpeed = Number(
+      (
+        writtenWords /
+        ((Date.now() / 1000 - startTimestamp) / 60)
+      ).toFixed(2),
+    );
+    if (userScores.lastChangesDate && wpmSpeed > 400)
       throw new https.HttpsError('unavailable', 'too fast!!');
+    if (accuracy < 75)
+      throw new https.HttpsError('unavailable', 'Bad accuracy!');
 
-    const activeCursorPoint = cursorsStamps[userScores.changes];
+    const progress =
+      ((userScores.changes + 1) / cursorPoints.length) * 100;
+    const points = Number(
+      (progress + (accuracy - 85) * 1.5).toFixed(2),
+    );
 
     const userNewScore = {
       changes: userScores.changes + 1,
       cursor: activeCursorPoint,
       lastChangesDate: Date.now(),
-      wpmSpeed:
-        activeCursorPoint / startTimestamp - Date.now() / 1000,
+      wpmSpeed,
       accuracy,
-      points: activeCursorPoint + accuracy - 90 * 1.5,
-      progress: cursorsStamps.length / (userScores.changes + 1),
+      points,
+      progress,
     } as UpdateGameScore;
+
     await gameScoresRef.update({ [`scores.${uid}`]: userNewScore });
     return {
       ...score,

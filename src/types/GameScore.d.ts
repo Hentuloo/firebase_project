@@ -3,15 +3,22 @@ export interface GameScore {
   cursor: number;
   lastChangesDate: null | number;
   wpmSpeed: number;
-  accurancy: number;
+  accuracy: number;
   points: number;
   progress: number;
 }
-export interface GameScoreWithUserData {
-  displayName: string;
+export interface GameScorebyUsers {
+  [uid: string]: GameScore;
+}
+export interface GameScoreWithDifference extends GameScore {
+  difference: number;
+}
+export interface GameScoreForStats {
   wpmSpeed: number;
-  accurancy: number;
+  accuracy: number;
   points: number;
   progress: number;
+  displayName: string;
   uid: string;
+  difference: number;
 }

@@ -42,7 +42,7 @@ export const ChartTab = forwardRef<HTMLDivElement, ChartTabProps>(
           dates={dates}
           time={times}
           speed={speeds}
-          accurancy={accurances}
+          accuracy={accurances}
         />
       </Wrapper>
     );

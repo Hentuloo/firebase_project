@@ -53,7 +53,7 @@ export interface GameScore {
   cursor: number;
   lastChangesDate: null | number;
   wpmSpeed: number;
-  accurancy: number;
+  accuracy: number;
   points: number;
   progress: number;
 }
@@ -63,7 +63,8 @@ export interface GameScoresDoc {
   scores: {
     [uid: string]: GameScore;
   };
-  cursorsStamps: number[] | null;
+  cursorPoints: number[] | null;
+  writtenWordsByCursorsPoints: number[] | null;
   startTimestamp: number | null;
 }
 export type UpdateGameScoresDoc = Partial<GameScoresDoc>;
