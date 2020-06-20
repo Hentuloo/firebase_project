@@ -18,10 +18,14 @@ const Wrapper = styled.div`
 
 export interface MultiplayerRaceStatsProps {
   scores: GameScoreForStats[];
+  startTimestamp?: number | null;
+  endTimestamp?: number | null;
 }
 
 export const MultiplayerRaceStats: FC<MultiplayerRaceStatsProps> = ({
   scores,
+  startTimestamp,
+  endTimestamp,
   ...props
 }) => {
   return (
@@ -44,6 +48,8 @@ export const MultiplayerRaceStats: FC<MultiplayerRaceStatsProps> = ({
             points={points}
             progress={progress}
             wpmSpeed={wpmSpeed}
+            startTimestamp={startTimestamp}
+            endTimestamp={endTimestamp}
           />
         ),
       )}

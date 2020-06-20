@@ -45,6 +45,8 @@ export const RaceLine: FC<RaceLineProps> = ({
   progress,
   wpmSpeed,
   difference,
+  startTimestamp,
+  endTimestamp,
   ...props
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -59,7 +61,12 @@ export const RaceLine: FC<RaceLineProps> = ({
   return (
     <Wrapper ref={wrapperRef} {...props}>
       <PlayerName>{displayName}</PlayerName>
-      <RoadImages progress={progress} wrapperWidth={wrapperWidth} />
+      <RoadImages
+        progress={progress}
+        wrapperWidth={wrapperWidth}
+        startTimestamp={startTimestamp}
+        endTimestamp={endTimestamp}
+      />
       <Scores
         accuracy={accuracy}
         points={points}

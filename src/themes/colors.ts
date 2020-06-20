@@ -12,6 +12,11 @@ export interface ThemeColor {
     contrastWhite: [string];
     contrastBrand: [string, string];
     shadow: [string];
+    points: {
+      RED: string;
+      GREEN: string;
+      DEFAULT: string;
+    };
   };
 }
 
@@ -43,6 +48,11 @@ const colors: ThemeColorByMode = {
       contrastWhite: ['rgb(255, 255, 255)'],
       contrastBrand: ['#6B9983', 'rgba(58, 119, 89, 0.4)'],
       shadow: ['rgba(0, 0, 0, 0.1)'],
+      points: {
+        RED: '#EC7D7D',
+        GREEN: '#3A7759',
+        DEFAULT: '#A9ABAA',
+      },
     },
   },
   dark: {
@@ -71,6 +81,11 @@ const colors: ThemeColorByMode = {
       contrastWhite: ['rgb(255, 255, 255)'],
       contrastBrand: ['rgb(255, 255, 255)', 'rgb(119, 119, 119)'],
       shadow: ['rgba(199, 199, 199, 0.48)'],
+      points: {
+        RED: '#9D3030',
+        GREEN: '#3A7759',
+        DEFAULT: '#A9ABAA',
+      },
     },
   },
 };

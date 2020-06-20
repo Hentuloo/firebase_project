@@ -62,9 +62,13 @@ const RoomPage: FC = () => {
   const dispatch = useDispatch();
   const redirect = useRedirect();
   const { roomId } = useParams();
-  const { title, withPassword, creator } = useSelector(
-    getGameSettings,
-  );
+  const {
+    title,
+    withPassword,
+    creator,
+    startTimestamp,
+    endTimestamp,
+  } = useSelector(getGameSettings);
   const regiteredUsers = useSelector(getRegisteredUserInArray);
   const { uid } = useSelector(getUser);
   const scores = useSelector(getGameScoresByRegisteredUsers);
@@ -137,6 +141,10 @@ const RoomPage: FC = () => {
     };
   }, [dispatch, onUserExitRoom]);
 
+  useEffect(() => {
+    dispatch(clearGameSettings());
+  }, [dispatch]);
+
   return (
     <Wrapper>
       <RoomDetails
@@ -146,7 +154,11 @@ const RoomPage: FC = () => {
         isCreator={creator === uid}
         onStartGame={handleStartGame}
       />
-      <StyledMultiplayerRaceStats scores={scores} />
+      <StyledMultiplayerRaceStats
+        scores={scores}
+        startTimestamp={startTimestamp}
+        endTimestamp={endTimestamp}
+      />
       <GameInput roomId={roomId} />
       <DarkModeButtonFixed small />
     </Wrapper>

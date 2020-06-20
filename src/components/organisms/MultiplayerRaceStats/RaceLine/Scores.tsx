@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
-import styled from 'styled-components';
+import React, { FC, useMemo } from 'react';
+import styled, { css } from 'styled-components';
+import Tippy from '@tippyjs/react';
 
 const Wrapper = styled.div`
   display: grid;
@@ -21,9 +22,14 @@ const Wrapper = styled.div`
 const Points = styled.span`
   grid-row: 1/-1;
   font-size: ${({ theme }) => theme.fs.xxxl};
+  ${({ color }: { color: PointsColor }) => css`
+    color: ${({ theme }) => theme.color.points[color]};
+  `}
 `;
 const Speed = styled.span``;
 const Accuracy = styled.span``;
+
+type PointsColor = 'RED' | 'GREEN' | 'DEFAULT';
 
 export interface ScoresProps {
   wpmSpeed: number;
@@ -39,11 +45,18 @@ export const Scores: FC<ScoresProps> = ({
   difference,
   ...props
 }) => {
+  const pointsColor = useMemo((): PointsColor => {
+    if (difference < -2) return 'RED';
+    if (difference > 2) return 'GREEN';
+    return 'DEFAULT';
+  }, [difference]);
   return (
-    <Wrapper {...props}>
-      <Points>{difference}P</Points>
-      <Speed>{wpmSpeed}WPM</Speed>
-      <Accuracy>{accuracy}%</Accuracy>
-    </Wrapper>
+    <Tippy content={`Zdobyte punkty: ${points || 0}`}>
+      <Wrapper {...props}>
+        <Points color={pointsColor}>{difference}P</Points>
+        <Speed>{wpmSpeed}WPM</Speed>
+        <Accuracy>{accuracy}%</Accuracy>
+      </Wrapper>
+    </Tippy>
   );
 };
