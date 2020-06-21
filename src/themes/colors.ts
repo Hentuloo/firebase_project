@@ -1,6 +1,6 @@
 export interface ThemeColor {
   color: {
-    brand: [string, string, string, string];
+    brand: [string, string, string, string, string];
     brandSecond: [string, string, string];
     white: [string, string, string];
     black: [string, string, string, string];
@@ -34,6 +34,7 @@ const colors: ThemeColorByMode = {
         '#3A7759',
         'rgba(58, 119, 89, 0.4)',
         '#6B9983',
+        '#3A7759',
       ],
       brandSecond: ['#FF9552', '#DC7738', '#B2612E'],
       white: ['rgb(255, 255, 255)', 'rgb(255, 255, 255)', '#E7C8B5'],
@@ -61,6 +62,7 @@ const colors: ThemeColorByMode = {
         'rgba(58, 119, 89, 0.4)',
         '#6B9983',
         '#69C397',
+        '#3A7759',
         '#3A7759',
       ],
       brandSecond: ['#FF9552', '#DC7738', '#B2612E'],

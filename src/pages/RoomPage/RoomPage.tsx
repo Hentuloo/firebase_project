@@ -24,6 +24,7 @@ import {
 } from 'store/actions/gameSettings.actions';
 import RoomDetails from './RoomDetails/RoomDetails';
 import { GameInput } from './GameInput/GameInput';
+import { PodiumModal } from './PodiumModal/PodiumModal';
 
 dayjs.extend(duration);
 
@@ -161,6 +162,7 @@ const RoomPage: FC = () => {
       />
       <GameInput roomId={roomId} />
       <DarkModeButtonFixed small />
+      <PodiumModal />
     </Wrapper>
   );
 };

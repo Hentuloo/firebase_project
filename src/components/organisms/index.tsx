@@ -6,3 +6,4 @@ export * from './LettersPanel/LettersPanel';
 export * from './Hands/Hands';
 export * from './TypingSnapsChart/TypingSnapsChart';
 export * from './RoomSettings';
+export * from './PodiumWithImages';

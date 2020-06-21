@@ -4,7 +4,9 @@ import { types } from './types';
 export type GameSettnigsActions =
   | UpdateGameSettingsAction
   | SetGameStartRequestAction
-  | ClearGameSettingsAction;
+  | ClearGameSettingsAction
+  | ToggleScoresModalAction
+  | ShowGameScoresAction;
 
 interface UpdateGameSettingsAction {
   type: types.UPDATE_GAME_SETTINGS;
@@ -14,6 +16,16 @@ export const updateGameSettings = (
   st: GameSettingsState,
 ): UpdateGameSettingsAction => ({
   type: types.UPDATE_GAME_SETTINGS,
+  payload: st,
+});
+interface ShowGameScoresAction {
+  type: types.SHOW_GAME_SCORES;
+  payload: GameSettingsState;
+}
+export const showGameScores = (
+  st: GameSettingsState,
+): ShowGameScoresAction => ({
+  type: types.SHOW_GAME_SCORES,
   payload: st,
 });
 interface SetGameStartRequestAction {
@@ -31,4 +43,10 @@ interface ClearGameSettingsAction {
 }
 export const clearGameSettings = (): ClearGameSettingsAction => ({
   type: types.CLEAR_GAME_SETTINGS,
+});
+interface ToggleScoresModalAction {
+  type: types.TOGGLE_SCORES_MODAL;
+}
+export const toggleScoresModal = (): ToggleScoresModalAction => ({
+  type: types.TOGGLE_SCORES_MODAL,
 });

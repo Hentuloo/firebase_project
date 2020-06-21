@@ -80,4 +80,5 @@ export const DarkModeButtonFixed = styled(DarkModeButton)`
     left: 8px;
     bottom: 8px;
   }
+  z-index: 10;
 `;

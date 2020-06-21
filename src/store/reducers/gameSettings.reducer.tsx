@@ -8,6 +8,7 @@ export interface GameSettingsState
     | null;
   gameAlreadyStated: boolean;
   gameStartRequest: boolean;
+  scoresModal: boolean;
 }
 // const tt = new Date().getTime() / 1000 + 10;
 // const now = tt * 1000 - new Date().getTime();
@@ -15,8 +16,8 @@ export interface GameSettingsState
 // const exampleState: GameSettingsState = {
 //   registeredUsers: {
 //     lsX6j7m33cdSZ0mfnZbQb0ttEwk1: {
+//       photoURL: '',
 //       displayName: 'szysza',
-//       photoURL: undefined,
 //     },
 //     I6pTXpwq0GQGFMqNhTITiSckzDF2: {
 //       photoURL:
@@ -24,28 +25,44 @@ export interface GameSettingsState
 //       displayName: 'Kamil Chędkowski',
 //     },
 //   },
-//   changesLength: null,
-//   startTimestamp: tt,
-//   endTimestamp: 1592154899.903,
-//   cursorPoints: [10, 22, 34],
-//   maxPlayersNumber: 2,
-//   creator: 'I6pTXpwq0GQGFMqNhTITiSckzDF2',
-//   title: 'sdfgsd',
-//   withPassword: false,
-//   created: 1592154558155,
 //   text:
 //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
-//   timesOfLightChanges: [
-//     now * 0.1,
-//     now * 0.3,
-//     now * 0.75,
-//     now * 0.95,
-//     now * 1,
-//   ],
+//   changesLength: null,
+//   startTimestamp: 1592669260.473,
+//   endTimestamp: 1592669300.473,
+//   cursorPoints: [20, 40, 60, 80, 100, 118],
+//   maxPlayersNumber: 2,
+//   creator: 'I6pTXpwq0GQGFMqNhTITiSckzDF2',
+//   title: 'dddddddd',
+//   withPassword: false,
+//   created: 1592669220256,
+//   timesOfLightChanges: null,
 //   gameAlreadyStated: false,
 //   gameStartRequest: false,
+//   scoresModal: true,
+//   usersByScores: [
+//     {
+//       cursor: 100,
+//       points: 104.26,
+//       accuracy: 98.95,
+//       lastChangesDate: 1592669275306,
+//       changes: 5,
+//       wpmSpeed: 101.13,
+//       uid: 'lsX6j7m33cdSZ0mfnZbQb0ttEwk1',
+//       progress: 83.33333333333334,
+//     },
+//     {
+//       cursor: 80,
+//       changes: 4,
+//       lastChangesDate: 1592669299206,
+//       wpmSpeed: 30.98,
+//       points: 81.28,
+//       uid: 'I6pTXpwq0GQGFMqNhTITiSckzDF2',
+//       accuracy: 94.74,
+//       progress: 66.66666666666666,
+//     },
+//   ],
 // };
-
 const init: GameSettingsState = {
   registeredUsers: {},
   text:
@@ -62,6 +79,7 @@ const init: GameSettingsState = {
   timesOfLightChanges: null,
   gameAlreadyStated: false,
   gameStartRequest: false,
+  scoresModal: false,
 };
 
 export default (state = init, action: Action): GameSettingsState => {
@@ -99,8 +117,19 @@ export default (state = init, action: Action): GameSettingsState => {
     case types.SET_GAME_START_REQUEST: {
       return { ...state, gameStartRequest: action.payload };
     }
+    case types.TOGGLE_SCORES_MODAL: {
+      return { ...state, scoresModal: !state.scoresModal };
+    }
+    case types.SHOW_GAME_SCORES: {
+      return {
+        ...state,
+        ...action.payload,
+        scoresModal: true,
+      };
+    }
     case types.CLEAR_GAME_SETTINGS: {
       return {
+        ...state,
         registeredUsers: {},
         text:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
@@ -116,6 +145,7 @@ export default (state = init, action: Action): GameSettingsState => {
         timesOfLightChanges: null,
         gameAlreadyStated: false,
         gameStartRequest: false,
+        scoresModal: false,
       };
     }
     default:

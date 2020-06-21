@@ -1,3 +1,5 @@
+import { GameScoreWithUid } from './GameScore';
+
 export interface GameSettings {
   registeredUsers: {
     [uid: string]: { displayName: string; photoURL?: string };
@@ -11,6 +13,7 @@ export interface GameSettings {
   creator: string;
   title: string;
   created: number;
+  usersByScores?: GameScoreWithUid[];
 }
 export interface GameSettingsWithPassword extends GameSettings {
   password: string | boolean;

@@ -7,6 +7,10 @@ export interface GameScore {
   points: number;
   progress: number;
 }
+export interface GameScoreWithUid extends GameScore {
+  uid: string;
+}
+
 export interface GameScorebyUsers {
   [uid: string]: GameScore;
 }

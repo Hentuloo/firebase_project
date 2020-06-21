@@ -10,13 +10,21 @@ import {
   UpdateGameSettingsDoc,
   GameSettingsDoc,
   UpdateGameScore,
+  ScoreWithUid,
 } from '../data';
-import { callFunctionByCloudTask } from '../utils/cloudTask.utils';
+import {
+  callFunctionByCloudTask,
+  deleteCloudTask,
+} from '../utils/cloudTask.utils';
+import { sortUsersScores } from '../utils/utils';
 
 interface StartGameProps {
   roomId: string;
 }
 
+interface StopGameBody {
+  roomId: string;
+}
 interface CallPointReachedProps {
   roomId: string;
   accuracy: number;
@@ -65,7 +73,16 @@ export class GameController {
     const cursorPoints = [20, 40, 60, 80, 100, 118];
     const writtenWordsByCursorsPoints = [6, 10, 14, 20, 25, 33];
     const start = Date.now() / 1000 + 15;
-    const end = Date.now() / 1000 + 75;
+    const end = Date.now() / 1000 + 55;
+
+    const [cloudFunction] = await callFunctionByCloudTask({
+      functionName: 'stopGame',
+      payload: { roomId },
+      time: end,
+      headers: {
+        Authorization: context.rawRequest.headers.authorization,
+      },
+    });
 
     gameRef.update({
       startTimestamp: start,
@@ -74,19 +91,11 @@ export class GameController {
       cursorPoints,
     } as UpdateGameSettingsDoc);
     gameScoresRef.update({
+      stopGameFunction: cloudFunction.name,
       startTimestamp: start,
       cursorPoints,
       writtenWordsByCursorsPoints,
     } as UpdateGameScoresDoc);
-
-    await callFunctionByCloudTask({
-      functionName: 'stopGame',
-      payload: { uid },
-      time: end,
-      headers: {
-        Authorization: context.rawRequest.headers.authorization,
-      },
-    });
 
     return {
       ok: true,
@@ -103,6 +112,7 @@ export class GameController {
     const { roomId, accuracy } = data;
 
     const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
+    const gameRef = firestore().doc(`games/${roomId}`);
 
     const scoreSnap = await gameScoresRef.get();
     if (!scoreSnap.exists)
@@ -115,6 +125,7 @@ export class GameController {
       cursorPoints,
       startTimestamp,
       writtenWordsByCursorsPoints,
+      stopGameFunction,
       scores: { [uid]: userScores },
     } = score;
     if (!userScores)
@@ -137,7 +148,7 @@ export class GameController {
         ((Date.now() / 1000 - startTimestamp) / 60)
       ).toFixed(2),
     );
-    if (userScores.lastChangesDate && wpmSpeed > 400)
+    if (userScores.lastChangesDate && wpmSpeed > 500)
       throw new https.HttpsError('unavailable', 'too fast!!');
     if (accuracy < 75)
       throw new https.HttpsError('unavailable', 'Bad accuracy!');
@@ -159,6 +170,13 @@ export class GameController {
     } as UpdateGameScore;
 
     await gameScoresRef.update({ [`scores.${uid}`]: userNewScore });
+
+    if (progress === 100) {
+      deleteCloudTask({ taskName: stopGameFunction });
+      const usersByScores = sortUsersScores(score);
+      gameRef.update({ usersByScores } as UpdateGameSettingsDoc);
+    }
+
     return {
       ...score,
       scores: {
@@ -167,12 +185,20 @@ export class GameController {
       },
     };
   }
+
   @use(useBearerAuth)
   @fireFunction({ region: 'europe-west1', type: 'onRequest' })
-  async stopGame(req: Request, res: Response) {
-    res.send({
-      ok: true,
-      code: 'Zatrzymu22e !!!!!!!!!',
-    });
+  async stopGame(req, res: Response) {
+    const { roomId } = req.body as StopGameBody;
+    const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
+    const gameRef = firestore().doc(`games/${roomId}`);
+
+    const scoreSnap = await gameScoresRef.get();
+    const scores = scoreSnap.data() as GameScoresDoc;
+    const usersByScores = sortUsersScores(scores);
+
+    gameRef.update({ usersByScores } as UpdateGameSettingsDoc);
+
+    res.send({ ok: true });
   }
 }

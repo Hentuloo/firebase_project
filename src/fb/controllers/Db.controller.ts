@@ -2,7 +2,10 @@ import store from 'store/store';
 import { defaultUser, defaultUserSolo } from 'fb/default';
 import { Snap } from 'store/reducers/soloTraining.reducer';
 import dayjs from 'dayjs';
-import { updateGameSettings } from 'store/actions/gameSettings.actions';
+import {
+  updateGameSettings,
+  showGameScores,
+} from 'store/actions/gameSettings.actions';
 import { GameSettingsWithPassword } from 'types/GameSettings';
 import { GameSettingsState } from 'store/reducers/gameSettings.reducer';
 import { Constants } from 'config/Constants';
@@ -67,7 +70,15 @@ export class Db {
           ...settingsWithoutPassword
         } = gameSettingsSnap.data() as GameSettingsWithPassword;
         if (settingsWithoutPassword) {
-          store.dispatch(
+          if (settingsWithoutPassword.usersByScores) {
+            return store.dispatch(
+              showGameScores({
+                withPassword: !!password,
+                ...settingsWithoutPassword,
+              } as GameSettingsState),
+            );
+          }
+          return store.dispatch(
             updateGameSettings({
               withPassword: !!password,
               ...settingsWithoutPassword,

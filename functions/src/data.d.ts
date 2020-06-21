@@ -59,6 +59,10 @@ export interface GameScore {
 }
 export type UpdateGameScore = Partial<GameScore>;
 
+export interface ScoreWithUid extends GameScore {
+  uid: string;
+}
+
 export interface GameScoresDoc {
   scores: {
     [uid: string]: GameScore;
@@ -66,5 +70,6 @@ export interface GameScoresDoc {
   cursorPoints: number[] | null;
   writtenWordsByCursorsPoints: number[] | null;
   startTimestamp: number | null;
+  stopGameFunction?: string;
 }
 export type UpdateGameScoresDoc = Partial<GameScoresDoc>;
