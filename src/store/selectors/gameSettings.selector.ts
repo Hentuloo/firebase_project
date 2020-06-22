@@ -30,6 +30,10 @@ export const getFinalResults = createSelector(
   getGameSettings,
   ({ usersByScores }) => usersByScores,
 );
+export const getRoomCreator = createSelector(
+  getGameSettings,
+  ({ creator }) => creator,
+);
 export const getFinalResultsWithUserImages = createSelector(
   getGameSettings,
   ({ usersByScores, registeredUsers }) => {

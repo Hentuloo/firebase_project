@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { stickyModal } from 'components/molecules';
-import { UserLabel } from 'components/molecules/UserLabel';
 import { FilledButton } from 'components/atoms';
 import { useSelector } from 'react-redux';
 import {
@@ -9,6 +8,8 @@ import {
   getGameStartTimestamp,
   getFinalResults,
 } from 'store/selectors/gameSettings.selector';
+import { UserWithUid } from 'types/GameSettings';
+import { PlayersList } from './PlayersList';
 
 interface WrapperProps {
   showOnMobile: boolean;
@@ -46,11 +47,7 @@ const SmallText = styled.span`
 `;
 
 export interface RoomDetailsCardProps {
-  users: {
-    uid: string;
-    displayName: string;
-    photoURL?: string;
-  }[];
+  users: UserWithUid[];
   showPlayersOnMobile: boolean;
   isCreator: boolean;
   onStartGame: () => void;
@@ -76,14 +73,7 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
 
   return (
     <Wrapper showOnMobile={showPlayersOnMobile} {...props}>
-      {users.map(({ uid, photoURL, displayName }) => (
-        <UserLabel
-          key={uid}
-          id={uid}
-          photoURL={photoURL}
-          displayName={displayName}
-        />
-      ))}
+      <PlayersList players={users} />
       {users.length === 1 && (
         <SmallText>
           Aby rozpocząć potrzeba minimum dwóch graczy.

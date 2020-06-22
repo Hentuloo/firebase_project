@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { BarDecorator } from 'components/atoms';
 import { useSelector } from 'react-redux';
-
 import defaultPicture from 'assets/svg/icons/defaultProfilePicture.svg';
 import { getUser } from 'store/selectors/user.selector';
 
@@ -13,11 +11,6 @@ const Wrapper = styled.div`
   height: 65px;
   justify-content: center;
   align-content: center;
-  ${BarDecorator}
-  &::after {
-    left: 100%;
-    height: 20px;
-  }
 `;
 const Image = styled.img`
   position: absolute;

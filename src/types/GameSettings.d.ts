@@ -1,5 +1,15 @@
 import { GameScoreWithUid } from './GameScore';
 
+export interface UserBasicInfo {
+  displayName: string;
+  photoURL?: string;
+}
+export interface UserWithUid {
+  uid: string;
+  displayName: string;
+  photoURL?: string;
+}
+
 export interface GameSettings {
   registeredUsers: {
     [uid: string]: { displayName: string; photoURL?: string };
