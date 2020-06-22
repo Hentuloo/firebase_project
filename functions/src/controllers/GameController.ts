@@ -10,7 +10,6 @@ import {
   UpdateGameSettingsDoc,
   GameSettingsDoc,
   UpdateGameScore,
-  ScoreWithUid,
 } from '../data';
 import {
   callFunctionByCloudTask,
@@ -51,14 +50,23 @@ export class GameController {
     const {
       creator,
       startTimestamp,
+      endTimestamp,
       registeredUsers,
     } = gameSnap.data() as GameSettingsDoc;
-    if (startTimestamp)
+
+    const usersUids = Object.keys(registeredUsers);
+
+    if (
+      startTimestamp &&
+      endTimestamp &&
+      startTimestamp < Date.now() / 1000 &&
+      endTimestamp > Date.now() / 1000
+    )
       throw new https.HttpsError(
         'unavailable',
         'game already is runned',
       );
-    if (Object.keys(registeredUsers).length < 2)
+    if (usersUids.length < 2)
       throw new https.HttpsError(
         'unavailable',
         'Minimum two players can start game',
@@ -66,6 +74,18 @@ export class GameController {
     if (creator !== uid)
       throw new https.HttpsError('unavailable', 'permision denied');
 
+    const usersScoresWithStartScore = usersUids.reduce((acc, uid) => {
+      acc[uid] = {
+        changes: 0,
+        cursor: 0,
+        lastChangesDate: 0,
+        wpmSpeed: 0,
+        accuracy: 0,
+        points: 0,
+        progress: 0,
+      };
+      return acc;
+    }, {});
     // text and cursors get from db
     const text =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.';
@@ -89,8 +109,10 @@ export class GameController {
       endTimestamp: end,
       text,
       cursorPoints,
+      usersByScores: null,
     } as UpdateGameSettingsDoc);
-    gameScoresRef.update({
+    gameScoresRef.set({
+      scores: { ...usersScoresWithStartScore },
       stopGameFunction: cloudFunction.name,
       startTimestamp: start,
       cursorPoints,
@@ -133,7 +155,7 @@ export class GameController {
         'unavailable',
         "You don't have permisions to this room",
       );
-    if (startTimestamp > Date.now())
+    if (!startTimestamp || startTimestamp > Date.now() / 1000)
       throw new https.HttpsError(
         'unavailable',
         'the game is not yet available',
@@ -148,7 +170,7 @@ export class GameController {
         ((Date.now() / 1000 - startTimestamp) / 60)
       ).toFixed(2),
     );
-    if (userScores.lastChangesDate && wpmSpeed > 500)
+    if (userScores.lastChangesDate !== undefined && wpmSpeed > 500)
       throw new https.HttpsError('unavailable', 'too fast!!');
     if (accuracy < 75)
       throw new https.HttpsError('unavailable', 'Bad accuracy!');
@@ -198,6 +220,9 @@ export class GameController {
     const usersByScores = sortUsersScores(scores);
 
     gameRef.update({ usersByScores } as UpdateGameSettingsDoc);
+    gameScoresRef.update({
+      startTimestamp: null,
+    } as UpdateGameSettingsDoc);
 
     res.send({ ok: true });
   }

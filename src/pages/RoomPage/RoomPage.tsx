@@ -25,6 +25,8 @@ import {
 import RoomDetails from './RoomDetails/RoomDetails';
 import { GameInput } from './GameInput/GameInput';
 import { PodiumModal } from './PodiumModal/PodiumModal';
+import { LastScoresUpdateModal } from './LastScoresUpdateModal';
+import { LigthsCountingModal } from './LigthsCountingModal';
 
 dayjs.extend(duration);
 
@@ -163,6 +165,8 @@ const RoomPage: FC = () => {
       <GameInput roomId={roomId} />
       <DarkModeButtonFixed small />
       <PodiumModal />
+      <LastScoresUpdateModal />
+      <LigthsCountingModal />
     </Wrapper>
   );
 };

@@ -21,6 +21,15 @@ export const getGameStartTimestamp = createSelector(
   getGameSettings,
   ({ startTimestamp }) => startTimestamp,
 );
+
+export const getLastScoresUpdateFlag = createSelector(
+  getGameSettings,
+  ({ waitForLastScoresUpdate }) => waitForLastScoresUpdate,
+);
+export const getFinalResults = createSelector(
+  getGameSettings,
+  ({ usersByScores }) => usersByScores,
+);
 export const getFinalResultsWithUserImages = createSelector(
   getGameSettings,
   ({ usersByScores, registeredUsers }) => {

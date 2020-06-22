@@ -1,18 +1,10 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { BarDecorator } from 'components/atoms';
 import Spiner from 'components/atoms/Spiner';
+import { TitleWithSmallPrefix } from 'components/molecules/TitleWithSmallPrefix';
 
 const Wrapper = styled.div``;
-const SmallText = styled.span`
-  font-size: ${({ theme }) => theme.fs.xxs};
-  margin-right: 8px;
-`;
-const RoomTitle = styled.span`
-  ${BarDecorator}
-  font-size: ${({ theme }) => theme.fs.m};
-  font-weight:${({ theme }) => theme.fw[1]};
-`;
+
 const StyledSpiner = styled(Spiner)`
   margin: 10px auto 0px;
 `;
@@ -29,8 +21,7 @@ export const JoinRoomWithoutPassword: FC<JoinRoomWithoutPasswordProps> = ({
 }) => {
   return (
     <Wrapper {...props}>
-      <SmallText>Łącze z: </SmallText>
-      <RoomTitle>{roomTitle}</RoomTitle>
+      <TitleWithSmallPrefix prefix="Łącze z:" title={roomTitle} />
       {fetching && <StyledSpiner />}
     </Wrapper>
   );

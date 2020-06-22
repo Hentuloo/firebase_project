@@ -4,8 +4,7 @@ import { TypingInput } from 'components/organisms';
 import { useSelector } from 'react-redux';
 import { getGameSettings } from 'store/selectors/gameSettings.selector';
 import { TypingMood } from 'hooks/useInputSpeedTest/types';
-import { LigthsCountingModal } from './LigthsCountingModal';
-import { ControlPointReachedProvider } from './ControlPointReachedProvider';
+import { ControlGameInputProvider } from './ControlGameInputProvider';
 
 export interface GameInputProps {
   roomId: string;
@@ -25,12 +24,9 @@ export const GameInput: FC<GameInputProps> = ({ roomId }) => {
       gameType={TypingMood.MULTIPLAYER}
       withoutCounters
       render={state => (
-        <ControlPointReachedProvider
+        <ControlGameInputProvider
           inputState={state}
           roomId={roomId}
-          render={() => (
-            <LigthsCountingModal typingInputState={state} />
-          )}
         />
       )}
     />

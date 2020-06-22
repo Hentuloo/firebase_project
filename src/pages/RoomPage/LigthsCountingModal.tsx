@@ -4,7 +4,6 @@ import { ClearModal } from 'components/molecules';
 import gsap from 'gsap';
 import { useSelector } from 'react-redux';
 import { getGameSettings } from 'store/selectors/gameSettings.selector';
-import { UseInputSpeedTestReturnApi } from 'hooks/useInputSpeedTest/useInputSpeedTest';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -13,17 +12,12 @@ const Wrapper = styled.div`
   transform: translate(-50%, -50%);
   z-index: 5;
 `;
-export interface LigthsCountingModalProps {
-  typingInputState: UseInputSpeedTestReturnApi;
-}
+export interface LigthsCountingModalProps {}
 
 export const LigthsCountingModal: FC<LigthsCountingModalProps> = ({
-  typingInputState: { startNewMultiplayerGame },
   ...props
 }) => {
-  const { startTimestamp, timesOfLightChanges } = useSelector(
-    getGameSettings,
-  );
+  const { timesOfLightChanges } = useSelector(getGameSettings);
   const circlesWrapperRef = useRef<SVGGElement>(null);
   const [ligthsActive, setLightsActive] = useState(false);
   const [ligthStepNumber, setLigthStepNumber] = useState(0);
@@ -49,14 +43,6 @@ export const LigthsCountingModal: FC<LigthsCountingModalProps> = ({
     const circlesWrapper = circlesWrapperRef.current;
     if (!circlesWrapper) return;
     const circles = [...circlesWrapper.children];
-
-    // prepare game input for game
-    if (ligthStepNumber === 1 && startTimestamp) {
-      startNewMultiplayerGame({
-        secondsToEnd: 60,
-        startTimestamp,
-      });
-    }
 
     // change ligths
     if (ligthStepNumber > 0 && ligthStepNumber <= 3) {

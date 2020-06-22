@@ -69,13 +69,22 @@ export const RoadImages: FC<RoadImagesProps> = ({
       if (!car || wrapperWidth === null) return;
       return gsap.to(car, {
         x: (percents / 100) * (wrapperWidth - car.clientWidth),
-        duration: duration || 3,
+        duration: duration || 4,
         ease: Linear.easeIn,
         delay: delay || 0,
       });
     },
     [wrapperWidth],
   );
+  const resetCarPosition = useCallback(() => {
+    const car = carRef.current;
+    if (!car || wrapperWidth === null) return;
+    return gsap.to(car, {
+      x: 0,
+      duration: 1,
+      ease: Linear.easeIn,
+    });
+  }, [wrapperWidth]);
 
   useEffect(() => {
     if (progress === 0 || progress === null) return;
@@ -108,6 +117,7 @@ export const RoadImages: FC<RoadImagesProps> = ({
       (endTimestamp * 1000 - new Date().getTime()) / 1000;
 
     if (duration < 0) return;
+    if (delay > 0) resetCarPosition();
 
     const animSub = moveCar({
       delay: delay < 0 ? 0 : delay,
@@ -117,7 +127,13 @@ export const RoadImages: FC<RoadImagesProps> = ({
     return () => {
       if (animSub) animSub.kill();
     };
-  }, [startTimestamp, endTimestamp, moveCar, isAnimation]);
+  }, [
+    startTimestamp,
+    endTimestamp,
+    moveCar,
+    isAnimation,
+    resetCarPosition,
+  ]);
 
   return (
     <Wrapper {...props}>

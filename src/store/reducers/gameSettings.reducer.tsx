@@ -9,6 +9,7 @@ export interface GameSettingsState
   gameAlreadyStated: boolean;
   gameStartRequest: boolean;
   scoresModal: boolean;
+  waitForLastScoresUpdate: boolean;
 }
 // const tt = new Date().getTime() / 1000 + 10;
 // const now = tt * 1000 - new Date().getTime();
@@ -80,40 +81,35 @@ const init: GameSettingsState = {
   gameAlreadyStated: false,
   gameStartRequest: false,
   scoresModal: false,
+  waitForLastScoresUpdate: false,
+  usersByScores: null,
 };
 
 export default (state = init, action: Action): GameSettingsState => {
   switch (action.type) {
-    case types.UPDATE_GAME_SETTINGS:
-      if (
-        state.startTimestamp === null &&
-        action.payload.startTimestamp !== null
-      ) {
-        const timeToStart =
-          action.payload.startTimestamp * 1000 - new Date().getTime();
-        // game started Before
-        if (timeToStart < 0) {
-          return {
-            ...state,
-            ...action.payload,
-            gameStartRequest: false,
-            gameAlreadyStated: true,
-          };
-        }
-        return {
-          ...state,
-          ...action.payload,
-          gameStartRequest: false,
-          timesOfLightChanges: [
-            0,
-            timeToStart * 0.55,
-            timeToStart * 0.75,
-            timeToStart * 0.95,
-            timeToStart,
-          ],
-        };
-      }
-      return { ...state, ...action.payload, gameStartRequest: false };
+    case types.SET_GAME_ALREADY_STARTED: {
+      return {
+        ...state,
+        ...action.payload,
+        gameStartRequest: false,
+        gameAlreadyStated: true,
+        scoresModal: false,
+      };
+    }
+    case types.SET_GAME_BEFORE_START: {
+      return {
+        ...state,
+        ...action.payload,
+        gameStartRequest: false,
+        scoresModal: false,
+      };
+    }
+    case types.UPDATE_GAME_SETTINGS: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
     case types.SET_GAME_START_REQUEST: {
       return { ...state, gameStartRequest: action.payload };
     }
@@ -125,6 +121,13 @@ export default (state = init, action: Action): GameSettingsState => {
         ...state,
         ...action.payload,
         scoresModal: true,
+        waitForLastScoresUpdate: false,
+      };
+    }
+    case types.LAST_SCORES_UPDATE: {
+      return {
+        ...state,
+        waitForLastScoresUpdate: true,
       };
     }
     case types.CLEAR_GAME_SETTINGS: {

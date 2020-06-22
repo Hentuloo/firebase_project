@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import {
   getGameStatusRequestFlag,
   getGameStartTimestamp,
+  getFinalResults,
 } from 'store/selectors/gameSettings.selector';
 
 interface WrapperProps {
@@ -64,11 +65,14 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
 }) => {
   const gameStartRequest = useSelector(getGameStatusRequestFlag);
   const startTimestamp = useSelector(getGameStartTimestamp);
+  const results = useSelector(getFinalResults);
 
-  const showStartButtonFlag = useMemo(
-    () => users.length > 1 && isCreator && startTimestamp === null,
-    [isCreator, startTimestamp, users.length],
-  );
+  const showStartButtonFlag = useMemo(() => {
+    const basicPermision = users.length > 1 && isCreator;
+    const beforeStartOrAfterGame = startTimestamp === null || results;
+
+    return basicPermision && beforeStartOrAfterGame;
+  }, [isCreator, results, startTimestamp, users.length]);
 
   return (
     <Wrapper showOnMobile={showPlayersOnMobile} {...props}>

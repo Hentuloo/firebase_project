@@ -6,18 +6,13 @@ import exitDoor from 'assets/svg/icons/exitDoor.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import { getScoresModalFlag } from 'store/selectors/gameSettings.selector';
 import { toggleScoresModal } from 'store/actions/gameSettings.actions';
+import { FixedBackgroudProvider } from 'components/molecules';
 import { Table } from './Table';
 
-const Wrapper = styled.div`
-  position: fixed;
+const Wrapper = styled(FixedBackgroudProvider)`
   display: grid;
-  grid-template-rows: 1fr 1fr;
-  width: 100%;
   min-height: 80%;
-  left: 0%;
-  top: 0%;
-  background-color: ${({ theme }) => theme.color.white[0]};
-  z-index: 5;
+  grid-template-rows: 1fr 1fr 150px;
   text-align: center;
   align-items: center;
 `;
@@ -26,6 +21,7 @@ const StyledPodiumWithImages = styled(PodiumWithImages)`
 `;
 const StyledButton = styled(CircledButtonWithImage)`
   margin: 0px auto;
+  align-self: center;
 `;
 
 export interface PodiumModalProps {}

@@ -53,9 +53,13 @@ export class FireFunctions {
     return fn({ roomId });
   };
 
-  public callPointReached = (roomId: string, accuracy: number) => {
+  public callPointReached = (
+    roomId: string,
+    accuracy: number,
+    index: number,
+  ) => {
     const fn = this.call('callGamePointReached');
-    return fn({ roomId, accuracy });
+    return fn({ roomId, accuracy, index });
   };
 
   public createRoom = ({

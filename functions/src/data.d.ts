@@ -45,6 +45,7 @@ export interface GameSettingsDoc {
   password: string;
   maxPlayersNumber: number;
   creator: string;
+  usersByScores: ScoreWithUid[] | null;
 }
 export type UpdateGameSettingsDoc = Partial<GameSettingsDoc>;
 

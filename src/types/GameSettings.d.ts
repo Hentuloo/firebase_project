@@ -13,7 +13,7 @@ export interface GameSettings {
   creator: string;
   title: string;
   created: number;
-  usersByScores?: GameScoreWithUid[];
+  usersByScores: GameScoreWithUid[] | null;
 }
 export interface GameSettingsWithPassword extends GameSettings {
   password: string | boolean;

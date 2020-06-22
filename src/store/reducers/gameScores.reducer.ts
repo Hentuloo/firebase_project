@@ -26,6 +26,27 @@ export default (state = init, action: Action): GameScoreState => {
 
       return { ...state, ...newScoresState };
     }
+    case types.SET_GAME_BEFORE_START: {
+      const { registeredUsers } = action.payload;
+      const usersUids = Object.keys(registeredUsers);
+      const usersWithClearScores = usersUids.reduce((acc, uid) => {
+        acc[uid] = {
+          lastChangesDate: 0,
+          cursor: 0,
+          wpmSpeed: 0,
+          changes: 0,
+          points: 0,
+          accuracy: 100,
+          progress: 0,
+          difference: 0,
+        };
+        return acc;
+      }, {});
+
+      return {
+        ...usersWithClearScores,
+      };
+    }
     default:
       return state;
   }
