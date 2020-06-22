@@ -3,10 +3,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { Db, FireFunctions } from 'fb';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  getGameSettings,
-  getRegisteredUserInArray,
-} from 'store/selectors/gameSettings.selector';
+import { getGameSettings } from 'store/selectors/gameSettings.selector';
 import { useRedirect } from 'hooks/useRedirect';
 import { Constants } from 'config/Constants';
 import { toast } from 'react-toastify';
@@ -72,7 +69,7 @@ const RoomPage: FC = () => {
     startTimestamp,
     endTimestamp,
   } = useSelector(getGameSettings);
-  const regiteredUsers = useSelector(getRegisteredUserInArray);
+
   const { uid } = useSelector(getUser);
   const scores = useSelector(getGameScoresByRegisteredUsers);
 
@@ -151,7 +148,6 @@ const RoomPage: FC = () => {
   return (
     <Wrapper>
       <RoomDetails
-        users={regiteredUsers}
         title={title}
         copyToClipboard={copyRoomLinkToClipboard}
         isCreator={creator === uid}

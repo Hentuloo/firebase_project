@@ -35,7 +35,6 @@ export interface RoomDetailsProps
 }
 
 const RoomDetails: FC<RoomDetailsProps> = ({
-  users,
   title,
   copyToClipboard,
   isCreator,
@@ -62,7 +61,6 @@ const RoomDetails: FC<RoomDetailsProps> = ({
     <Wrapper>
       <RoomTitle>{title}</RoomTitle>
       <RoomDetailsCard
-        users={users}
         showPlayersOnMobile={showPlayersOnMobile}
         isCreator={isCreator}
         onStartGame={onStartGame}

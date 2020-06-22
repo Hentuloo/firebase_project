@@ -7,8 +7,8 @@ import {
   getGameStatusRequestFlag,
   getGameStartTimestamp,
   getFinalResults,
+  getRegisteredUserInArray,
 } from 'store/selectors/gameSettings.selector';
-import { UserWithUid } from 'types/GameSettings';
 import { PlayersList } from './PlayersList';
 
 interface WrapperProps {
@@ -47,34 +47,33 @@ const SmallText = styled.span`
 `;
 
 export interface RoomDetailsCardProps {
-  users: UserWithUid[];
   showPlayersOnMobile: boolean;
   isCreator: boolean;
   onStartGame: () => void;
 }
 
 export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
-  users,
   showPlayersOnMobile,
   isCreator,
   onStartGame,
   ...props
 }) => {
+  const regiteredUsers = useSelector(getRegisteredUserInArray);
   const gameStartRequest = useSelector(getGameStatusRequestFlag);
   const startTimestamp = useSelector(getGameStartTimestamp);
   const results = useSelector(getFinalResults);
 
   const showStartButtonFlag = useMemo(() => {
-    const basicPermision = users.length > 1 && isCreator;
+    const basicPermision = regiteredUsers.length > 1 && isCreator;
     const beforeStartOrAfterGame = startTimestamp === null || results;
 
     return basicPermision && beforeStartOrAfterGame;
-  }, [isCreator, results, startTimestamp, users.length]);
+  }, [isCreator, results, startTimestamp, regiteredUsers.length]);
 
   return (
     <Wrapper showOnMobile={showPlayersOnMobile} {...props}>
-      <PlayersList players={users} />
-      {users.length === 1 && (
+      <PlayersList players={regiteredUsers} />
+      {regiteredUsers.length === 1 && (
         <SmallText>
           Aby rozpocząć potrzeba minimum dwóch graczy.
         </SmallText>

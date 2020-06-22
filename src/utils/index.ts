@@ -80,3 +80,13 @@ export const sortByPointsDifference = (points: number[]) => {
     return num - max;
   });
 };
+
+export const arrayMoveElement = <T = any>(
+  array: T[],
+  from: number,
+  to: number,
+): T[] => {
+  const copyOfArray = [...array];
+  copyOfArray.splice(to, 0, copyOfArray.splice(from, 1)[0]);
+  return copyOfArray;
+};

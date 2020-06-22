@@ -4,10 +4,11 @@ export interface UserBasicInfo {
   displayName: string;
   photoURL?: string;
 }
-export interface UserWithUid {
+export interface UserLabelInfo {
   uid: string;
   displayName: string;
   photoURL?: string;
+  isCreator?: boolean;
 }
 
 export interface GameSettings {

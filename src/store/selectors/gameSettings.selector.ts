@@ -1,16 +1,23 @@
 import { createSelector } from 'reselect';
 import { StoreType } from 'store/store';
+import { arrayMoveElement } from 'utils';
 
 export const getGameSettings = (store: StoreType) =>
   store.gameSettings;
 
 export const getRegisteredUserInArray = createSelector(
   getGameSettings,
-  ({ registeredUsers }) => {
-    return Object.keys(registeredUsers).map(playerId => ({
+  ({ registeredUsers, creator }) => {
+    const users = Object.keys(registeredUsers).map(playerId => ({
       ...registeredUsers[playerId],
       uid: playerId,
+      isCreator: creator === playerId,
     }));
+    const creatorIndex = users.findIndex(
+      ({ isCreator }) => isCreator === true,
+    );
+    if (creatorIndex === -1 || creatorIndex === 0) return users;
+    return arrayMoveElement(users, creatorIndex, 0);
   },
 );
 export const getGameStatusRequestFlag = createSelector(
