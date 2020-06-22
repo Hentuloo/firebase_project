@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { CircleImage } from 'components/atoms';
 import creatorIconSvg from 'assets/svg/creatorIcon.svg';
+import { UserLabelInfo } from 'types/GameSettings';
 import { UserLabelTooltipProvider } from './UserLabelTooltipProvider';
 
 const Wrapper = styled.div`
@@ -24,16 +25,13 @@ const CreatorIcon = styled.img`
   transform: translate(-14px, -75%);
 `;
 
-export interface UserLabelProps {
-  displayName: string;
-  photoURL?: string;
-  isCreator?: boolean;
-}
+export interface UserLabelProps extends Omit<UserLabelInfo, 'uid'> {}
 
 export const UserLabel: FC<UserLabelProps> = ({
   photoURL,
   displayName,
   isCreator,
+  wins,
   ...props
 }) => {
   return (
@@ -41,6 +39,7 @@ export const UserLabel: FC<UserLabelProps> = ({
       photoURL={photoURL}
       displayName={displayName}
       isCreator={isCreator}
+      wins={wins}
     >
       <Wrapper {...props}>
         <StyledCircleImage src={photoURL} />

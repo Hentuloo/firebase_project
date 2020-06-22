@@ -2,18 +2,24 @@ import { GameScoreWithUid } from './GameScore';
 
 export interface UserBasicInfo {
   displayName: string;
+  wins: number;
   photoURL?: string;
 }
 export interface UserLabelInfo {
   uid: string;
   displayName: string;
+  wins: number;
   photoURL?: string;
   isCreator?: boolean;
 }
 
 export interface GameSettings {
   registeredUsers: {
-    [uid: string]: { displayName: string; photoURL?: string };
+    [uid: string]: {
+      displayName: string;
+      photoURL?: string;
+      wins: number;
+    };
   };
   text: string | null;
   changesLength: number | null;

@@ -72,13 +72,15 @@ export interface AddPlayerToRoomProps {
   uid: string;
   displayName: string;
   photoURL: string;
+  wins: number;
 }
 export const addPlayerToRoom = async ({
   roomId,
   uid,
   displayName,
   photoURL,
-}) => {
+  wins,
+}: AddPlayerToRoomProps) => {
   const gameRef = firestore().doc(`games/${roomId}`);
   const gameScoreRef = firestore().doc(`gamesScores/${roomId}`);
   const userRef = firestore().doc(`users/${uid}`);
@@ -87,7 +89,7 @@ export const addPlayerToRoom = async ({
     lastJoinedRoom: roomId,
   });
   const gamePromise = gameRef.update({
-    [`registeredUsers.${uid}`]: { displayName, photoURL },
+    [`registeredUsers.${uid}`]: { displayName, photoURL, wins },
   } as UpdateGameSettingsDoc);
   const scoresPromise = gameScoreRef.update({
     [`scores.${uid}`]: {

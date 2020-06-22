@@ -11,6 +11,7 @@ export interface UserReducerState {
   displayName: string | null;
   photoURL: string | null;
   darkMode: DarkMode;
+  wins: number;
 }
 
 const init: UserReducerState = {
@@ -19,6 +20,7 @@ const init: UserReducerState = {
   displayName: null,
   photoURL: null,
   darkMode: getStoragedDarkModeTheme() || 'LIGHT',
+  wins: 0,
 };
 
 export default (

@@ -1,13 +1,14 @@
 import { createSelector } from 'reselect';
 import { StoreType } from 'store/store';
 import { arrayMoveElement } from 'utils';
+import { UserLabelInfo } from 'types/GameSettings';
 
 export const getGameSettings = (store: StoreType) =>
   store.gameSettings;
 
 export const getRegisteredUserInArray = createSelector(
   getGameSettings,
-  ({ registeredUsers, creator }) => {
+  ({ registeredUsers, creator }): UserLabelInfo[] => {
     const users = Object.keys(registeredUsers).map(playerId => ({
       ...registeredUsers[playerId],
       uid: playerId,

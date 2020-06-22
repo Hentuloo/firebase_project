@@ -31,7 +31,12 @@ const BrandText = styled.span`
 const WinsInfoWrapper = styled.div`
   display: grid;
   grid-auto-flow: column;
+  column-gap: 5px;
   text-align: end;
+  font-weight: ${({ theme }) => theme.fw[1]};
+  font-size: ${({ theme }) => theme.fs.s};
+  color: ${({ theme }) => theme.color.brand[3]};
+  align-items: center;
 `;
 const SmallIcon = styled.img`
   max-height: 17px;
@@ -46,6 +51,7 @@ export const UserLabelTooltipProvider: FC<UserLabelTooltipProviderProps> = ({
   photoURL,
   displayName,
   isCreator,
+  wins,
   children,
 }) => {
   return (
@@ -58,7 +64,7 @@ export const UserLabelTooltipProvider: FC<UserLabelTooltipProviderProps> = ({
           {isCreator && <BrandText>Założyciel pokoju</BrandText>}
           <span>{displayName}</span>
           <WinsInfoWrapper>
-            <span>42</span>
+            <span>{wins}</span>
             <SmallIcon src={crownIconSVG} />
           </WinsInfoWrapper>
         </Wrapper>

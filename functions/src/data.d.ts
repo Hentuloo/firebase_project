@@ -4,6 +4,7 @@ export interface UserDocument {
   photoURL: string;
   state: string;
   lastChanged: number;
+  wins: number;
   cloudTaskDeleteRelatedRoom?: string;
   lastCreatedRoom?: string;
   lastJoinedRoom?: string;
@@ -36,7 +37,11 @@ export type UpdateAvaiableRoomsCollection = Partial<
 
 export interface GameSettingsDoc {
   registeredUsers: {
-    [uid: string]: { displayName: string; photoURL: string };
+    [uid: string]: {
+      displayName: string;
+      photoURL: string;
+      wins: number;
+    };
   };
   textId: string;
   changesLength: number;

@@ -10,12 +10,17 @@ import {
   UpdateGameSettingsDoc,
   GameSettingsDoc,
   UpdateGameScore,
+  UpdateUserDocument,
 } from '../data';
 import {
   callFunctionByCloudTask,
   deleteCloudTask,
 } from '../utils/cloudTask.utils';
 import { sortUsersScores } from '../utils/utils';
+
+const firestoreIncrementValue = (firestore.FieldValue.increment(
+  1,
+) as unknown) as number;
 
 interface StartGameProps {
   roomId: string;
@@ -135,6 +140,7 @@ export class GameController {
 
     const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
     const gameRef = firestore().doc(`games/${roomId}`);
+    const usersRef = firestore().collection(`users`);
 
     const scoreSnap = await gameScoresRef.get();
     if (!scoreSnap.exists)
@@ -196,7 +202,14 @@ export class GameController {
     if (progress === 100) {
       deleteCloudTask({ taskName: stopGameFunction });
       const usersByScores = sortUsersScores(score);
-      gameRef.update({ usersByScores } as UpdateGameSettingsDoc);
+      const winner = usersByScores[0];
+      usersRef.doc(winner.uid).update({
+        wins: firestoreIncrementValue,
+      } as UpdateUserDocument);
+      gameRef.update({
+        usersByScores,
+        [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue,
+      } as UpdateGameSettingsDoc);
     }
 
     return {
@@ -214,12 +227,23 @@ export class GameController {
     const { roomId } = req.body as StopGameBody;
     const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
     const gameRef = firestore().doc(`games/${roomId}`);
+    const usersRef = firestore().collection(`users`);
 
     const scoreSnap = await gameScoresRef.get();
     const scores = scoreSnap.data() as GameScoresDoc;
     const usersByScores = sortUsersScores(scores);
 
-    gameRef.update({ usersByScores } as UpdateGameSettingsDoc);
+    const winner = usersByScores[0];
+    if (winner) {
+      usersRef.doc(winner.uid).update({
+        wins: firestoreIncrementValue,
+      } as UpdateUserDocument);
+    }
+
+    gameRef.update({
+      usersByScores,
+      [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue,
+    } as UpdateGameSettingsDoc);
     gameScoresRef.update({
       startTimestamp: null,
     } as UpdateGameSettingsDoc);

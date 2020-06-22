@@ -53,7 +53,7 @@ export class RoomsController {
       title,
       maxPlayersNumber,
       password,
-      user: { displayName, photoURL, lastCreatedRoom },
+      user: { displayName, photoURL, lastCreatedRoom, wins },
     } = data;
 
     if (lastCreatedRoom) {
@@ -70,7 +70,7 @@ export class RoomsController {
       .collection(`games`)
       .add({
         registeredUsers: {
-          [uid]: { displayName, photoURL },
+          [uid]: { displayName, photoURL, wins },
         },
         title,
         maxPlayersNumber,
@@ -134,6 +134,7 @@ export class RoomsController {
         photoURL,
         lastJoinedRoom,
         lastCreatedRoom,
+        wins,
       },
     } = data;
 
@@ -163,7 +164,13 @@ export class RoomsController {
     // user doesn't exist
     // check if room need password
     if (roomPassword === false) {
-      addPlayerToRoom({ uid, displayName, photoURL, roomId });
+      addPlayerToRoom({
+        uid,
+        displayName,
+        photoURL: photoURL || null,
+        roomId,
+        wins,
+      });
       return {
         ok: true,
         code: 'You have access',
@@ -179,7 +186,13 @@ export class RoomsController {
       throw new https.HttpsError('unavailable', 'wrong password');
     }
 
-    addPlayerToRoom({ uid, displayName, photoURL, roomId });
+    addPlayerToRoom({
+      uid,
+      displayName,
+      photoURL: photoURL || null,
+      roomId,
+      wins,
+    });
     return {
       ok: true,
       code: 'You have access',

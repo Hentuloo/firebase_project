@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import level1 from 'assets/svg/levels/level1.svg';
+import Tippy from '@tippyjs/react';
 
 const Wrapper = styled.div`
   position: relative;
@@ -16,8 +17,10 @@ const Image = styled.img`
 
 export const RangImage: FC = ({ ...props }) => {
   return (
-    <Wrapper {...props}>
-      <Image src={level1} alt="Ranga" />
-    </Wrapper>
+    <Tippy content="Ranga rozgrywek solowych">
+      <Wrapper {...props}>
+        <Image src={level1} alt="Ranga" />
+      </Wrapper>
+    </Tippy>
   );
 };
