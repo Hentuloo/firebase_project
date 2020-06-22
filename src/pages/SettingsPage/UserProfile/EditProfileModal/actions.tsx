@@ -1,5 +1,5 @@
 import { validImageFile } from 'utils';
-import { Storage, Db } from 'fb';
+import { Storage, FireFunctions } from 'fb';
 import { toast } from 'react-toastify';
 import { Constants } from 'config/Constants';
 import { types } from './types';
@@ -21,8 +21,8 @@ export const submitForm = ({
   if (!image || !image.files) return;
 
   const nweFields = {} as {
-    photoURL: null | string;
-    displayName: null | string;
+    photoURL?: string;
+    displayName?: string;
   };
   const firstImage = image.files[0];
 
@@ -41,7 +41,7 @@ export const submitForm = ({
     if (inputValue !== '') nweFields.displayName = inputValue;
 
     if (Object.keys(nweFields).length > 0)
-      await Db.init().updateUserDoc(uid, nweFields);
+      await FireFunctions.init().updateUser(nweFields);
 
     dispatch({ type: types.REQUEST_SUCCESSFUL });
   } catch (err) {

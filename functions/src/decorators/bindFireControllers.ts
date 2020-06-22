@@ -1,19 +1,48 @@
-import { database, region, https } from 'firebase-functions';
-import { MetadataT } from './types';
+import { database, region, https, auth } from 'firebase-functions';
+import { MetadataT, ListenAuthTypes } from './types';
 import { FireFunctionOptions } from './fireFunctions';
 import { ListenDatabaseOptions } from './listenDatabase';
+import { ListenAuthOptions } from './listenAuth';
 
 class Controller {
   [key: string]: any;
 }
 export type IController = Controller;
 
-interface BindFireFunctionType extends FireFunctionOptions {
+interface BindAuthListenerType {
+  type: ListenAuthTypes;
   middlewares: Function[];
   controller: object;
   method: string;
 }
 
+const bindAuthListener = ({
+  type,
+  middlewares,
+  controller,
+  method,
+}: BindAuthListenerType) => {
+  return auth.user()[type](async (userRecord, context) => {
+    try {
+      for await (const fn of middlewares) {
+        await fn(userRecord, context);
+      }
+      return controller[method](userRecord, context);
+    } catch ({ code, message, details, name }) {
+      console.error(JSON.stringify({ code, message, details, name }));
+      throw new https.HttpsError('unknown', code, {
+        message,
+        details,
+        name,
+      });
+    }
+  });
+};
+interface BindFireFunctionType extends FireFunctionOptions {
+  middlewares: Function[];
+  controller: object;
+  method: string;
+}
 const bindFireFunction = ({
   region: choosedRegion,
   type,
@@ -95,6 +124,21 @@ export const bindFireControllers = (controllers: IController[]) => {
           middlewares,
           region: fireFunction.region,
           type: fireFunction.type,
+        });
+      }
+
+      const authListener = Reflect.getMetadata(
+        MetadataT.authListener,
+        controller,
+        method,
+      ) as ListenAuthOptions;
+
+      if (authListener) {
+        fireMethods[method] = bindAuthListener({
+          controller,
+          method,
+          middlewares,
+          type: authListener.type,
         });
       }
 

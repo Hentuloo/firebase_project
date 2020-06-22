@@ -1,3 +1,4 @@
+import { UserProfileFieldsToUpdate } from 'types/UserProfile';
 import firebase from '../index';
 
 type FirebaseFunctionsType = firebase.functions.Functions;
@@ -73,5 +74,10 @@ export class FireFunctions {
       maxPlayersNumber,
       password,
     });
+  };
+
+  public updateUser = (data: UserProfileFieldsToUpdate) => {
+    const update = this.call('updateUser');
+    return update(data);
   };
 }

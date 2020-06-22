@@ -1,5 +1,5 @@
 import firebase from '../index';
-import { Db } from './Db.controller';
+import { FireFunctions } from './FireFunctions.controller';
 
 interface CreateAccountWithEmailProps {
   email: string;
@@ -48,35 +48,20 @@ export class Auth {
     return this.instance.signInWithEmailAndPassword(email, password);
   };
 
-  public createAccountWithEmail = async (
-    { email, password, displayName }: CreateAccountWithEmailProps,
-    additionalProps = {},
-  ) => {
-    const {
-      user,
-    } = await this.instance.createUserWithEmailAndPassword(
+  public createAccountWithEmail = async ({
+    email,
+    password,
+    displayName,
+  }: CreateAccountWithEmailProps) => {
+    await this.instance.createUserWithEmailAndPassword(
       email,
       password,
     );
-    if (!user) return;
-    const userRef = await Db.init().newUser(user.uid, {
-      displayName,
-      photoURL: null,
-      ...additionalProps,
-    });
-    return userRef;
+    await FireFunctions.init().updateUser({ displayName });
   };
 
-  public loginWithGoogle = async (additionalProps = {}) => {
+  public loginWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    const { user } = await this.instance.signInWithPopup(provider);
-    const { uid, displayName, photoURL } = user as firebase.User;
-
-    const userRef = await Db.init().newUser(uid, {
-      displayName,
-      photoURL,
-      ...additionalProps,
-    });
-    return userRef;
+    await this.instance.signInWithPopup(provider);
   };
 }

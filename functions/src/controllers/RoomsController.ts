@@ -62,57 +62,54 @@ export class RoomsController {
         'your previous room still exists',
       );
     }
-
     const withPassword =
       password !== '' && password !== undefined && password !== null;
+    const gamesCollection = firestore().collection(`games`);
+    const { id: newRoomId } = await gamesCollection.add({
+      registeredUsers: {
+        [uid]: { displayName, photoURL, wins },
+      },
+      title,
+      maxPlayersNumber,
+      textId: null,
+      changesLength: null,
+      startTimestamp: null,
+      endTimestamp: null,
+      password: withPassword ? password : false,
+      creator: uid,
+      created: Date.now(),
+      usersByScores: null,
+    } as GameSettingsDoc);
 
-    const { id: newRoomId } = await firestore()
-      .collection(`games`)
-      .add({
-        registeredUsers: {
-          [uid]: { displayName, photoURL, wins },
+    const gameRef = firestore().doc(`gamesScores/${newRoomId}`);
+    const roomsRef = firestore().doc(
+      `rooms/${withPassword ? 'protected' : 'open'}`,
+    );
+    gameRef.set({
+      scores: {
+        [uid]: {
+          changes: 0,
+          cursor: 0,
+          lastChangesDate: 0,
+          wpmSpeed: 0,
+          accuracy: 0,
+          points: 0,
+          progress: 0,
         },
+      },
+      writtenWordsByCursorsPoints: null,
+      cursorPoints: [],
+      startTimestamp: null,
+    } as GameScoresDoc);
+
+    roomsRef.update({
+      [newRoomId]: {
         title,
-        maxPlayersNumber,
-        textId: null,
-        changesLength: null,
-        startTimestamp: null,
-        endTimestamp: null,
-        password: withPassword ? password : false,
-        creator: uid,
+        password: withPassword,
+        playersNumber: maxPlayersNumber,
         created: Date.now(),
-        usersByScores: null,
-      } as GameSettingsDoc);
-
-    firestore()
-      .doc(`gamesScores/${newRoomId}`)
-      .set({
-        scores: {
-          [uid]: {
-            changes: 0,
-            cursor: 0,
-            lastChangesDate: 0,
-            wpmSpeed: 0,
-            accuracy: 0,
-            points: 0,
-            progress: 0,
-          },
-        },
-        writtenWordsByCursorsPoints: null,
-        cursorPoints: [],
-        startTimestamp: null,
-      } as GameScoresDoc);
-
-    firestore()
-      .doc(`rooms/${withPassword ? 'protected' : 'open'}`)
-      .update({
-        [newRoomId]: {
-          title,
-          password: withPassword,
-          playersNumber: maxPlayersNumber,
-          created: Date.now(),
-        },
-      } as UpdateAvaiableRoomsCollection);
+      },
+    } as UpdateAvaiableRoomsCollection);
     firestore()
       .doc(`users/${uid}`)
       .update({ lastCreatedRoom: newRoomId } as UpdateUserDocument);
@@ -169,7 +166,7 @@ export class RoomsController {
         displayName,
         photoURL: photoURL || null,
         roomId,
-        wins,
+        wins: wins || 0,
       });
       return {
         ok: true,
@@ -191,7 +188,7 @@ export class RoomsController {
       displayName,
       photoURL: photoURL || null,
       roomId,
-      wins,
+      wins: wins || 0,
     });
     return {
       ok: true,

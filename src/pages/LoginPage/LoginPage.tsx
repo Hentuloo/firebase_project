@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logoSVG from 'assets/svg/icons/logo.svg';
@@ -8,6 +8,8 @@ import { useRedirect } from 'hooks/useRedirect';
 import { Auth } from 'fb';
 import { toast } from 'react-toastify';
 import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
+import { useSelector } from 'react-redux';
+import { getUser } from 'store/selectors/user.selector';
 import Form, { InputValuesReducerState } from './Form';
 
 const LogoWrapper = styled.div`
@@ -49,6 +51,7 @@ const StyledAuthLoading = styled(GoogleLoading)`
 `;
 
 const LoginPage: FC = () => {
+  const { uid } = useSelector(getUser);
   const [hasAccount, setHasAccount] = useState<boolean | string>(
     false,
   );
@@ -70,11 +73,7 @@ const LoginPage: FC = () => {
         redirect(Constants.paths.dashboard.path);
         return;
       }
-      await createAccountWithEmail(
-        { email, password },
-        { displayName },
-      );
-      redirect(Constants.paths.registered.path);
+      await createAccountWithEmail({ email, password, displayName });
     } catch (err) {
       toast.error(Constants.firebaseErrors[err.code] || err.message);
       if (err.code === 'auth/popup-closed-by-user') return;
@@ -87,15 +86,20 @@ const LoginPage: FC = () => {
     try {
       setAuthRequest('google');
       await Auth.init().loginWithGoogle();
-      if (!hasAccount)
-        return redirect(Constants.paths.registered.path);
       setAuthRequest(false);
-      return redirect(Constants.paths.dashboard.path);
     } catch (err) {
       toast.error(Constants.firebaseErrors[err.code] || err.message);
       setAuthRequest(false);
     }
   };
+
+  useEffect(() => {
+    if (uid !== null) {
+      if (!hasAccount)
+        return redirect(Constants.paths.registered.path);
+      return redirect(Constants.paths.dashboard.path);
+    }
+  }, [hasAccount, redirect, uid]);
 
   return (
     <WithBackgroundTemplate type={0}>
