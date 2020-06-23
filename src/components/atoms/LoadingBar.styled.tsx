@@ -9,7 +9,7 @@ export const Bar = styled.div`
   background: ${({ theme }) => theme.color.gradients[0]};
   border-radius: 40px;
   overflow: hidden;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 
   ${({ green }: { green?: boolean }) =>
     green &&

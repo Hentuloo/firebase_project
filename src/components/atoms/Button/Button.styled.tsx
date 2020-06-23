@@ -71,7 +71,7 @@ export const CircleButton = styled(ClearButton)`
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  box-shadow: 0px 0px 15px ${({ theme }) => theme.color.shadow[0]};
+  box-shadow: ${({ theme }) => theme.color.shadow[0]};
   color: ${({ theme }) => theme.color.brand[0]};
 `;
 
@@ -81,5 +81,9 @@ export const FilledButton = styled(ClearButton)`
   border-radius: 32px;
   font-weight: ${({ theme }) => theme.fw[0]};
   color: ${({ theme }) => theme.color.contrastWhite[0]};
-  background-color: ${({ theme }) => theme.color.brand[3]};
+  background-color: ${({ theme }) => theme.color.buttonColor[0]};
+  box-shadow: ${({ theme }) => theme.color.buttonShadow[0]};
+  &:hover {
+    box-shadow: ${({ theme }) => theme.color.buttonShadow[1]};
+  }
 `;

@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 const Value = styled.span`
   padding: 5px;
   border-radius: 45px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
   font-weight: ${({ theme }) => theme.fw[0]};
 `;
 const Title = styled.span`

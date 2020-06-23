@@ -43,6 +43,9 @@ const InnerWrapper = styled.div`
 
   ${stickyModal}
   position: relative;
+  ${({ theme }) => theme.mediaQuery.lg} {
+    grid-row-gap: 8px;
+  }
 `;
 
 interface TypingInput extends UseInputSpeedTestProps {

@@ -11,7 +11,9 @@ export interface ThemeColor {
     chart: [string, string, string];
     contrastWhite: [string];
     contrastBrand: [string, string];
-    shadow: [string];
+    shadow: [string, string];
+    buttonColor: [string];
+    buttonShadow: [string, string];
     points: {
       RED: string;
       GREEN: string;
@@ -48,7 +50,12 @@ const colors: ThemeColorByMode = {
       chart: ['#69C397', 'rgb(119, 119, 119)', 'rgb(220, 220, 220)'],
       contrastWhite: ['rgb(255, 255, 255)'],
       contrastBrand: ['#6B9983', 'rgba(58, 119, 89, 0.4)'],
-      shadow: ['rgba(0, 0, 0, 0.1)'],
+      shadow: [
+        '0px 0px 8px rgba(0, 0, 0, 0.1)',
+        '0px 0px 8px rgba(0, 0, 0, 0.1)',
+      ],
+      buttonColor: ['#6B9983'],
+      buttonShadow: [`0px 0px 3px #15633e`, `0px 0px 1px #15633e`],
       points: {
         RED: '#EC7D7D',
         GREEN: '#3A7759',
@@ -82,7 +89,15 @@ const colors: ThemeColorByMode = {
       chart: ['#69C397', 'rgb(119, 119, 119)', 'rgb(220, 220, 220)'],
       contrastWhite: ['rgb(255, 255, 255)'],
       contrastBrand: ['rgb(255, 255, 255)', 'rgb(119, 119, 119)'],
-      shadow: ['rgba(199, 199, 199, 0.48)'],
+      shadow: [
+        `5px 5px 5px rgb(19,19,19), -1px -3px 5px rgba(103,103,103,0.84)`,
+        `2px 2px 5px rgb(19, 19, 19),0px -1px 5px rgb(19, 19, 19)`,
+      ],
+      buttonColor: ['rgb(35, 35, 35)'],
+      buttonShadow: [
+        `3px 3px 5px rgb(19,19,19), -1px -3px 5px rgba(134, 134, 134, 0.57)`,
+        `3px 3px 5px rgb(19,19,19) inset, -1px -3px 5px rgba(134,134,134,0.57) inset`,
+      ],
       points: {
         RED: '#9D3030',
         GREEN: '#3A7759',

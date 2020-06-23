@@ -8,7 +8,7 @@ export default css`
       background: ${({ theme }) => theme.color.white[0]};
       color: ${({ theme }) => theme.color.black[0]};
       border-radius: 9px 9px 4px 4px;
-      box-shadow: 0px 0px 15px ${({ theme }) => theme.color.shadow[0]};
+      box-shadow: ${({ theme }) => theme.color.shadow[0]};
     }
     &__toast--error {
       .Toastify__progress-bar {

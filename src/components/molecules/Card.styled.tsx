@@ -12,7 +12,7 @@ export const CardBackgroud = css`
     padding: 30px 0px;
     transform: translate(-50%, -50%);
     border-radius: 45px;
-    box-shadow: 0px 0px 15px ${({ theme }) => theme.color.shadow[0]};
+    box-shadow: ${({ theme }) => theme.color.shadow[0]};
     background-color: ${({ theme }) => theme.color.white[0]};
     z-index: -1;
   }

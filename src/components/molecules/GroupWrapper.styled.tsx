@@ -28,7 +28,7 @@ export const GroupWrapper = styled.div`
     transform: translate(-50%, -120%);
     background-color: ${({ theme }) => theme.color.white[0]};
     border-radius: 45px;
-    box-shadow: 0px 0px 15px ${({ theme }) => theme.color.shadow[0]};
+    box-shadow: ${({ theme }) => theme.color.shadow[0]};
     z-index: -1;
     ${({ theme }) => theme.mediaQuery.md} {
       display: block;

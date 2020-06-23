@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   grid-auto-flow: column;
   align-self: center;
   &::before {
-    box-shadow: 0px 0px 10px ${({ theme }) => theme.color.shadow[0]};
+    box-shadow: ${({ theme }) => theme.color.shadow[0]};
   }
 `;
 interface StyledClearButtonProps {

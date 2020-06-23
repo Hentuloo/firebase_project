@@ -38,6 +38,7 @@ const Wrapper = styled(Card)`
   &::before {
     width: 130px;
     height: 97%;
+    box-shadow: ${({ theme }) => theme.color.shadow[1]};
     ${({ theme }) => theme.mediaQuery.md} {
       width: 160px;
     }

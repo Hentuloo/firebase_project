@@ -21,7 +21,7 @@ const size = css`
 const Wrapper = styled.div`
   ${size};
   border-radius: 50%;
-  box-shadow: 0px 0px 15px ${({ theme }) => theme.color.shadow[0]};
+  box-shadow: ${({ theme }) => theme.color.shadow[0]};
   overflow: hidden;
   font-size: ${({ theme }) => theme.fs.m};
   font-weight: ${({ theme }) => theme.fw[1]};
