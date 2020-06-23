@@ -14,6 +14,7 @@ export interface ThemeColor {
     shadow: [string, string];
     buttonColor: [string];
     buttonShadow: [string, string];
+    disabledButtonFilter: [string];
     points: {
       RED: string;
       GREEN: string;
@@ -51,11 +52,12 @@ const colors: ThemeColorByMode = {
       contrastWhite: ['rgb(255, 255, 255)'],
       contrastBrand: ['#6B9983', 'rgba(58, 119, 89, 0.4)'],
       shadow: [
-        '0px 0px 8px rgba(0, 0, 0, 0.1)',
+        '3px 3px 5px rgba(95, 93, 93, 0.39), -1px -2px 4px rgba(195,194,194,0.17)',
         '0px 0px 8px rgba(0, 0, 0, 0.1)',
       ],
       buttonColor: ['#6B9983'],
       buttonShadow: [`0px 0px 3px #15633e`, `0px 0px 1px #15633e`],
+      disabledButtonFilter: ['grayscale(100%)'],
       points: {
         RED: '#EC7D7D',
         GREEN: '#3A7759',
@@ -98,6 +100,7 @@ const colors: ThemeColorByMode = {
         `3px 3px 5px rgb(19,19,19), -1px -3px 5px rgba(134, 134, 134, 0.57)`,
         `3px 3px 5px rgb(19,19,19) inset, -1px -3px 5px rgba(134,134,134,0.57) inset`,
       ],
+      disabledButtonFilter: ['brightness(0.6)'],
       points: {
         RED: '#9D3030',
         GREEN: '#3A7759',

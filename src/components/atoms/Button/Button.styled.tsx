@@ -13,7 +13,7 @@ const offStylesProps = css<{ off?: boolean }>`
     css`
       cursor: initial !important;
       pointer-events: none;
-      filter: grayscale(100%);
+      filter: ${({ theme }) => theme.color.disabledButtonFilter[0]};
     `}
 `;
 const LinkWithOffProp = styled(Link)`
