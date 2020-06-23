@@ -4,14 +4,15 @@ import { UserLabelInfo } from 'types/GameSettings';
 
 export interface PlayersListProps {
   players: UserLabelInfo[];
+  className?: string;
 }
 
 export const PlayersList: FC<PlayersListProps> = ({
   players,
-  ...props
+  className,
 }) => {
   return (
-    <div {...props}>
+    <div className={className}>
       {players.map(
         ({ uid, photoURL, displayName, isCreator, wins }) => (
           <UserLabel

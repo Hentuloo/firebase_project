@@ -33,8 +33,12 @@ const StyledPlayersList = styled(PlayersList)`
   ${({ theme }) => theme.mediaQuery.md} {
     display: block;
   }
-  ${({ showOnMobile }: { showOnMobile?: boolean }) =>
-    showOnMobile &&
+  ${({
+    showPlayersOnMobileView,
+  }: {
+    showPlayersOnMobileView?: boolean;
+  }) =>
+    showPlayersOnMobileView &&
     css`
       display: block;
       ${({ theme }) => theme.mediaQuery.md} {
@@ -76,7 +80,7 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
   return (
     <Wrapper {...props}>
       <StyledPlayersList
-        showOnMobile={showPlayersOnMobile}
+        showPlayersOnMobileView={showPlayersOnMobile}
         players={regiteredUsers}
       />
       {regiteredUsers.length === 1 && (
