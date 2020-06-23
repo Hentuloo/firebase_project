@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import podiumSvg from 'assets/svg/ilustrations/podium.svg';
 import defaultPicture from 'assets/svg/icons/defaultProfilePicture.svg';
@@ -35,20 +35,38 @@ const CirclesWrapper = styled.div`
     transform: translate(30%, -15%);
   }
 `;
+export interface ImageObject {
+  src: string;
+  alt: string;
+}
 
-export interface PodiumWithImagesProps {}
+export interface PodiumWithImagesProps {
+  images: ImageObject[];
+}
 
 export const PodiumWithImages: FC<PodiumWithImagesProps> = ({
+  images,
   ...props
 }) => {
+  const prearedImages = useMemo(() => {
+    return [0, 1, 2].map(i => {
+      if (images[i]) {
+        return (
+          <CircleImage
+            key={i}
+            src={images[i].src || defaultPicture}
+            alt={images[i].src || 'Użytkownik'}
+          />
+        );
+      }
+      return <CircleImage key={i} src={defaultPicture} />;
+    });
+  }, [images]);
+
   return (
     <Wrapper {...props}>
       <BackgroundImage src={podiumSvg} title="Podium tło" />
-      <CirclesWrapper>
-        <CircleImage src={defaultPicture} />
-        <CircleImage src={defaultPicture} />
-        <CircleImage src={defaultPicture} />
-      </CirclesWrapper>
+      <CirclesWrapper>{prearedImages}</CirclesWrapper>
     </Wrapper>
   );
 };

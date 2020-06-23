@@ -4,7 +4,10 @@ import { PodiumWithImages } from 'components/organisms';
 import { CircledButtonWithImage } from 'components/atoms/Button/CircledButtonWithImage';
 import exitDoor from 'assets/svg/icons/exitDoor.svg';
 import { useSelector, useDispatch } from 'react-redux';
-import { getScoresModalFlag } from 'store/selectors/gameSettings.selector';
+import {
+  getScoresModalFlag,
+  getFinalUsersImages,
+} from 'store/selectors/gameSettings.selector';
 import { toggleScoresModal } from 'store/actions/gameSettings.actions';
 import { FixedBackgroudProvider } from 'components/molecules';
 import gsap from 'gsap';
@@ -18,6 +21,9 @@ const Wrapper = styled(FixedBackgroudProvider)`
   align-items: center;
 `;
 const PodiumImagesWrapper = styled.div`
+  width: 100%;
+`;
+const StyledPodiumWithImages = styled(PodiumWithImages)`
   margin: 30px auto 10px;
 `;
 const StyledButton = styled(CircledButtonWithImage)`
@@ -30,6 +36,7 @@ export interface PodiumModalProps {}
 export const PodiumModal: FC<PodiumModalProps> = () => {
   const podiumImagesRef = useRef<HTMLDivElement>(null);
   const showModal = useSelector(getScoresModalFlag);
+  const finalResults = useSelector(getFinalUsersImages);
   const dispatch = useDispatch();
 
   const handleCloseScoresTab = useCallback(() => {
@@ -41,7 +48,7 @@ export const PodiumModal: FC<PodiumModalProps> = () => {
       const el = podiumImagesRef.current;
       if (!el) return;
 
-      gsap.set(el, { opacity: 0.2, scale: 0.05 });
+      gsap.set(el, { opacity: 0.2, scale: 0 });
       gsap.to(el, {
         opacity: 1,
         scale: 1,
@@ -55,7 +62,9 @@ export const PodiumModal: FC<PodiumModalProps> = () => {
   return (
     <Wrapper>
       <PodiumImagesWrapper ref={podiumImagesRef}>
-        <PodiumWithImages />
+        {finalResults.length > 0 && (
+          <StyledPodiumWithImages images={finalResults} />
+        )}
       </PodiumImagesWrapper>
       <Table />
       <StyledButton

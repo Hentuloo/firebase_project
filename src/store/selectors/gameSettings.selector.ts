@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { StoreType } from 'store/store';
 import { arrayMoveElement } from 'utils';
 import { UserLabelInfo } from 'types/GameSettings';
+import defaultPicture from 'assets/svg/icons/defaultProfilePicture.svg';
 
 export const getGameSettings = (store: StoreType) =>
   store.gameSettings;
@@ -49,6 +50,16 @@ export const getFinalResultsWithUserImages = createSelector(
     return usersByScores.map(({ uid, ...rest }) => ({
       ...registeredUsers[uid],
       ...rest,
+    }));
+  },
+);
+export const getFinalUsersImages = createSelector(
+  getFinalResultsWithUserImages,
+  (items: ReturnType<typeof getFinalResultsWithUserImages>) => {
+    if (!items) return [];
+    return items.map(({ displayName, photoURL }) => ({
+      src: photoURL || defaultPicture,
+      alt: displayName,
     }));
   },
 );
