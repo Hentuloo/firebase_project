@@ -11,6 +11,7 @@ export const withUser = <
 >(
   WrapperedComponent: React.ComponentType<P>,
   OtherPage?: React.ComponentType<O>,
+  optionalProps?: { [key: string]: any },
 ) => {
   return (props: any) => {
     const { loggedRequest, uid } = useSelector(getUser);
@@ -22,10 +23,11 @@ export const withUser = <
     }, [uid]);
 
     if (Constants.OFFLINE_MODE)
-      return <WrapperedComponent {...props} />;
+      return <WrapperedComponent {...props} {...optionalProps} />;
     if (loggedRequest) return null;
-    if (uid) return <WrapperedComponent {...props} />;
-    if (OtherPage) return <OtherPage {...props} />;
+    if (uid)
+      return <WrapperedComponent {...props} {...optionalProps} />;
+    if (OtherPage) return <OtherPage {...props} {...optionalProps} />;
     return <Redirect to={Constants.paths.login.path} />;
   };
 };
@@ -36,6 +38,7 @@ export const redirectWhenUserLogged = <
 >(
   WrapperedComponent: React.ComponentType<P>,
   OtherPage?: React.ComponentType<O>,
+  optionalProps?: { [key: string]: any },
 ) => {
   return (props: any) => {
     const [checkedOnce, setCheckedOnce] = useState(false);
@@ -49,10 +52,11 @@ export const redirectWhenUserLogged = <
     }, [loggedRequest, uid]);
 
     if (Constants.OFFLINE_MODE)
-      return <WrapperedComponent {...props} />;
+      return <WrapperedComponent {...props} {...optionalProps} />;
     if (loggedRequest) return null;
-    if (!uid || checkedOnce) return <WrapperedComponent {...props} />;
-    if (OtherPage) return <OtherPage {...props} />;
+    if (!uid || checkedOnce)
+      return <WrapperedComponent {...props} {...optionalProps} />;
+    if (OtherPage) return <OtherPage {...props} {...optionalProps} />;
 
     return <Redirect to={Constants.paths.dashboard.path} />;
   };

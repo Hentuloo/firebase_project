@@ -12,7 +12,7 @@ const Wrapper = styled.footer`
   margin-bottom: 30px;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-template-columns: 1fr 40% 1fr;
-    margin-top: 300px;
+    margin-top: 100px;
   }
 `;
 const LinksWrapper = styled.div`

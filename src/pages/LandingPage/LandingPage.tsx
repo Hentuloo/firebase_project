@@ -9,6 +9,7 @@ import MultiplayerSection from './MultiplayerSection';
 import TrainingSection from './TrainingSection';
 import LevelsSection from './LevelsSection';
 import FootherSection from './FootherSection';
+import { LoginButtons } from './LoginButtons';
 
 const Wrapper = styled.main`
   position: relative;
@@ -64,12 +65,13 @@ const LandingPage: FC = () => {
   return (
     <Wrapper>
       <IntroSection />
-      <RadialImage src={radialSVG} />;
+      <RadialImage src={radialSVG} />
       <MultiplayerSection />
       <TrainingSection />
-      <LineImage src={lineSVG} />;
-      <GrayLineImage src={lineSVG} />;
+      <LineImage src={lineSVG} />
+      <GrayLineImage src={lineSVG} />
       <LevelsSection />
+      <LoginButtons />
       <FootherSection />
     </Wrapper>
   );

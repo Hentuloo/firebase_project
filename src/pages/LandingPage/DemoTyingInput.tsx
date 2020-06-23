@@ -5,6 +5,7 @@ import { TypingInput } from 'components/organisms';
 import arrowSVG from 'assets/svg/longArrow.svg';
 
 const Wrapper = styled.div`
+  position: relative;
   display: none;
   ${({ theme }) => theme.mediaQuery.md} {
     display: block;
@@ -26,9 +27,9 @@ const StyledTypingInput = styled(TypingInput)`
   width: 100%;
 `;
 const ArrowWrapper = styled.div`
-  top: calc(100% - 50px);
-  left: 50%;
   position: absolute;
+  top: 110px;
+  left: 50%;
   transform: translate(-80%, 0%);
 `;
 const ArrowImage = styled.img``;

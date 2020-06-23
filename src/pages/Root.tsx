@@ -58,6 +58,12 @@ function Root() {
           component={redirectWhenUserLogged(LoginPage)}
         />
         <Route
+          path={Constants.paths.createAccount.path}
+          component={redirectWhenUserLogged(LoginPage, undefined, {
+            hasAccount: true,
+          })}
+        />
+        <Route
           path={Constants.paths.registered.path}
           component={withUser(RegisteredPage)}
         />

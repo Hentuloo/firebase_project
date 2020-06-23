@@ -50,14 +50,16 @@ const StyledAuthLoading = styled(GoogleLoading)`
     transform: translate(10%, 10%);
   }
 `;
-
-const LoginPage: FC = () => {
+export interface LoginPageProps {
+  hasAccount?: boolean;
+}
+const LoginPage: FC<LoginPageProps> = ({ hasAccount = false }) => {
   const { uid } = useSelector(getUser);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(
     null,
   );
-  const [hasAccount, setHasAccount] = useState<boolean | string>(
-    false,
+  const [withAccount, setHasAccount] = useState<boolean | string>(
+    hasAccount,
   );
   const [authRequest, setAuthRequest] = useState<boolean | string>(
     false,
@@ -71,7 +73,7 @@ const LoginPage: FC = () => {
     const { loginWithEmail, createAccountWithEmail } = Auth.init();
     try {
       setAuthRequest(true);
-      if (hasAccount) {
+      if (withAccount) {
         await loginWithEmail(email, password);
         setAuthRequest(false);
         redirect(Constants.paths.dashboard.path);
@@ -105,15 +107,15 @@ const LoginPage: FC = () => {
       clearTimeout(timeoutId);
       setTimeoutId(null);
     }
-  }, [hasAccount, redirect, timeoutId, uid]);
+  }, [redirect, timeoutId, uid]);
 
   useEffect(() => {
     if (uid !== null && timeoutId === null) {
-      if (!hasAccount)
+      if (!withAccount)
         return redirect(Constants.paths.registered.path);
       return redirect(Constants.paths.dashboard.path);
     }
-  }, [hasAccount, redirect, timeoutId, uid]);
+  }, [withAccount, redirect, timeoutId, uid]);
 
   return (
     <WithBackgroundTemplate type={0}>
@@ -129,7 +131,7 @@ const LoginPage: FC = () => {
           onSubmit={onSubmit}
           authRequest={authRequest}
           setHasAccount={setHasAccount}
-          hasAccount={hasAccount}
+          hasAccount={withAccount}
           loginWithGoogle={handleLoginWithGoogle}
         />
       )}

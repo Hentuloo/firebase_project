@@ -16,6 +16,10 @@ export const Constants = {
       path: '/logowanie',
       name: 'Logowanie',
     },
+    createAccount: {
+      path: '/rejestracja',
+      name: 'Rejestracja',
+    },
     registered: {
       path: '/hello',
       name: 'Powitanie',

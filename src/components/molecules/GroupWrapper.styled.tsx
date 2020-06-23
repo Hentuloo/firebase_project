@@ -10,6 +10,7 @@ export const GroupWrapper = styled.div`
     grid-auto-flow: column;
     grid-template-columns: repeat(3, minmax(17%, 190px));
     grid-template-rows: 300px;
+    margin: 30px auto 80px;
     justify-content: space-evenly;
   }
   ${({ theme }) => theme.mediaQuery.vlg} {

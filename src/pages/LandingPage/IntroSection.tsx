@@ -1,13 +1,11 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
 import {
-  ButtonWithBar,
   BarDecorator,
   RoundButton,
+  ClearButton,
 } from 'components/atoms';
-
 import logoSVG from 'assets/svg/icons/logo.svg';
 import carsRaceSVG from 'assets/svg/road/carsRaceFirst.svg';
 import leavesSVG from 'assets/svg/leaves.svg';
@@ -23,14 +21,15 @@ const Wrapper = styled.section`
   width: 100%;
   height: 100vh;
   grid-template-columns: 80px 150px 1fr;
-  grid-template-rows: 90px 130px 1fr 170px;
+  grid-template-rows: 90px 170px 1fr 170px;
   overflow: hidden;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-template-columns: 100px 80px 150px 40px 1fr 200px;
-    grid-template-rows: 140px 160px 1fr 100px;
+    grid-template-rows: 140px 190px 1fr 100px;
   }
   ${({ theme }) => theme.mediaQuery.lg} {
     grid-template-columns: 100px 80px 190px 40px 1fr 120px 200px;
+    grid-template-rows: 140px 240px 1fr 100px;
   }
   ${({ theme }) => theme.mediaQuery.vlg} {
     grid-template-columns: 170px 120px 280px 40px 1fr 120px 200px;
@@ -71,14 +70,23 @@ const HeaderText = styled.div`
   p {
     min-width: 300px;
     padding-top: 15px;
-    text-align: center;
     ${({ theme }) => theme.mediaQuery.vlg} {
       min-width: 400px;
     }
   }
 `;
 const SmallText = styled.p`
+  max-width: 300px;
+  grid-column: 2 / span 1;
+  grid-row: 3 / span 1;
   font-size: 16px;
+  text-align: left;
+  ${({ theme }) => theme.mediaQuery.md} {
+    grid-column: 3 / span 3;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    max-width: 400px;
+  }
   ${({ theme }) => theme.mediaQuery.vlg} {
     font-size: 22px;
   }
@@ -104,7 +112,7 @@ const ArrowSVG = styled.img`
     height: 34px;
   }
 `;
-const ButtonWrapper = styled(Link)`
+const NewAccountButton = styled(ClearButton)`
   display: grid;
   grid-column: -1 / -3;
   grid-row: -1 / -2;
@@ -113,19 +121,27 @@ const ButtonWrapper = styled(Link)`
   z-index: 10;
   font-size: ${({ theme }) => theme.fs.xs};
   text-decoration: none;
+
   ${({ theme }) => theme.mediaQuery.md} {
     font-size: ${({ theme }) => theme.fs.m};
     align-items: flex-start;
   }
 `;
+const NewAccountButtonContent = styled.span`
+  ${BarDecorator}
+`;
 
 const RaceImage = styled.img`
-  max-width: 120vw;
-  grid-column: -1 / -3;
-  grid-row: 1 / 2;
-  margin-left: auto;
-  transform: translate(0%, 22%) rotate(-35deg);
+  position: absolute;
+  bottom: 12%;
+  left: 5%;
+  transform: rotate(-35deg);
   ${({ theme }) => theme.mediaQuery.md} {
+    position: relative;
+    max-width: 120vw;
+    grid-column: -1 / -3;
+    grid-row: 1 / 2;
+    margin-left: auto;
     width: 1000px;
     transform: translate(10%, -5%) rotate(0deg);
   }
@@ -145,9 +161,10 @@ const LeavesImage = styled.img`
     width: 550px;
     margin-left: 40px;
     margin-bottom: 40px;
-    opacity: 1;
+    opacity: 0.6;
   }
   ${({ theme }) => theme.mediaQuery.lg} {
+    opacity: 1;
     width: 650px;
   }
 `;
@@ -180,15 +197,14 @@ const IntroSection: FC = () => {
         <span>Pisz</span>
         <span>Rywalizuj</span>
         <WithBar>Ucz się!</WithBar>
-        <SmallText>
-          Naszym zadaniem jest poprawić Twoje umiejętności w pisaniu
-          na klawiaturze.
-        </SmallText>
       </HeaderText>
-
-      <ButtonWrapper to={Constants.paths.login.path}>
-        <ButtonWithBar as="span">Nowe konto</ButtonWithBar>
-      </ButtonWrapper>
+      <SmallText>
+        Naucz się szybkiego pisania, rywalizuj online, obserwuj
+        postępy
+      </SmallText>
+      <NewAccountButton as={Link} to={Constants.paths.login.path}>
+        <NewAccountButtonContent>Zaloguj się</NewAccountButtonContent>
+      </NewAccountButton>
       <DemoTyingInput />
       <RaceImage src={carsRaceSVG} />
       <LeavesImage src={leavesSVG} />
