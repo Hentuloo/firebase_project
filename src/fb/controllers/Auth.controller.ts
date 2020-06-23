@@ -62,6 +62,13 @@ export class Auth {
 
   public loginWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    await this.instance.signInWithPopup(provider);
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(
+      navigator.userAgent,
+    );
+    if (isMobile) {
+      return this.instance.signInWithRedirect(provider);
+    }
+    return this.instance.signInWithPopup(provider);
   };
 }

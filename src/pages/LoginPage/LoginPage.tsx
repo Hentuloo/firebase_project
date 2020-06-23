@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 import { useSelector } from 'react-redux';
 import { getUser } from 'store/selectors/user.selector';
+import { setTimeout } from 'timers';
 import Form, { InputValuesReducerState } from './Form';
 
 const LogoWrapper = styled.div`
@@ -52,6 +53,9 @@ const StyledAuthLoading = styled(GoogleLoading)`
 
 const LoginPage: FC = () => {
   const { uid } = useSelector(getUser);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(
+    null,
+  );
   const [hasAccount, setHasAccount] = useState<boolean | string>(
     false,
   );
@@ -83,10 +87,12 @@ const LoginPage: FC = () => {
 
   const handleLoginWithGoogle = async (e: any) => {
     e.preventDefault();
+
     try {
       setAuthRequest('google');
       await Auth.init().loginWithGoogle();
-      setAuthRequest(false);
+      const id = setTimeout(() => setAuthRequest(false), 1000);
+      setTimeoutId(id);
     } catch (err) {
       toast.error(Constants.firebaseErrors[err.code] || err.message);
       setAuthRequest(false);
@@ -95,11 +101,19 @@ const LoginPage: FC = () => {
 
   useEffect(() => {
     if (uid !== null) {
+      if (!timeoutId) return;
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+  }, [hasAccount, redirect, timeoutId, uid]);
+
+  useEffect(() => {
+    if (uid !== null && timeoutId === null) {
       if (!hasAccount)
         return redirect(Constants.paths.registered.path);
       return redirect(Constants.paths.dashboard.path);
     }
-  }, [hasAccount, redirect, uid]);
+  }, [hasAccount, redirect, timeoutId, uid]);
 
   return (
     <WithBackgroundTemplate type={0}>
