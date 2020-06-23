@@ -6,9 +6,12 @@ export interface PlayersListProps {
   players: UserLabelInfo[];
 }
 
-export const PlayersList: FC<PlayersListProps> = ({ players }) => {
+export const PlayersList: FC<PlayersListProps> = ({
+  players,
+  ...props
+}) => {
   return (
-    <>
+    <div {...props}>
       {players.map(
         ({ uid, photoURL, displayName, isCreator, wins }) => (
           <UserLabel
@@ -20,6 +23,6 @@ export const PlayersList: FC<PlayersListProps> = ({ players }) => {
           />
         ),
       )}
-    </>
+    </div>
   );
 };

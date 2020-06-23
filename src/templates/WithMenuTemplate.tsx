@@ -10,7 +10,9 @@ const Wrapper = styled.div`
   ${({ theme }) => theme.mediaQuery.md} {
     grid-template-columns: 1fr minmax(500px, 40%);
     grid-template-rows: 55px auto;
+    grid-row-gap: 60px;
   }
+
   ${({ theme }) => theme.mediaQuery.lg} {
     grid-template-rows: 75px auto;
   }

@@ -11,33 +11,36 @@ import {
 } from 'store/selectors/gameSettings.selector';
 import { PlayersList } from './PlayersList';
 
-interface WrapperProps {
-  showOnMobile: boolean;
-}
-
-const Wrapper = styled.div<WrapperProps>`
-  ${stickyModal};
-  display: none;
-  max-width: 270px;
-  min-height: 300px;
-  grid-row-gap: 15px;
-  padding: 15px 20px;
+const Wrapper = styled.div`
+  display: block;
+  width: 100%;
   ${({ theme }) => theme.mediaQuery.md} {
+    ${stickyModal};
     display: grid;
+    max-width: 270px;
+    min-height: 300px;
     align-items: flex-start;
+    grid-row-gap: 15px;
+    padding: 15px 20px;
   }
-  ${({ showOnMobile }) =>
-    showOnMobile &&
-    css`
-      display: grid;
-      ${({ theme }) => theme.mediaQuery.md} {
-        display: block;
-      }
-    `}
 `;
 const StyledFilledButton = styled(FilledButton)`
   width: 70%;
   align-self: end;
+`;
+const StyledPlayersList = styled(PlayersList)`
+  display: none;
+  ${({ theme }) => theme.mediaQuery.md} {
+    display: block;
+  }
+  ${({ showOnMobile }: { showOnMobile?: boolean }) =>
+    showOnMobile &&
+    css`
+      display: block;
+      ${({ theme }) => theme.mediaQuery.md} {
+        display: block;
+      }
+    `}
 `;
 const SmallText = styled.span`
   display: block;
@@ -71,8 +74,11 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
   }, [isCreator, results, startTimestamp, regiteredUsers.length]);
 
   return (
-    <Wrapper showOnMobile={showPlayersOnMobile} {...props}>
-      <PlayersList players={regiteredUsers} />
+    <Wrapper {...props}>
+      <StyledPlayersList
+        showOnMobile={showPlayersOnMobile}
+        players={regiteredUsers}
+      />
       {regiteredUsers.length === 1 && (
         <SmallText>
           Aby rozpocząć potrzeba minimum dwóch graczy.

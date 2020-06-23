@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   grid-row-gap: 15px;
   padding: 40px 0px;
   ${({ theme }) => theme.mediaQuery.md} {
-    transform: translate(0%, -100px);
+    transform: translate(0%, -40px);
   }
 `;
 const Title = styled.h3`

@@ -9,10 +9,10 @@ const Wrapper = styled.div`
   min-height: 100vh;
   overflow: hidden;
   ${({ theme }) => theme.mediaQuery.md} {
-    min-height: calc(100vh - 65px);
+    min-height: calc(100vh - 130px);
   }
   ${({ theme }) => theme.mediaQuery.lg} {
-    min-height: calc(100vh - 85px);
+    min-height: calc(100vh - 155px);
   }
 `;
 

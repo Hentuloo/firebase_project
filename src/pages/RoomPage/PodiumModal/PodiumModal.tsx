@@ -11,8 +11,8 @@ import { Table } from './Table';
 
 const Wrapper = styled(FixedBackgroudProvider)`
   display: grid;
-  min-height: 80%;
-  grid-template-rows: 1fr 1fr 150px;
+  max-height: 100%;
+  grid-template-rows: 1fr 1fr auto;
   text-align: center;
   align-items: center;
 `;
@@ -20,7 +20,7 @@ const StyledPodiumWithImages = styled(PodiumWithImages)`
   margin: 30px auto 10px;
 `;
 const StyledButton = styled(CircledButtonWithImage)`
-  margin: 0px auto;
+  margin: 30px auto;
   align-self: center;
 `;
 
