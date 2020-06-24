@@ -149,6 +149,10 @@ const RaceImage = styled.img`
     grid-column: 5 / -1;
     transform: translate(15%, -4%) rotate(0deg);
   }
+  ${({ theme }) => theme.mediaQuery.vlg} {
+    grid-column: 5 / -1;
+    transform: translate(15%, 8%) rotate(0deg);
+  }
 `;
 const LeavesImage = styled.img`
   max-width: 110vw;

@@ -1,10 +1,13 @@
+export type OnlineStates = 'online' | 'offline';
+
 export interface UserDocument {
-  created: string;
+  created: number;
   displayName: string;
   photoURL: string;
-  state: string;
-  lastChanged: number;
+  online: OnlineStates;
+  onlineInApp: OnlineStates;
   wins: number;
+  lastChanged?: number;
   cloudTaskUserExitApplication?: string;
   lastCreatedRoom?: string;
   lastJoinedRoom?: string;

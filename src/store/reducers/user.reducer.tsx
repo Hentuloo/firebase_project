@@ -2,16 +2,12 @@ import {
   getStoragedDarkModeTheme,
   setStoragedDarkModeTheme,
 } from 'utils/storageHelpers';
+import { UserDocument } from 'types/UserProfile';
 import { types, Action } from '../actions/types';
 
 export type DarkMode = 'LIGHT' | 'DARK';
-export interface UserReducerState {
-  loggedRequest: boolean;
-  uid: string | null;
-  displayName: string | null;
-  photoURL: string | null;
+export interface UserReducerState extends UserDocument {
   darkMode: DarkMode;
-  wins: number;
 }
 
 const init: UserReducerState = {
@@ -20,6 +16,8 @@ const init: UserReducerState = {
   displayName: null,
   photoURL: null,
   darkMode: getStoragedDarkModeTheme() || 'LIGHT',
+  online: 'online',
+  created: null,
   wins: 0,
 };
 

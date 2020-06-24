@@ -1,9 +1,11 @@
+import firebase from 'firebase';
 import { firestore } from 'firebase-admin';
 import { listenAuth } from '../decorators/listenAuth';
 import { fireFunction } from '../decorators/fireFunctions';
 import { defaultUser, defaultUserSolo } from '../config/defaults';
 import { use } from '../decorators/use';
 import { useAuth } from '../middlewares/useAuth';
+import { UserDocument } from '../data';
 
 interface UpdateUserProfile {
   displayName: string;
@@ -36,7 +38,7 @@ export class AuthController {
       created,
       displayName,
       photoURL,
-    });
+    } as UserDocument);
     await userTrainingRef.set(defaultSoloTraining);
 
     return userRef;

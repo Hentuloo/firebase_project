@@ -42,7 +42,7 @@ export class StatusController {
     const { state } = statusSnapshot.val();
 
     const userSnap = await userRef.get();
-    const { cloudTaskUserExitApplication } = {
+    const { cloudTaskUserExitApplication, onlineInApp } = {
       ...userSnap.data(),
     } as UserDocument;
 
@@ -59,29 +59,27 @@ export class StatusController {
       }
 
       userRef.update({
-        state: 'offline',
+        online: 'offline',
         lastChanged: (firestore.FieldValue.serverTimestamp() as unknown) as number,
         cloudTaskUserExitApplication: cloudTaskName || null,
       } as UpdateUserDocument);
     }
     if (state === 'online') {
-      console.log(
-        'StatusController -> onUs',
-        cloudTaskUserExitApplication,
-      );
       if (cloudTaskUserExitApplication) {
         deleteCloudTask({
           functionName: 'userExitApplication',
           taskName: cloudTaskUserExitApplication,
         });
-      } else {
+      }
+      if (onlineInApp === 'offline') {
         generalStateUsersRef.update({
-          online: firestoreIncrementValue,
+          online: firestoreIncrementValue(),
         } as UpdateGeneralStateUsers);
       }
 
       userRef.update({
-        state: 'online',
+        online: 'online',
+        onlineInApp: 'online',
         lastChanged: (firestore.FieldValue.serverTimestamp() as unknown) as number,
         cloudTaskUserExitApplication: firestore.FieldValue.delete() as undefined,
       } as UpdateUserDocument);
@@ -99,22 +97,23 @@ export class StatusController {
     );
 
     const userSnap = await userRef.get();
-    const { state, lastCreatedRoom, lastJoinedRoom } = {
+    const { online, lastCreatedRoom, lastJoinedRoom } = {
       ...userSnap.data(),
     } as UserDocument;
 
     //user is still offline now
-    if (state === 'offline') {
+    if (online === 'offline') {
       if (lastCreatedRoom)
         exitRoomAsCreator({ roomId: lastCreatedRoom, uid });
       if (lastJoinedRoom)
         exitRoomAsPlayer({ roomId: lastJoinedRoom, uid });
 
       generalStateUsersRef.update({
-        online: firestoreDecrementValue,
+        online: firestoreDecrementValue(),
       } as UpdateGeneralStateUsers);
     }
     userRef.update({
+      onlineInApp: 'offline',
       cloudTaskUserExitApplication: firestore.FieldValue.delete() as undefined,
     } as UpdateUserDocument);
     res.send({

@@ -1,6 +1,7 @@
 export const defaultUser = {
   wins: 0,
-  state: 'online',
+  online: 'online',
+  onlineInApp: 'online',
 };
 export const defaultUserSolo = {
   level: 10,
