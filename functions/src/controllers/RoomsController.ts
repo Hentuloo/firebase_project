@@ -98,14 +98,17 @@ export class RoomsController {
       startTimestamp: null,
     } as GameScoresDoc);
 
-    roomsRef.update({
-      [newRoomId]: {
-        title,
-        password: withPassword,
-        playersNumber: maxPlayersNumber,
-        created: Date.now(),
-      },
-    } as UpdateAvaiableRoomsCollection);
+    roomsRef.set(
+      {
+        [newRoomId]: {
+          title,
+          password: withPassword,
+          playersNumber: maxPlayersNumber,
+          created: Date.now(),
+        },
+      } as UpdateAvaiableRoomsCollection,
+      { merge: true },
+    );
     firestore()
       .doc(`users/${uid}`)
       .update({ lastCreatedRoom: newRoomId } as UpdateUserDocument);

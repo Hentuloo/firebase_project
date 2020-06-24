@@ -206,7 +206,10 @@ const IntroSection: FC = () => {
         Naucz się szybkiego pisania, rywalizuj online, obserwuj
         postępy
       </SmallText>
-      <NewAccountButton as={Link} to={Constants.paths.login.path}>
+      <NewAccountButton
+        as={Link}
+        to={Constants.paths.createAccount.path}
+      >
         <NewAccountButtonContent>Zaloguj się</NewAccountButtonContent>
       </NewAccountButton>
       <DemoTyingInput />

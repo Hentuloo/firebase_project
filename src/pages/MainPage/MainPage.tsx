@@ -1,13 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
 import WithMenuTemplate from 'templates/WithMenuTemplate';
-
-import { ProfileImage } from 'components/atoms';
+import { ProfileImage, ClearButton } from 'components/atoms';
 import { Constants } from 'config/Constants';
 import { SummaryPanel } from 'components/organisms';
 import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
+import { useSelector, useDispatch } from 'react-redux';
+import { getLinkToStoredRoom } from 'store/selectors/rooms.selector';
+import { toast } from 'react-toastify';
+import { useRedirect } from 'hooks/useRedirect';
+import { setSavedRoomUrl } from 'store/actions/rooms.actions';
 import { RoomsCard } from './RoomsCard';
 
 const Wrapper = styled.div`
@@ -41,16 +44,36 @@ const StyledSummaryPanel = styled(SummaryPanel)`
     margin-top: 0px;
   }
 `;
+const StyledClearButton = styled(ClearButton)`
+  text-decoration: underline;
+`;
 
 const MainPage: FC = () => {
-  // const [isActiveRoomId, redirect] = useStoredRoom();
+  const dispatch = useDispatch();
+  const link = useSelector(getLinkToStoredRoom);
+  const redirect = useRedirect();
 
-  // useEffect(() => {
-  //   if (isActiveRoomId) {
-  //     toast(() => <button type="button">Przejdź do pokoju</button>);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  const moveToRoomFromClipboard = useCallback(() => {
+    redirect(Constants.paths.joinRoom.path + link);
+  }, [link, redirect]);
+
+  useEffect(() => {
+    if (link) {
+      toast(
+        () => (
+          <StyledClearButton onClick={moveToRoomFromClipboard}>
+            Przejdź do pokoju z zaproszenia
+          </StyledClearButton>
+        ),
+        {
+          autoClose: 4000,
+          closeOnClick: true,
+          hideProgressBar: true,
+        },
+      );
+      dispatch(setSavedRoomUrl(null));
+    }
+  }, [dispatch, link, moveToRoomFromClipboard]);
 
   return (
     <WithMenuTemplate>

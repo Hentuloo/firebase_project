@@ -1,17 +1,24 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { joinRoom } from 'store/actions/rooms.actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSavedRoomUrl } from 'store/actions/rooms.actions';
+import { getUser } from 'store/selectors/user.selector';
 
 export const saveRoomPath = <P extends object>(
   Component: React.ComponentType<P>,
 ) => {
   return (...props: any) => {
     const dispatch = useDispatch();
-    const { roomId } = useParams();
+    const { uid } = useSelector(getUser);
+    const { roomId, title, withPassword } = useParams();
     useEffect(() => {
-      dispatch(joinRoom(roomId));
-    }, [dispatch, roomId]);
+      if (uid) return;
+      dispatch(
+        setSavedRoomUrl(
+          `/${roomId}/${title}${withPassword ? '/pass' : ''}`,
+        ),
+      );
+    }, [dispatch, roomId, title, uid, withPassword]);
 
     return <Component {...props} />;
   };

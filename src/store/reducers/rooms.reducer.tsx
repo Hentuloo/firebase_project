@@ -25,7 +25,7 @@ export default (
           ({ gameKey }) => gameKey !== action.payload,
         ),
       };
-    case types.JOIN_ROOM_WITHOUT_PASS:
+    case types.SET_ROOM_URL:
       return { ...state, activeRoomId: action.payload };
     default:
       return state;

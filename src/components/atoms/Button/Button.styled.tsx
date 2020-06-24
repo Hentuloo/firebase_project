@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
-import { BarDecorator } from 'components/atoms';
 import { Link } from 'react-router-dom';
+import { BarDecoratorForLink } from '../BarDecorator.styled';
 
 export interface ButtonProps extends React.ComponentProps<any> {
   to?: string;
@@ -60,7 +60,7 @@ export const ClearButton = styled(Button)`
 `;
 
 export const ButtonWithBar = styled(ClearButton)`
-  ${BarDecorator}
+  ${BarDecoratorForLink}
 `;
 
 export const RoundButton = styled(ClearButton)`

@@ -41,13 +41,16 @@ export interface LoginButtonsProps {}
 export const LoginButtons: FC<LoginButtonsProps> = ({ ...props }) => {
   return (
     <Wrapper {...props}>
-      <NewAccountButton as={Link} to={Constants.paths.login.path}>
+      <NewAccountButton
+        as={Link}
+        to={Constants.paths.createAccount.path}
+      >
         <NewAccountButtonContent>Nowe konto</NewAccountButtonContent>
       </NewAccountButton>
       <NewAccountButton
         smaller
         as={Link}
-        to={Constants.paths.createAccount.path}
+        to={Constants.paths.login.path}
       >
         <NewAccountButtonContent>
           Mam już konto

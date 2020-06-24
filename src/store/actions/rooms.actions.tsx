@@ -2,7 +2,7 @@ import { types } from './types';
 
 export type RoomsActions =
   | UpdateAvaiableRoomsAction
-  | JoinRoomAction
+  | SetRoomUrlAction
   | ClearRoomFromAvaiableAction;
 
 interface UpdateAvaiableRoomsAction {
@@ -27,11 +27,13 @@ export const clearRoomFromAvaiable = (
   payload: roomId,
 });
 
-interface JoinRoomAction {
-  type: types.JOIN_ROOM_WITHOUT_PASS;
-  payload: string;
+interface SetRoomUrlAction {
+  type: types.SET_ROOM_URL;
+  payload: string | null;
 }
-export const joinRoom = (roomId: string): JoinRoomAction => ({
-  type: types.JOIN_ROOM_WITHOUT_PASS,
+export const setSavedRoomUrl = (
+  roomId: string | null,
+): SetRoomUrlAction => ({
+  type: types.SET_ROOM_URL,
   payload: roomId,
 });

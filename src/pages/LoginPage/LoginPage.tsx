@@ -51,15 +51,17 @@ const StyledAuthLoading = styled(GoogleLoading)`
   }
 `;
 export interface LoginPageProps {
-  hasAccount?: boolean;
+  createAccountPage?: boolean;
 }
-const LoginPage: FC<LoginPageProps> = ({ hasAccount = false }) => {
+const LoginPage: FC<LoginPageProps> = ({
+  createAccountPage = false,
+}) => {
   const { uid } = useSelector(getUser);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(
     null,
   );
   const [withAccount, setHasAccount] = useState<boolean | string>(
-    hasAccount,
+    !createAccountPage,
   );
   const [authRequest, setAuthRequest] = useState<boolean | string>(
     false,

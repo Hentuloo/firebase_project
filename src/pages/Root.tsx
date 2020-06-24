@@ -47,11 +47,11 @@ function Root() {
         />
         <Route
           path={`${Constants.paths.joinRoom.path}/:roomId/:title/:withPassword?`}
-          component={withUser(saveRoomPath(JoinRoomPage))}
+          component={saveRoomPath(withUser(JoinRoomPage))}
         />
         <Route
           path={`${Constants.paths.room.path}/:roomId`}
-          component={withUser(saveRoomPath(RoomPage))}
+          component={saveRoomPath(withUser(RoomPage))}
         />
         <Route
           path={Constants.paths.login.path}
@@ -59,9 +59,13 @@ function Root() {
         />
         <Route
           path={Constants.paths.createAccount.path}
-          component={redirectWhenUserLogged(LoginPage, undefined, {
-            hasAccount: true,
-          })}
+          component={redirectWhenUserLogged(
+            LoginPage,
+            RegisteredPage,
+            {
+              createAccountPage: true,
+            },
+          )}
         />
         <Route
           path={Constants.paths.registered.path}
