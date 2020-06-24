@@ -7,6 +7,7 @@ import { Constants } from 'config/Constants';
 import { ProfileImage } from 'components/atoms';
 import { getUser } from 'store/selectors/user.selector';
 import Tippy from '@tippyjs/react';
+import { SmallImageWithText } from 'components/atoms/SmallImageWithTextProps';
 
 const Wrapper = styled.div`
   display: grid;
@@ -28,18 +29,12 @@ const TextGroup = styled.div`
   align-content: space-around;
 `;
 const Name = styled.span``;
-const WinsInfoWrapper = styled.div`
-  text-align: center;
+const StyledSmallImageWithText = styled(SmallImageWithText)`
+  width: 50px;
+  grid-template-columns: 30px auto;
   font-weight: ${({ theme }) => theme.fw[1]};
   font-size: ${({ theme }) => theme.fs.s};
   color: ${({ theme }) => theme.color.brand[3]};
-  align-items: center;
-  ${({ theme }) => theme.mediaQuery.md} {
-    width: 100px;
-  }
-`;
-const SmallIcon = styled.img`
-  max-height: 17px;
 `;
 
 const UserInfo: FC = () => {
@@ -55,12 +50,11 @@ const UserInfo: FC = () => {
       </Tippy>
       <TextGroup>
         <Name>{displayName}</Name>
-        <Tippy content="Ilość wygranych rozgrywek online">
-          <WinsInfoWrapper>
-            <span>{wins}</span>
-            <SmallIcon src={crownIconSVG} />
-          </WinsInfoWrapper>
-        </Tippy>
+        <StyledSmallImageWithText
+          labelText="Ilość wygranych rozgrywek online"
+          text={wins}
+          src={crownIconSVG}
+        />
       </TextGroup>
     </Wrapper>
   );

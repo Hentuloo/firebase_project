@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card } from 'components/molecules';
 import {
-  InputWithFA,
   BarDecorator,
   FilledButton,
   ClearButton,
@@ -18,22 +17,12 @@ import Spiner from 'components/atoms/Spiner';
 import RoomsList from './RoomsList';
 
 const Wrapper = styled(Card)`
-  grid-column: 1/-1;
   display: flex;
+  height: 100%;
   align-items: center;
   justify-content: start;
   flex-direction: column;
-  width: 80%;
-  max-width: 290px;
-  min-height: 400px;
-  padding: 10px 5px 10px 0px;
-  margin: 30px auto;
-  ${({ theme }) => theme.mediaQuery.md} {
-    max-width: 340px;
-    grid-column: 1 / span 1;
-    grid-row: 2 / span 1;
-    margin: 0px auto;
-  }
+  padding: 15px 5px 10px 0px;
 
   &::before {
     width: 130px;
@@ -56,37 +45,36 @@ const Title = styled.h2`
     transform: translate(35%, 0%);
   }
 `;
-const SmallerTitle = styled.h2`
-  font-weight: 600;
-  text-transform: uppercase;
-  margin: 10px 0px 10px;
-  font-size: ${({ theme }) => theme.fs.xs};
-`;
-const Label = styled.label`
-  width: 85%;
-`;
-const StyledInput = styled(InputWithFA)`
-  margin: 6px auto;
-  padding-top: 12px;
-  padding-bottom: 8px;
-  font-weight: ${({ theme }) => theme.fw[1]};
-`;
 
 const StyledFilledLink = styled(FilledButton)`
   width: 100%;
   padding: 10px 0px;
-  margin: 6px auto;
+  margin: 8px auto;
   text-decoration: none;
   text-align: center;
 `;
 
-export const RoomsPanel: FC = () => {
+const SmallerTitle = styled.h2`
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 15px 0px 10px;
+  font-size: ${({ theme }) => theme.fs.xs};
+`;
+
+export interface RoomsPanelProps {
+  onRoomsRefetch?: () => void;
+}
+
+export const RoomsPanel: FC<RoomsPanelProps> = ({
+  onRoomsRefetch,
+}) => {
   const dispatch = useDispatch();
   const { avaiableRooms } = useSelector(getRooms);
   const [fetching, setFetching] = useState(false);
 
   const updateRooms = useCallback(
     async (page = 1) => {
+      if (onRoomsRefetch) onRoomsRefetch();
       try {
         const {
           data: { rooms },
@@ -98,7 +86,7 @@ export const RoomsPanel: FC = () => {
         toast.error(message);
       }
     },
-    [dispatch],
+    [dispatch, onRoomsRefetch],
   );
 
   const handleRefetch = useCallback(() => {
@@ -125,16 +113,6 @@ export const RoomsPanel: FC = () => {
       <StyledFilledLink as={Link} to={Constants.paths.newRoom.path}>
         Nowy pokój
       </StyledFilledLink>
-      <Label>
-        <span className="sr-only">Wyszukaj pokoju</span>
-        <StyledInput
-          iconClass="fa-search"
-          type="text"
-          name="displayName"
-          placeholder="Nazwa pokoju"
-        />
-      </Label>
-
       <SmallerTitle>
         {fetching && 'Aktualizuje...'}
         {avaiableRooms.length === 0 && !fetching && 'Nie ma pokoi'}

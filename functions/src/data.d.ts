@@ -5,7 +5,7 @@ export interface UserDocument {
   state: string;
   lastChanged: number;
   wins: number;
-  cloudTaskDeleteRelatedRoom?: string;
+  cloudTaskUserExitApplication?: string;
   lastCreatedRoom?: string;
   lastJoinedRoom?: string;
 }
@@ -79,3 +79,14 @@ export interface GameScoresDoc {
   stopGameFunction?: string;
 }
 export type UpdateGameScoresDoc = Partial<GameScoresDoc>;
+
+export interface GeneralStateUsers {
+  online: number;
+}
+export type UpdateGeneralStateUsers = Partial<GeneralStateUsers>;
+export interface GeneralStateCollection {
+  users: GeneralStateUsers;
+}
+export type UpdateGeneralStateCollection = Partial<
+  GeneralStateCollection
+>;

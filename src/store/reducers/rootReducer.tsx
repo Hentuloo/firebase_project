@@ -10,6 +10,9 @@ import soloTrainingReducer, {
 import gameScoresReducer, {
   GameScoreState,
 } from './gameScores.reducer';
+import generalStateReducer, {
+  GeneralStateReducer,
+} from './generalState.reducer';
 
 export default combineReducers({
   user: userReducer,
@@ -17,6 +20,7 @@ export default combineReducers({
   soloTraining: soloTrainingReducer,
   gameSettings: gameSettingsReducer,
   gameScore: gameScoresReducer,
+  generalState: generalStateReducer,
 });
 
 export type RootReducerType = {
@@ -25,4 +29,5 @@ export type RootReducerType = {
   soloTraining: SoloTrainingState;
   gameSettings: GameSettingsState;
   gameScore: GameScoreState;
+  generalState: GeneralStateReducer;
 };

@@ -17,10 +17,7 @@ import {
   deleteCloudTask,
 } from '../utils/cloudTask.utils';
 import { sortUsersScores } from '../utils/utils';
-
-const firestoreIncrementValue = (firestore.FieldValue.increment(
-  1,
-) as unknown) as number;
+import { firestoreIncrementValue } from '../utils/firebaseFieldValue';
 
 interface StartGameProps {
   roomId: string;

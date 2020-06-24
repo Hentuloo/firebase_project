@@ -6,8 +6,9 @@ import WithMenuTemplate from 'templates/WithMenuTemplate';
 
 import { ProfileImage } from 'components/atoms';
 import { Constants } from 'config/Constants';
-import { RoomsPanel, SummaryPanel } from 'components/organisms';
+import { SummaryPanel } from 'components/organisms';
 import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
+import { RoomsCard } from './RoomsCard';
 
 const Wrapper = styled.div`
   display: grid;
@@ -19,7 +20,8 @@ const Wrapper = styled.div`
     grid-template-rows: 70px auto;
   }
 `;
-const CircleLink = styled(Link)`
+
+const CircleLinkOnMobile = styled(Link)`
   grid-column: 2 / span 1;
   padding: 5px;
   ${({ theme }) => theme.mediaQuery.md} {
@@ -48,11 +50,11 @@ const MainPage: FC = () => {
     <WithMenuTemplate>
       <WithBackgroundTemplate type={1}>
         <Wrapper>
-          <CircleLink to={Constants.paths.settings.path}>
+          <CircleLinkOnMobile to={Constants.paths.settings.path}>
             <span className="sr-only">Przejdź do ustawień</span>
             <ProfileImage />
-          </CircleLink>
-          <RoomsPanel />
+          </CircleLinkOnMobile>
+          <RoomsCard />
           <StyledSummaryPanel />
         </Wrapper>
       </WithBackgroundTemplate>

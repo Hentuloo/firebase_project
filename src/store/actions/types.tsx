@@ -3,13 +3,15 @@ import { UserActions } from './user.actions';
 import { SoloTrainingActions } from './soloTraining.actions';
 import { GameSettnigsActions } from './gameSettings.actions';
 import { GameScoresActions } from './gameScore.actions';
+import { GeneralStateActions } from './generalState.actions';
 
 export type Action =
   | RoomsActions
   | UserActions
   | SoloTrainingActions
   | GameSettnigsActions
-  | GameScoresActions;
+  | GameScoresActions
+  | GeneralStateActions;
 
 export enum types {
   USER_NOT_LOGGED = 'USER_NOT_LOGGED',
@@ -38,4 +40,7 @@ export enum types {
 
   // GAME SCORES
   UPDATE_GAME_SCORES = 'UPDATE_GAME_SCORES',
+
+  // GENERAL STATE
+  UPDATE_GENERAL_STATE_USERS = 'UPDATE_GENERAL_STATE_USERS',
 }

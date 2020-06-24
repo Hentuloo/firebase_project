@@ -11,59 +11,7 @@ export interface GameSettingsState
   scoresModal: boolean;
   waitForLastScoresUpdate: boolean;
 }
-// const tt = new Date().getTime() / 1000 + 10;
-// const now = tt * 1000 - new Date().getTime();
 
-// const exampleState: GameSettingsState = {
-//   registeredUsers: {
-//     lsX6j7m33cdSZ0mfnZbQb0ttEwk1: {
-//       photoURL: '',
-//       displayName: 'szysza',
-//     },
-//     I6pTXpwq0GQGFMqNhTITiSckzDF2: {
-//       photoURL:
-//         'https://lh3.googleusercontent.com/a-/AOh14GgG4PBQzVabVfUBAYTZxLhlEe0A4H1x3iDceB6Bhw',
-//       displayName: 'Kamil Chędkowski',
-//     },
-//   },
-//   text:
-//     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
-//   changesLength: null,
-//   startTimestamp: 1592669260.473,
-//   endTimestamp: 1592669300.473,
-//   cursorPoints: [20, 40, 60, 80, 100, 118],
-//   maxPlayersNumber: 2,
-//   creator: 'I6pTXpwq0GQGFMqNhTITiSckzDF2',
-//   title: 'dddddddd',
-//   withPassword: false,
-//   created: 1592669220256,
-//   timesOfLightChanges: null,
-//   gameAlreadyStated: false,
-//   gameStartRequest: false,
-//   scoresModal: true,
-//   usersByScores: [
-//     {
-//       cursor: 100,
-//       points: 104.26,
-//       accuracy: 98.95,
-//       lastChangesDate: 1592669275306,
-//       changes: 5,
-//       wpmSpeed: 101.13,
-//       uid: 'lsX6j7m33cdSZ0mfnZbQb0ttEwk1',
-//       progress: 83.33333333333334,
-//     },
-//     {
-//       cursor: 80,
-//       changes: 4,
-//       lastChangesDate: 1592669299206,
-//       wpmSpeed: 30.98,
-//       points: 81.28,
-//       uid: 'I6pTXpwq0GQGFMqNhTITiSckzDF2',
-//       accuracy: 94.74,
-//       progress: 66.66666666666666,
-//     },
-//   ],
-// };
 const init: GameSettingsState = {
   registeredUsers: {},
   text:

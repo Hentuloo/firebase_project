@@ -14,7 +14,6 @@ import {
 } from '../utils/rooms.utils';
 import { use } from '../decorators/use';
 import {
-  UserDocument,
   UpdateAvaiableRoomsCollection,
   UpdateUserDocument,
   GameSettingsDoc,
@@ -38,10 +37,7 @@ interface CreateRoomData extends WithUserProfile {
   maxPlayersNumber: number;
   password?: string;
 }
-interface ClearRoomPayload {
-  uid: string;
-  roomId: string;
-}
+
 export class RoomsController {
   @use(useRequiredFields('title', 'maxPlayersNumber'))
   @use(useAuth)
@@ -221,39 +217,6 @@ export class RoomsController {
       ok: true,
       code: 'You exit room',
     };
-  }
-
-  @use(useBearerAuth({ allowInternallKey: true }))
-  @fireFunction({ region: 'europe-west1', type: 'onRequest' })
-  async userExitRoom(req, res) {
-    const { uid, roomId } = req.body as ClearRoomPayload;
-
-    const userRef = firestore().doc(`users/${uid}`);
-    const userSnap = await userRef.get();
-    const { state, lastCreatedRoom, lastJoinedRoom } = {
-      ...userSnap.data(),
-    } as UserDocument;
-
-    if (!lastCreatedRoom && !lastJoinedRoom) {
-      userRef.update({
-        cloudTaskRelatedRoom: firestore.FieldValue.delete(),
-      });
-      res.send({
-        ok: true,
-        code: 'Room deleted',
-      });
-    }
-
-    //user is still offline now
-    if (state === 'offline') {
-      if (lastCreatedRoom) exitRoomAsCreator({ roomId, uid });
-      if (lastJoinedRoom) exitRoomAsPlayer({ roomId, uid });
-    }
-
-    res.send({
-      ok: true,
-      code: 'Room deleted',
-    });
   }
 
   @use(useAuth)

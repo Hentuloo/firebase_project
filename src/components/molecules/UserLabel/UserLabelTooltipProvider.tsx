@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import Tippy from '@tippyjs/react';
 import crownIconSVG from 'assets/svg/icons/crownIcon.svg';
+import { SmallImageWithText } from 'components/atoms/SmallImageWithTextProps';
 import { UserLabelProps } from './UserLabel';
 
 const Wrapper = styled.div`
@@ -28,18 +29,13 @@ const UserImage = styled.img`
 const BrandText = styled.span`
   color: ${({ theme }) => theme.color.brand[3]};
 `;
-const WinsInfoWrapper = styled.div`
-  display: grid;
-  grid-auto-flow: column;
-  column-gap: 5px;
-  text-align: end;
+const StyledSmallImageWithText = styled(SmallImageWithText)`
+  width: 90px;
+  grid-template-columns: 30px auto;
   font-weight: ${({ theme }) => theme.fw[1]};
   font-size: ${({ theme }) => theme.fs.s};
   color: ${({ theme }) => theme.color.brand[3]};
-  align-items: center;
-`;
-const SmallIcon = styled.img`
-  max-height: 17px;
+  margin: 0px auto;
 `;
 
 export interface UserLabelTooltipProviderProps
@@ -63,10 +59,7 @@ export const UserLabelTooltipProvider: FC<UserLabelTooltipProviderProps> = ({
           </UserImageWrapper>
           {isCreator && <BrandText>Założyciel pokoju</BrandText>}
           <span>{displayName}</span>
-          <WinsInfoWrapper>
-            <span>{wins}</span>
-            <SmallIcon src={crownIconSVG} />
-          </WinsInfoWrapper>
+          <StyledSmallImageWithText src={crownIconSVG} text={wins} />
         </Wrapper>
       }
       placement="left"

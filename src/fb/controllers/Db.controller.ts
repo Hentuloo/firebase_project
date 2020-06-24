@@ -19,6 +19,10 @@ export class Db {
     return this.collection(`games`);
   };
 
+  generalStateRef = () => {
+    return this.collection(`generalState`);
+  };
+
   userProfileRef = (uid: string) => {
     return this.doc(`users/${uid}`);
   };
@@ -37,6 +41,10 @@ export class Db {
 
   userDatabaseConnectedInfosRef = () => {
     return firebase.database().ref('.info/connected');
+  };
+
+  generalStateUsersRef = () => {
+    return this.generalStateRef().doc('users');
   };
 
   static init = () => {
@@ -88,6 +96,9 @@ export class Db {
     this.userSoloTrainingRef(uid).update({
       snaps: firebase.firestore.FieldValue.arrayUnion(snap),
     });
+
+  public getGeneralStateUser = () =>
+    this.generalStateUsersRef().get();
 
   public increaseLevel = (uid: string) =>
     this.userSoloTrainingRef(uid).update({
