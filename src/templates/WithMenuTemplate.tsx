@@ -18,10 +18,16 @@ const Wrapper = styled.div`
   }
 `;
 const ContentWrapper = styled.div`
+  display: grid;
+  height: 100%;
   padding: 5px 0px 5px 5px;
   ${({ theme }) => theme.mediaQuery.md} {
+    min-height: calc(100vh - 125px);
     grid-column: 1 / -1;
     grid-row: 2 / span 1;
+  }
+  ${({ theme }) => theme.mediaQuery.lg} {
+    min-height: calc(100vh - 145px);
   }
 `;
 const StyledNavigation = styled(Navigation)`

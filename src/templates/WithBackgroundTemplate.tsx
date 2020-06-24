@@ -6,14 +6,8 @@ import CornerSecondSvg from 'assets/svg/road/corner2.svg';
 
 const Wrapper = styled.div`
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   overflow: hidden;
-  ${({ theme }) => theme.mediaQuery.md} {
-    min-height: calc(100vh - 130px);
-  }
-  ${({ theme }) => theme.mediaQuery.lg} {
-    min-height: calc(100vh - 155px);
-  }
 `;
 
 const CornerFirst = styled.img`

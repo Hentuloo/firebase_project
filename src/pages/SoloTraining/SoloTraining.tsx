@@ -31,17 +31,12 @@ const Wrapper = styled.div`
   height: 100%;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto auto;
-  grid-row-gap: 20px;
   margin: 0px auto;
   ${({ theme }) => theme.mediaQuery.md} {
-    min-height: calc(100vh - 65px);
     width: 90%;
     grid-template-columns: 1fr 230px;
     grid-template-rows: auto;
     grid-row-gap: 0px;
-  }
-  ${({ theme }) => theme.mediaQuery.lg} {
-    min-height: calc(100vh - 85px);
   }
 `;
 const TabsWrapper = styled.div`

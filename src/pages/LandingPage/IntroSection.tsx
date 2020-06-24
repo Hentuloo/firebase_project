@@ -147,7 +147,7 @@ const RaceImage = styled.img`
   }
   ${({ theme }) => theme.mediaQuery.lg} {
     grid-column: 5 / -1;
-    transform: translate(15%, 4%) rotate(0deg);
+    transform: translate(15%, -4%) rotate(0deg);
   }
 `;
 const LeavesImage = styled.img`
@@ -156,14 +156,14 @@ const LeavesImage = styled.img`
   grid-row: -1 / -3;
   align-self: flex-end;
   opacity: 0.3;
-  z-index: -1;
+  z-index: -22;
   ${({ theme }) => theme.mediaQuery.md} {
     width: 550px;
     margin-left: 40px;
     margin-bottom: 40px;
     opacity: 0.6;
   }
-  ${({ theme }) => theme.mediaQuery.lg} {
+  ${({ theme }) => theme.mediaQuery.vlg} {
     opacity: 1;
     width: 650px;
   }
