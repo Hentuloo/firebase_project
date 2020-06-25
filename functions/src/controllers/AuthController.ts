@@ -7,6 +7,10 @@ import { use } from '../decorators/use';
 import { useAuth } from '../middlewares/useAuth';
 import { UserDocument } from '../data';
 import { useValidator } from '../middlewares/useValidator';
+import {
+  exitRoomAsCreator,
+  exitRoomAsPlayer,
+} from '../utils/rooms.utils';
 
 interface UpdateUserProfile {
   displayName: string;
@@ -43,6 +47,25 @@ export class AuthController {
     await userTrainingRef.set(defaultSoloTraining);
 
     return userRef;
+  }
+  @listenAuth({ type: 'onDelete' })
+  async onDeleteUser(userRecord) {
+    const { uid } = userRecord as firebase.User;
+    const userReference = firestore().doc(`/users/${uid}`);
+    const userTrainingRef = firestore().doc(`usersSolo/${uid}`);
+
+    const userSnap = await userReference.get();
+    const {
+      lastCreatedRoom,
+      lastJoinedRoom,
+    } = userSnap.data() as UserDocument;
+    if (lastCreatedRoom)
+      exitRoomAsCreator({ roomId: lastCreatedRoom, uid });
+    if (lastJoinedRoom)
+      exitRoomAsPlayer({ roomId: lastJoinedRoom, uid });
+    userReference.delete();
+    userTrainingRef.delete();
+    return { ok: true };
   }
   @use(
     useValidator({

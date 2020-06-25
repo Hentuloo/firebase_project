@@ -17,10 +17,10 @@ export const useUserProfile = async (
       'not authenticated!',
     );
   }
+  const userRef = firestore().doc(`users/${uid}`);
 
-  const userSnap = await firestore()
-    .doc(`users/${uid}`)
-    .get();
+  const userSnap = await userRef.get();
+
   const user = { uid, ...userSnap.data() };
   data.user = user;
 };

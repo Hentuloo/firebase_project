@@ -97,6 +97,7 @@ const UserProfile: FC<UserProfileProps> = ({ className }) => {
     try {
       await Auth.init().deleteUser(password);
     } catch (err) {
+      console.error(err);
       toast.error(Constants.firebaseErrors[err.code] || err.message);
     }
     setIsRequest(false);

@@ -101,9 +101,11 @@ export class StatusController {
     );
 
     const userSnap = await userRef.get();
-    const { online, lastCreatedRoom, lastJoinedRoom } = {
-      ...userSnap.data(),
-    } as UserDocument;
+    const {
+      online,
+      lastCreatedRoom,
+      lastJoinedRoom,
+    } = userSnap.data() as UserDocument;
 
     //user is still offline now
     if (online === 'offline') {
