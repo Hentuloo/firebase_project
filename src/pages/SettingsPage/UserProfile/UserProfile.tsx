@@ -15,7 +15,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import { Constants } from 'config/Constants';
 import { toast } from 'react-toastify';
 import { getUser } from 'store/selectors/user.selector';
-import EditProfileModal from './EditProfileModal/EditProfileModal';
+import EditProfileModal from './EditProfileModal';
 import DeleteUserModal from './DeleteUserModal';
 
 const Wrapper = styled.div`

@@ -11,7 +11,7 @@ import { WithBackgroundTemplate } from 'templates/WithBackgroundTemplate';
 import { useSelector } from 'react-redux';
 import { getUser } from 'store/selectors/user.selector';
 import { setTimeout } from 'timers';
-import Form, { InputValuesReducerState } from './Form';
+import Form, { FormState } from './Form';
 
 const LogoWrapper = styled.div`
   position: fixed;
@@ -71,7 +71,7 @@ const LoginPage: FC<LoginPageProps> = ({
     email,
     password,
     displayName,
-  }: InputValuesReducerState) => {
+  }: FormState) => {
     const { loginWithEmail, createAccountWithEmail } = Auth.init();
     try {
       setAuthRequest(true);
@@ -130,7 +130,7 @@ const LoginPage: FC<LoginPageProps> = ({
       </Link>
       {authRequest !== 'google' && (
         <Form
-          onSubmit={onSubmit}
+          submitCallback={onSubmit}
           authRequest={authRequest}
           setHasAccount={setHasAccount}
           hasAccount={withAccount}

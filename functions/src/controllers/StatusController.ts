@@ -21,6 +21,7 @@ import {
   firestoreDecrementValue,
   firestoreIncrementValue,
 } from '../utils/firebaseFieldValue';
+import { useValidator } from '../middlewares/useValidator';
 
 interface UserExitApplicationPayload {
   uid: string;
@@ -53,7 +54,9 @@ export class StatusController {
         const [response] = await callFunctionByCloudTask({
           functionName: 'userExitApplication',
           payload,
-          headers: { internallcall: config().internallcall.key },
+          headers: {
+            internallcall: config().internallcall.key,
+          },
         });
         cloudTaskName = response.name;
       }
@@ -87,6 +90,7 @@ export class StatusController {
     return { ok: true };
   }
 
+  @use(useValidator({ uid: 'required|alpha_num|min:10|max:35' }))
   @use(useBearerAuth({ allowInternallKey: true }))
   @fireFunction({ region: 'europe-west1', type: 'onRequest' })
   async userExitApplication(req, res) {

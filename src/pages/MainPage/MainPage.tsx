@@ -19,11 +19,8 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr 75px;
   overflow: hidden;
   ${({ theme }) => theme.mediaQuery.md} {
-    padding: 15px 0px;
+    padding: 10px 0px 0px;
     grid-template-columns: repeat(3, 1fr);
-  }
-  ${({ theme }) => theme.mediaQuery.lg} {
-    padding: 40px 0px;
   }
   ${({ theme }) => theme.mediaQuery.vlg} {
     padding: 70px 0px;

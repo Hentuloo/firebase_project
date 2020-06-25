@@ -1,4 +1,5 @@
 import * as dayjs from 'dayjs';
+import Validator from 'validatorjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/pl';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,3 +13,6 @@ dayjs.locale('pl');
 
 // gsap draggable plugin
 gsap.registerPlugin(Draggable);
+
+// validator
+Validator.useLang('pl');

@@ -2,7 +2,7 @@ import { firestore } from 'firebase-admin';
 import { https, Response } from 'firebase-functions';
 import { fireFunction } from '../decorators/fireFunctions';
 import { useAuth, useBearerAuth } from '../middlewares/useAuth';
-import { useRequiredFields } from '../middlewares/useRequiredFields';
+import { useValidator } from '../middlewares/useValidator';
 import { use } from '../decorators/use';
 import {
   GameScoresDoc,
@@ -31,7 +31,11 @@ interface CallPointReachedProps {
   accuracy: number;
 }
 export class GameController {
-  @use(useRequiredFields('roomId'))
+  @use(
+    useValidator({
+      roomId: 'required|alpha_num|min:10|max:35',
+    }),
+  )
   @use(useAuth)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async startGame(
@@ -125,15 +129,20 @@ export class GameController {
       ok: true,
     };
   }
-  @use(useRequiredFields('roomId', 'accuracy'))
+  @use(
+    useValidator({
+      roomId: 'required|alpha_num|min:10|max:35',
+      accuracy: 'required|numeric|min:0|max:100',
+    }),
+  )
   @use(useAuth)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async callGamePointReached(
     data: CallPointReachedProps,
     context: https.CallableContext,
   ) {
-    const { uid } = context.auth;
     const { roomId, accuracy } = data;
+    const { uid } = context.auth;
 
     const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
     const gameRef = firestore().doc(`games/${roomId}`);
@@ -201,11 +210,11 @@ export class GameController {
       const usersByScores = sortUsersScores(score);
       const winner = usersByScores[0];
       usersRef.doc(winner.uid).update({
-        wins: firestoreIncrementValue,
+        wins: firestoreIncrementValue(),
       } as UpdateUserDocument);
       gameRef.update({
         usersByScores,
-        [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue,
+        [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue(),
       } as UpdateGameSettingsDoc);
     }
 
@@ -233,13 +242,13 @@ export class GameController {
     const winner = usersByScores[0];
     if (winner) {
       usersRef.doc(winner.uid).update({
-        wins: firestoreIncrementValue,
+        wins: firestoreIncrementValue(),
       } as UpdateUserDocument);
     }
 
     gameRef.update({
       usersByScores,
-      [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue,
+      [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue(),
     } as UpdateGameSettingsDoc);
     gameScoresRef.update({
       startTimestamp: null,

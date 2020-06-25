@@ -4,26 +4,6 @@ export * from './shuffleArray';
 export const isMobile = () =>
   typeof window.orientation !== 'undefined';
 
-export const validImageFile = ({
-  size,
-  type,
-}: {
-  size: number;
-  type: string;
-}) => {
-  if (size < 600 || size > 1000000) {
-    return { ok: false, message: 'Invalid size' };
-  }
-  if (
-    type !== 'image/png' &&
-    type !== 'image/jpg' &&
-    type !== 'image/jpeg'
-  ) {
-    return { ok: false, message: 'Invalid file type (png or jpg)' };
-  }
-  return { ok: true };
-};
-
 export const copyToClipBoard = (message: string) =>
   navigator.clipboard.writeText(message);
 

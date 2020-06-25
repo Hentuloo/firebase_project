@@ -6,6 +6,7 @@ import { defaultUser, defaultUserSolo } from '../config/defaults';
 import { use } from '../decorators/use';
 import { useAuth } from '../middlewares/useAuth';
 import { UserDocument } from '../data';
+import { useValidator } from '../middlewares/useValidator';
 
 interface UpdateUserProfile {
   displayName: string;
@@ -43,6 +44,12 @@ export class AuthController {
 
     return userRef;
   }
+  @use(
+    useValidator({
+      displayName: ['min:4', 'max:18', 'regex:/^[a-z0-9 ]+$/i'],
+      photoURL: 'url',
+    }),
+  )
   @use(useAuth)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async updateUser(data: UpdateUserProfile, context) {

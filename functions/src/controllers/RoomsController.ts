@@ -1,8 +1,8 @@
 import { firestore } from 'firebase-admin';
 import { https } from 'firebase-functions';
 import { fireFunction } from '../decorators/fireFunctions';
-import { useAuth, useBearerAuth } from '../middlewares/useAuth';
-import { useRequiredFields } from '../middlewares/useRequiredFields';
+import { useAuth } from '../middlewares/useAuth';
+import { useValidator } from '../middlewares/useValidator';
 import {
   useUserProfile,
   WithUserProfile,
@@ -19,6 +19,7 @@ import {
   GameSettingsDoc,
   GameScoresDoc,
 } from '../data';
+import Validator from 'validatorjs';
 
 interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;
@@ -39,7 +40,13 @@ interface CreateRoomData extends WithUserProfile {
 }
 
 export class RoomsController {
-  @use(useRequiredFields('title', 'maxPlayersNumber'))
+  @use(
+    useValidator({
+      title: ['required', 'min:5', 'max:18', 'regex:/^[a-z0-9 ]+$/i'],
+      password: 'alpha_num|min:4|max:16',
+      maxPlayersNumber: 'required|integer|min:2|max:5',
+    }),
+  )
   @use(useAuth)
   @use(useUserProfile)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
@@ -111,12 +118,24 @@ export class RoomsController {
     );
     firestore()
       .doc(`users/${uid}`)
-      .update({ lastCreatedRoom: newRoomId } as UpdateUserDocument);
+      .update({
+        lastCreatedRoom: newRoomId,
+      } as UpdateUserDocument);
 
-    return { roomId: newRoomId, title, maxPlayersNumber, password };
+    return {
+      roomId: newRoomId,
+      title,
+      maxPlayersNumber,
+      password,
+    };
   }
 
-  @use(useRequiredFields('roomId'))
+  @use(
+    useValidator({
+      roomId: 'required|alpha_num|min:10|max:35',
+      password: 'alpha_num|min:4|max:16',
+    }),
+  )
   @use(useAuth)
   @use(useUserProfile)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
@@ -195,7 +214,11 @@ export class RoomsController {
     };
   }
 
-  @use(useRequiredFields('roomId'))
+  @use(
+    useValidator({
+      roomId: 'required|alpha_num|min:10|max:35',
+    }),
+  )
   @use(useAuth)
   @fireFunction({ region: 'europe-west1', type: 'onCall' })
   async leaveFromRoom(data: LeaveFromOpenRoomData, context) {

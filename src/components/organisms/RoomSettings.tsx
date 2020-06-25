@@ -9,11 +9,7 @@ import {
 import { stickyModal } from 'components/molecules';
 import { useFormik } from 'formik';
 import { InputCheckbox } from 'components/atoms/Input/InputCheckbox';
-import {
-  validateRoomName,
-  validateRoomPlayersLength,
-  validateRoomPasword,
-} from 'utils/validations';
+import { validator, getFirstValidatorError } from 'utils/validator';
 import { toast } from 'react-toastify';
 import Spiner from 'components/atoms/Spiner';
 
@@ -48,7 +44,7 @@ export interface RoomSetingsState {
   title: string;
   players: number;
   withPassword: boolean;
-  password: string;
+  password?: string;
 }
 export interface RoomSetingsProps {
   onSubmit: (state: RoomSetingsState) => void;
@@ -73,33 +69,24 @@ export const RoomSetings: FC<RoomSetingsProps> = ({
       password: '',
     },
     onSubmit: state => {
-      let errorFlag = false;
-      const { title, players, withPassword, password } = state;
-
-      const titleError = validateRoomName(title);
-      if (titleError) {
-        errorFlag = true;
-        toast(titleError, { type: 'error' });
-      }
-
-      const playersLengthError = validateRoomPlayersLength(players, {
-        min: 2,
-        max: 4,
+      const copyOfState = {
+        ...state,
+        password: state.withPassword ? state.password : undefined,
+      };
+      const validation = validator(copyOfState, {
+        title: [
+          'required',
+          'min:5',
+          'max:18',
+          'regex:/^[a-z0-9 ]+$/i',
+        ],
+        players: 'required|integer|min:2|max:5',
+        password: 'alpha_num|min:4|max:16',
       });
-      if (playersLengthError) {
-        errorFlag = true;
-        toast(playersLengthError, { type: 'error' });
-      }
-
-      if (withPassword) {
-        const passwordError = validateRoomPasword(password);
-        if (passwordError) {
-          errorFlag = true;
-          toast(passwordError, { type: 'error' });
-        }
-      }
-      if (!errorFlag) {
-        onSubmit(state);
+      if (validation.fails()) {
+        toast.error(getFirstValidatorError(validation.errors));
+      } else {
+        onSubmit(copyOfState);
       }
     },
   });

@@ -1,4 +1,4 @@
-import React, { useReducer, FC } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -10,6 +10,9 @@ import {
 import { Card } from 'components/molecules';
 import leavesSVG from 'assets/svg/leaves.svg';
 import googleIconSVG from 'assets/svg/icons/googleIcon.svg';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+import { getFirstValidatorError, validator } from 'utils/validator';
 
 const Label = styled.label``;
 
@@ -104,60 +107,50 @@ const GoogleIcon = styled.img`
   width: 26px;
   margin-left: 8px;
 `;
+
+export interface FormState {
+  displayName: string;
+  email: string;
+  password: string;
+}
 interface FormProps {
-  onSubmit: (props: any) => any;
+  submitCallback: (props: FormState) => any;
   hasAccount: boolean | string;
   setHasAccount: (flag: boolean) => any;
   loginWithGoogle: (props: any) => any;
   authRequest: boolean | string;
 }
 
-export interface InputValuesReducerState {
-  displayName: string;
-  email: string;
-  password: string;
-}
-interface InputValuesReducerNewState {
-  displayName?: string;
-  email?: string;
-  password?: string;
-}
-
 const Form: FC<FormProps> = ({
-  onSubmit,
+  submitCallback,
   hasAccount,
   setHasAccount,
   loginWithGoogle,
   authRequest,
 }) => {
-  const [inputValues, setInputValues] = useReducer(
-    (
-      prevState: InputValuesReducerState,
-      newState: InputValuesReducerNewState,
-    ) => ({
-      ...prevState,
-      ...newState,
-    }),
-    {
+  const formik = useFormik<FormState>({
+    initialValues: {
       displayName: '',
       email: '',
       password: '',
     },
-  );
-
-  const handleSubmitForm = async (e: any) => {
-    e.preventDefault();
-    onSubmit(inputValues);
-  };
-
-  const changeInput = (e: any) => {
-    const { name, value } = e.target;
-    setInputValues({ [name]: value });
-  };
+    onSubmit: values => {
+      const validation = validator(values, {
+        displayName: ['min:5', 'max:18', 'regex:/^[a-z0-9 ]+$/i'],
+        email: 'required|email',
+        password: 'required|alpha_num|min:4|max:16',
+      });
+      if (validation.fails()) {
+        toast.error(getFirstValidatorError(validation.errors));
+      } else {
+        submitCallback(values);
+      }
+    },
+  });
 
   return (
     <>
-      <Wrapper as="form" onSubmit={handleSubmitForm}>
+      <Wrapper as="form" onSubmit={formik.handleSubmit}>
         <Title>{hasAccount ? 'Logowanie' : 'Nowe konto'}</Title>
         {hasAccount === false && (
           <Label>
@@ -165,8 +158,8 @@ const Form: FC<FormProps> = ({
             <Input
               type="text"
               name="displayName"
-              value={inputValues.displayName}
-              onChange={changeInput}
+              value={formik.values.displayName}
+              onChange={formik.handleChange}
               placeholder="Wyświetlana nazwa"
             />
           </Label>
@@ -176,8 +169,8 @@ const Form: FC<FormProps> = ({
           <Input
             type="email"
             name="email"
-            value={inputValues.email}
-            onChange={changeInput}
+            value={formik.values.email}
+            onChange={formik.handleChange}
             placeholder="Email"
           />
         </Label>
@@ -186,8 +179,8 @@ const Form: FC<FormProps> = ({
           <Input
             type="password"
             name="password"
-            value={inputValues.password}
-            onChange={changeInput}
+            value={formik.values.password}
+            onChange={formik.handleChange}
             placeholder="Password"
           />
         </Label>
