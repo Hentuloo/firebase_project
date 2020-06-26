@@ -29,7 +29,8 @@ interface UserExitApplicationPayload {
 
 export class StatusController {
   @listenDatabase({
-    type: 'onUpdate',
+    dbType: 'realtime',
+    listenerType: 'onUpdate',
     ref: '/status/{userId}',
   })
   async onUserStatusChanged(change, context) {
@@ -90,7 +91,6 @@ export class StatusController {
     return { ok: true };
   }
 
-  @use(useValidator({ uid: 'required|alpha_num|min:10|max:35' }))
   @use(useBearerAuth({ allowInternallKey: true }))
   @fireFunction({ region: 'europe-west1', type: 'onRequest' })
   async userExitApplication(req, res) {

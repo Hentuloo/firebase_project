@@ -6,8 +6,9 @@ export enum MetadataT {
 }
 export type ListenAuthTypes = 'onCreate' | 'onDelete';
 export type FireFunctionsTypes = 'onCall' | 'onRequest';
-export type ListenDatabseTypes =
+export type DatabseListenersTypes =
   | 'onWrite'
   | 'onUpdate'
   | 'onCreate'
   | 'onDelete';
+export type DatabaseTypes = 'firestore' | 'realtime';

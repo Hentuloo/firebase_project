@@ -83,6 +83,16 @@ export interface GameScoresDoc {
 }
 export type UpdateGameScoresDoc = Partial<GameScoresDoc>;
 
+export interface TextForMesurementDoc {
+  text: string;
+  cursorPoints: any[];
+  writtenWordsByInterval: number[];
+  timeForWrite: number;
+}
+export type UpdateTextForMesurementDoc = Partial<
+  TextForMesurementDoc
+>;
+
 export interface GeneralStateUsers {
   online: number;
 }

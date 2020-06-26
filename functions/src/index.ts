@@ -6,6 +6,7 @@ import { bindFireControllers } from './decorators/bindFireControllers';
 import { StatusController } from './controllers/StatusController';
 import { GameController } from './controllers/GameController';
 import { AuthController } from './controllers/AuthController';
+import { TextsController } from './controllers/TextsController';
 
 initializeApp(functions.config().firebase);
 
@@ -15,6 +16,7 @@ const fireFunctions = bindFireControllers([
   new StatusController(),
   new GameController(),
   new AuthController(),
+  new TextsController(),
 ]);
 
 const keys = Object.keys(fireFunctions);

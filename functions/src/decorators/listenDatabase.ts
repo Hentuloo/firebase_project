@@ -1,19 +1,29 @@
 import 'reflect-metadata';
-import { MetadataT, ListenDatabseTypes } from './types';
+import {
+  MetadataT,
+  DatabseListenersTypes,
+  DatabaseTypes,
+} from './types';
 
 export type ListenDatabaseOptions = {
+  dbType: DatabaseTypes;
   ref: string;
-  type: ListenDatabseTypes;
+  listenerType: DatabseListenersTypes;
 };
 
 export function listenDatabase({
-  type,
+  dbType,
+  listenerType,
   ref,
 }: ListenDatabaseOptions): MethodDecorator {
   return (target: object | any, key: string | symbol) => {
     Reflect.defineMetadata(
       MetadataT.databaseListener,
-      { type, ref },
+      {
+        dbType,
+        listenerType,
+        ref,
+      },
       target,
       key,
     );

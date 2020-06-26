@@ -23,7 +23,7 @@ export const ControlGameInputProvider: FC<UpdateReachedCursorProviderProps> = ({
   render = () => null,
 }) => {
   const dispatch = useDispatch();
-  const { cursorPoints, startTimestamp } = useSelector(
+  const { cursorPoints, startTimestamp, endTimestamp } = useSelector(
     getGameSettings,
   );
 
@@ -58,11 +58,11 @@ export const ControlGameInputProvider: FC<UpdateReachedCursorProviderProps> = ({
     const timeToStart = startTimestamp * 1000 - new Date().getTime();
     if (timeToStart > 0) {
       startNewMultiplayerGame({
-        secondsToEnd: 60,
+        secondsToEnd: (endTimestamp || 0) - startTimestamp,
         startTimestamp,
       });
     }
-  }, [startNewMultiplayerGame, startTimestamp]);
+  }, [endTimestamp, startNewMultiplayerGame, startTimestamp]);
 
   return render();
 };

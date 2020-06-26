@@ -17,6 +17,7 @@ import {
   deleteCloudTask,
 } from '../utils/cloudTask.utils';
 import { sortUsersScores } from '../utils/utils';
+import { randomFirestoreDocument } from '../utils/randomFirestoreDocument';
 import { firestoreIncrementValue } from '../utils/firebaseFieldValue';
 
 interface StartGameProps {
@@ -92,14 +93,16 @@ export class GameController {
       };
       return acc;
     }, {});
-    // text and cursors get from db
-    const text =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.';
 
-    const cursorPoints = [20, 40, 60, 80, 100, 118];
-    const writtenWordsByCursorsPoints = [6, 10, 14, 20, 25, 33];
-    const start = Date.now() / 1000 + 15;
-    const end = Date.now() / 1000 + 55;
+    const doc = await randomFirestoreDocument('textsForMeasurements');
+    if (!doc) {
+      throw new https.HttpsError(
+        'internal',
+        'something gone wrong try again',
+      );
+    }
+    const start = Date.now() / 1000 + 12;
+    const end = Date.now() / 1000 + 12 + doc.timeForWrite;
 
     const [cloudFunction] = await callFunctionByCloudTask({
       functionName: 'stopGame',
@@ -113,22 +116,23 @@ export class GameController {
     gameRef.update({
       startTimestamp: start,
       endTimestamp: end,
-      text,
-      cursorPoints,
+      text: doc.text,
+      cursorPoints: doc.cursorPoints,
       usersByScores: null,
     } as UpdateGameSettingsDoc);
     gameScoresRef.set({
       scores: { ...usersScoresWithStartScore },
       stopGameFunction: cloudFunction.name,
       startTimestamp: start,
-      cursorPoints,
-      writtenWordsByCursorsPoints,
+      cursorPoints: doc.cursorPoints,
+      writtenWordsByCursorsPoints: doc.writtenWordsByInterval,
     } as UpdateGameScoresDoc);
 
     return {
       ok: true,
     };
   }
+
   @use(
     useValidator({
       roomId: 'required|alpha_num|min:10|max:35',
@@ -184,8 +188,6 @@ export class GameController {
     );
     if (userScores.lastChangesDate !== undefined && wpmSpeed > 500)
       throw new https.HttpsError('unavailable', 'too fast!!');
-    if (accuracy < 75)
-      throw new https.HttpsError('unavailable', 'Bad accuracy!');
 
     const progress =
       ((userScores.changes + 1) / cursorPoints.length) * 100;

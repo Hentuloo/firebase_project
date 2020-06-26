@@ -1,4 +1,10 @@
-import { database, region, https, auth } from 'firebase-functions';
+import {
+  database,
+  region,
+  https,
+  auth,
+  firestore,
+} from 'firebase-functions';
 import { MetadataT, ListenAuthTypes } from './types';
 import { FireFunctionOptions } from './fireFunctions';
 import { ListenDatabaseOptions } from './listenDatabase';
@@ -72,13 +78,16 @@ interface BindDatabaseListenerType extends ListenDatabaseOptions {
   method: string;
 }
 const bindDatabaseListener = ({
-  type,
+  listenerType,
+  dbType,
   middlewares,
   controller,
   method,
   ref,
 }: BindDatabaseListenerType) => {
-  return database.ref(ref)[type](async (data, context) => {
+  let db = dbType === 'firestore' ? firestore.document : database.ref;
+
+  return db(ref)[listenerType](async (data, context) => {
     try {
       for await (const fn of middlewares) {
         await fn(data, context);
@@ -153,7 +162,8 @@ export const bindFireControllers = (controllers: IController[]) => {
           method,
           middlewares,
           ref: databaseListener.ref,
-          type: databaseListener.type,
+          dbType: databaseListener.dbType,
+          listenerType: databaseListener.listenerType,
         });
       }
     });
