@@ -50,7 +50,7 @@ export interface GameSettingsDoc {
   changesLength: number;
   startTimestamp: number | null;
   endTimestamp: number | null;
-  password: string;
+  password: string | false;
   maxPlayersNumber: number;
   creator: string;
   usersByScores: ScoreWithUid[] | null;

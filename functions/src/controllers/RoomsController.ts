@@ -68,42 +68,50 @@ export class RoomsController {
     const withPassword =
       password !== '' && password !== undefined && password !== null;
     const gamesCollection = firestore().collection(`games`);
-    const { id: newRoomId } = await gamesCollection.add({
-      registeredUsers: {
-        [uid]: { displayName, photoURL, wins },
-      },
-      title,
-      maxPlayersNumber,
-      textId: null,
-      changesLength: null,
-      startTimestamp: null,
-      endTimestamp: null,
-      password: withPassword ? password : false,
-      creator: uid,
-      created: Date.now(),
-      usersByScores: null,
-    } as GameSettingsDoc);
+    const ref = gamesCollection.doc();
+    const newRoomId = ref.id;
+    ref.set(
+      {
+        registeredUsers: {
+          [uid]: { displayName, photoURL, wins },
+        },
+        title,
+        maxPlayersNumber,
+        textId: null,
+        changesLength: null,
+        startTimestamp: null,
+        endTimestamp: null,
+        password: withPassword ? password : false,
+        creator: uid,
+        created: Date.now(),
+        usersByScores: null,
+      } as GameSettingsDoc,
+      { merge: true },
+    );
 
     const gameRef = firestore().doc(`gamesScores/${newRoomId}`);
     const roomsRef = firestore().doc(
       `rooms/${withPassword ? 'protected' : 'open'}`,
     );
-    gameRef.set({
-      scores: {
-        [uid]: {
-          changes: 0,
-          cursor: 0,
-          lastChangesDate: 0,
-          wpmSpeed: 0,
-          accuracy: 0,
-          points: 0,
-          progress: 0,
+    gameRef.set(
+      {
+        scores: {
+          [uid]: {
+            changes: 0,
+            cursor: 0,
+            lastChangesDate: 0,
+            wpmSpeed: 0,
+            accuracy: 0,
+            points: 0,
+            progress: 0,
+          },
         },
-      },
-      writtenWordsByCursorsPoints: null,
-      cursorPoints: [],
-      startTimestamp: null,
-    } as GameScoresDoc);
+        writtenWordsByCursorsPoints: null,
+        cursorPoints: [],
+        startTimestamp: null,
+      } as GameScoresDoc,
+      { merge: true },
+    );
 
     roomsRef.set(
       {
@@ -165,11 +173,31 @@ export class RoomsController {
 
     const {
       registeredUsers,
+      endTimestamp,
+      startTimestamp,
+      maxPlayersNumber,
+
       password: roomPassword,
-    } = gameSnap.data();
+    } = gameSnap.data() as GameSettingsDoc;
 
     //  user already exist
     if (registeredUsers[uid]) return { ok: true };
+    if (
+      startTimestamp &&
+      endTimestamp &&
+      startTimestamp < Date.now() / 1000 &&
+      endTimestamp > Date.now() / 1000
+    )
+      throw new https.HttpsError(
+        'unavailable',
+        'game already is runned',
+      );
+
+    if (maxPlayersNumber <= Object.keys(registeredUsers).length)
+      throw new https.HttpsError(
+        'unavailable',
+        'max players number in this room',
+      );
 
     if (lastJoinedRoom)
       exitRoomAsPlayer({ roomId: lastJoinedRoom, uid });

@@ -28,7 +28,7 @@ export class TextsController {
     const wordsLength =
       writtenWordsByInterval[writtenWordsByInterval.length - 1];
 
-    const timeForWrite = Math.ceil((wordsLength / 15) * 60);
+    const timeForWrite = Math.ceil((wordsLength / 25) * 60);
 
     textRef.set(
       {

@@ -55,13 +55,11 @@ export const ControlGameInputProvider: FC<UpdateReachedCursorProviderProps> = ({
   }, [cursor, cursorPoints, dispatch, roomId]);
   useEffect(() => {
     if (!startTimestamp) return;
-    const timeToStart = startTimestamp * 1000 - new Date().getTime();
-    if (timeToStart > 0) {
-      startNewMultiplayerGame({
-        secondsToEnd: (endTimestamp || 0) - startTimestamp,
-        startTimestamp,
-      });
-    }
+
+    startNewMultiplayerGame({
+      secondsToEnd: (endTimestamp || 0) - startTimestamp,
+      startTimestamp,
+    });
   }, [endTimestamp, startNewMultiplayerGame, startTimestamp]);
 
   return render();

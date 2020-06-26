@@ -1,4 +1,5 @@
 import { GameSettingsWithPasswordFlag } from 'types/GameSettings';
+import { auth } from 'firebase';
 import { types, Action } from '../actions/types';
 
 export interface GameSettingsState
@@ -65,10 +66,16 @@ export default (state = init, action: Action): GameSettingsState => {
       return { ...state, scoresModal: !state.scoresModal };
     }
     case types.SHOW_GAME_SCORES: {
+      const user = auth().currentUser;
+      const { usersByScores } = action.payload;
+      const userHaveResultFlag =
+        usersByScores &&
+        user &&
+        usersByScores.some(({ uid }) => uid === user.uid);
       return {
         ...state,
         ...action.payload,
-        scoresModal: true,
+        scoresModal: !!userHaveResultFlag,
         waitForLastScoresUpdate: false,
       };
     }

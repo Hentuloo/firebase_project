@@ -1,22 +1,25 @@
 import firebase from 'firebase';
-import { firestore } from 'firebase-admin';
+import { firestore, database } from 'firebase-admin';
 import { listenAuth } from '../decorators/listenAuth';
 import { fireFunction } from '../decorators/fireFunctions';
 import { defaultUser, defaultUserSolo } from '../config/defaults';
 import { use } from '../decorators/use';
 import { useAuth } from '../middlewares/useAuth';
-import { UserDocument } from '../data';
+import { UserDocument, UpdateGeneralStateUsers } from '../data';
 import { useValidator } from '../middlewares/useValidator';
 import {
   exitRoomAsCreator,
   exitRoomAsPlayer,
 } from '../utils/rooms.utils';
+import {
+  firestoreIncrementValue,
+  firestoreDecrementValue,
+} from '../utils/firebaseFieldValue';
 
 interface UpdateUserProfile {
   displayName: string;
   photoURL: string;
 }
-
 export class AuthController {
   @listenAuth({ type: 'onCreate' })
   async onCreateUser(userRecord, context) {
@@ -27,9 +30,11 @@ export class AuthController {
     } = userRecord as firebase.User;
     const userReference = firestore().doc(`/users/${uid}`);
     const userTrainingRef = firestore().doc(`usersSolo/${uid}`);
+    const generalStateUsersRef = firestore().doc(
+      `generalState/users`,
+    );
 
     const created = Date.now();
-
     const defaultSoloTraining = { ...defaultUserSolo };
     defaultSoloTraining.snaps[0].data = created;
 
@@ -45,6 +50,9 @@ export class AuthController {
       photoURL,
     } as UserDocument);
     await userTrainingRef.set(defaultSoloTraining);
+    generalStateUsersRef.update({
+      online: firestoreIncrementValue(),
+    } as UpdateGeneralStateUsers);
 
     return userRef;
   }
@@ -53,6 +61,10 @@ export class AuthController {
     const { uid } = userRecord as firebase.User;
     const userReference = firestore().doc(`/users/${uid}`);
     const userTrainingRef = firestore().doc(`usersSolo/${uid}`);
+    const userStatusRef = database().ref(`status/${uid}`);
+    const generalStateUsersRef = firestore().doc(
+      `generalState/users`,
+    );
 
     const userSnap = await userReference.get();
     const {
@@ -65,6 +77,11 @@ export class AuthController {
       exitRoomAsPlayer({ roomId: lastJoinedRoom, uid });
     userReference.delete();
     userTrainingRef.delete();
+    userStatusRef.remove();
+    generalStateUsersRef.update({
+      online: firestoreDecrementValue(),
+    } as UpdateGeneralStateUsers);
+
     return { ok: true };
   }
   @use(

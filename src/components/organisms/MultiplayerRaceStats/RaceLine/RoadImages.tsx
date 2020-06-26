@@ -69,7 +69,7 @@ export const RoadImages: FC<RoadImagesProps> = ({
       if (!car || wrapperWidth === null) return;
       return gsap.to(car, {
         x: (percents / 100) * (wrapperWidth - car.clientWidth),
-        duration: duration || 4,
+        duration: duration || 6,
         ease: Linear.easeIn,
         delay: delay || 0,
       });

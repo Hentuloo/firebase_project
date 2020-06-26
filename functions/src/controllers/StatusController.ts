@@ -1,3 +1,4 @@
+import { https } from 'firebase-functions';
 import { firestore } from 'firebase-admin';
 import {
   callFunctionByCloudTask,
@@ -35,15 +36,19 @@ export class StatusController {
   })
   async onUserStatusChanged(change, context) {
     const uid = context.params.userId;
+
     const userRef = firestore().doc(`users/${uid}`);
     const generalStateUsersRef = firestore().doc(
-      `generalState/users`,
+      `/generalState/users`,
     );
 
     const statusSnapshot = await change.after.ref.once('value');
     const { state } = statusSnapshot.val();
 
     const userSnap = await userRef.get();
+    if (!userSnap.exists)
+      throw new https.HttpsError('unavailable', "user doesn't exist");
+
     const { cloudTaskUserExitApplication, onlineInApp } = {
       ...userSnap.data(),
     } as UserDocument;
@@ -95,12 +100,16 @@ export class StatusController {
   @fireFunction({ region: 'europe-west1', type: 'onRequest' })
   async userExitApplication(req, res) {
     const { uid } = req.body as UserExitApplicationPayload;
+
     const userRef = firestore().doc(`users/${uid}`);
     const generalStateUsersRef = firestore().doc(
       `generalState/users`,
     );
 
     const userSnap = await userRef.get();
+    if (!userSnap.exists)
+      throw new https.HttpsError('unavailable', "user doesn't exist");
+
     const {
       online,
       lastCreatedRoom,

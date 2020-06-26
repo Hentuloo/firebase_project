@@ -51,7 +51,7 @@ function Root() {
         />
         <Route
           path={`${Constants.paths.room.path}/:roomId`}
-          component={saveRoomPath(withUser(RoomPage))}
+          component={withUser(RoomPage)}
         />
         <Route
           path={Constants.paths.login.path}

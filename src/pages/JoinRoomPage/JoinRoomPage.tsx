@@ -30,26 +30,28 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
 
   const joinRoom = useCallback(
     async (formValues?: JoinWithPasswordForm) => {
-      const { joinFireRoom } = FireFunctions.init();
       try {
-        const { data } = await joinFireRoom(
+        const { data } = await FireFunctions.init().joinFireRoom(
           roomId,
           formValues && formValues.password,
         );
+
         if (data.ok)
           redirect(`${Constants.paths.room.path}/${roomId}`);
       } catch ({ message, ...d }) {
         if (message === "this room does'n exist") {
           toast.error('Nie ma takiego pokoju');
           redirect(Constants.paths.dashboard.path);
-        }
-        if (message === 'password is required')
+        } else if (message === 'password is required') {
           redirect(
             `${Constants.paths.joinRoom.path}/${roomId}/${title}/password`,
           );
-        if (message === 'wrong password') {
+        } else if (message === 'wrong password') {
           isFetching(false);
           toast.error('Podane hasło jest nieprawidłowe');
+        } else {
+          toast.error(message);
+          redirect(Constants.paths.dashboard.path);
         }
       }
     },

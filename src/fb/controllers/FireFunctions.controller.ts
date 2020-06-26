@@ -34,7 +34,7 @@ export class FireFunctions {
   public call = (functionName: string) =>
     this.instance.httpsCallable(functionName);
 
-  public joinFireRoom = async (roomId: string, pass?: string) => {
+  public joinFireRoom = (roomId: string, pass?: string) => {
     const joinFunc = this.call('joinRoom');
     return joinFunc({ roomId, password: pass });
   };

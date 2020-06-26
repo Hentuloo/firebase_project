@@ -21,9 +21,9 @@ export const NewRoomPage: FC = () => {
   const history = useHistory();
   const [isFetching, setIsFetching] = useState(false);
   const handleCreateRoom = async (state: RoomSetingsState) => {
-    const { title, players, password, withPassword } = state;
-    setIsFetching(true);
     try {
+      const { title, players, password, withPassword } = state;
+      setIsFetching(true);
       const { data } = await FireFunctions.init().createRoom({
         title,
         maxPlayersNumber: players,

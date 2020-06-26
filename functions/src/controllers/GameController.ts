@@ -101,7 +101,7 @@ export class GameController {
         'something gone wrong try again',
       );
     }
-    const start = Date.now() / 1000 + 12;
+    const start = Date.now() / 1000 + 14;
     const end = Date.now() / 1000 + 12 + doc.timeForWrite;
 
     const [cloudFunction] = await callFunctionByCloudTask({
@@ -238,6 +238,7 @@ export class GameController {
     const usersRef = firestore().collection(`users`);
 
     const scoreSnap = await gameScoresRef.get();
+    if (!scoreSnap.exists) res.send({ ok: false });
     const scores = scoreSnap.data() as GameScoresDoc;
     const usersByScores = sortUsersScores(scores);
 
