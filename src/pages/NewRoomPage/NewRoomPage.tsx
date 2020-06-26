@@ -29,6 +29,7 @@ export const NewRoomPage: FC = () => {
         maxPlayersNumber: players,
         password: withPassword ? password : undefined,
       });
+      if (!data) return;
       const encodedTitle = encodeURI(title);
       await copyToClipBoard(
         `${window.location.origin}${Constants.paths.joinRoom.path}/${

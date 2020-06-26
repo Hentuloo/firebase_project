@@ -248,11 +248,23 @@ export class GameController {
         wins: firestoreIncrementValue(),
       } as UpdateUserDocument);
     }
+    if (scores.stopGameFunction) {
+      deleteCloudTask({
+        taskName: scores.stopGameFunction,
+        functionName: 'delete planed stopGame function',
+      });
+      gameRef.update({
+        endTimestamp: Date.now() / 1000,
+        usersByScores,
+        [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue(),
+      } as UpdateGameSettingsDoc);
+    } else {
+      gameRef.update({
+        usersByScores,
+        [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue(),
+      } as UpdateGameSettingsDoc);
+    }
 
-    gameRef.update({
-      usersByScores,
-      [`registeredUsers.${winner.uid}.wins`]: firestoreIncrementValue(),
-    } as UpdateGameSettingsDoc);
     gameScoresRef.update({
       startTimestamp: null,
     } as UpdateGameSettingsDoc);

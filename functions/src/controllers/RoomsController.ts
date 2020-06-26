@@ -18,8 +18,11 @@ import {
   UpdateUserDocument,
   GameSettingsDoc,
   GameScoresDoc,
+  UpdateGameSettingsDoc,
+  UpdateGameScoresDoc,
 } from '../data';
 import Validator from 'validatorjs';
+import { deleteCloudTask } from '../utils/cloudTask.utils';
 
 interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;
@@ -70,49 +73,43 @@ export class RoomsController {
     const gamesCollection = firestore().collection(`games`);
     const ref = gamesCollection.doc();
     const newRoomId = ref.id;
-    ref.set(
-      {
-        registeredUsers: {
-          [uid]: { displayName, photoURL, wins },
-        },
-        title,
-        maxPlayersNumber,
-        textId: null,
-        changesLength: null,
-        startTimestamp: null,
-        endTimestamp: null,
-        password: withPassword ? password : false,
-        creator: uid,
-        created: Date.now(),
-        usersByScores: null,
-      } as GameSettingsDoc,
-      { merge: true },
-    );
+    ref.create({
+      registeredUsers: {
+        [uid]: { displayName, photoURL, wins },
+      },
+      title,
+      maxPlayersNumber,
+      textId: null,
+      changesLength: null,
+      startTimestamp: null,
+      endTimestamp: null,
+      password: withPassword ? password : false,
+      creator: uid,
+      created: Date.now(),
+      usersByScores: null,
+    } as GameSettingsDoc);
 
     const gameRef = firestore().doc(`gamesScores/${newRoomId}`);
+
+    gameRef.create({
+      scores: {
+        [uid]: {
+          changes: 0,
+          cursor: 0,
+          lastChangesDate: 0,
+          wpmSpeed: 0,
+          accuracy: 0,
+          points: 0,
+          progress: 0,
+        },
+      },
+      writtenWordsByCursorsPoints: null,
+      cursorPoints: [],
+      startTimestamp: null,
+    } as GameScoresDoc);
     const roomsRef = firestore().doc(
       `rooms/${withPassword ? 'protected' : 'open'}`,
     );
-    gameRef.set(
-      {
-        scores: {
-          [uid]: {
-            changes: 0,
-            cursor: 0,
-            lastChangesDate: 0,
-            wpmSpeed: 0,
-            accuracy: 0,
-            points: 0,
-            progress: 0,
-          },
-        },
-        writtenWordsByCursorsPoints: null,
-        cursorPoints: [],
-        startTimestamp: null,
-      } as GameScoresDoc,
-      { merge: true },
-    );
-
     roomsRef.set(
       {
         [newRoomId]: {
@@ -253,10 +250,14 @@ export class RoomsController {
     const { uid } = context.auth;
     const { roomId } = data;
 
-    const gameSnap = await firestore()
-      .doc(`games/${roomId}`)
-      .get();
-    const { creator } = gameSnap.data();
+    const gameRef = firestore().doc(`games/${roomId}`);
+    const gameScoresRef = firestore().doc(`gamesScores/${roomId}`);
+
+    const gameSnap = await gameRef.get();
+    const {
+      creator,
+      registeredUsers,
+    } = gameSnap.data() as GameSettingsDoc;
 
     // user is a creator -> delete all dependencies
     if (creator === uid) {
@@ -267,6 +268,30 @@ export class RoomsController {
       };
     }
     exitRoomAsPlayer({ roomId, uid });
+
+    // when last user => resetGame
+    if (Object.keys(registeredUsers).length === 2) {
+      const scoresSnap = await gameScoresRef.get();
+      const { stopGameFunction } = scoresSnap.data() as GameScoresDoc;
+      if (stopGameFunction) {
+        deleteCloudTask({
+          taskName: stopGameFunction,
+          functionName: 'delete planed stopGame function',
+        });
+        gameRef.update({
+          textId: null,
+          changesLength: null,
+          startTimestamp: null,
+          endTimestamp: null,
+          usersByScores: null,
+        } as UpdateGameSettingsDoc);
+        gameScoresRef.update({
+          writtenWordsByCursorsPoints: null,
+          cursorPoints: [],
+          startTimestamp: null,
+        } as UpdateGameScoresDoc);
+      }
+    }
     return {
       ok: true,
       code: 'You exit room',
