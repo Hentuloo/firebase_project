@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   text-align: center;
   margin: 0px auto;
   ${({ theme }) => theme.mediaQuery.md} {
-    grid-row: 1 / span 2;
+    grid-row: 1 / span 3;
     align-self: center;
   }
 `;

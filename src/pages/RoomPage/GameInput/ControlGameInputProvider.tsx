@@ -5,6 +5,7 @@ import { getGameSettings } from 'store/selectors/gameSettings.selector';
 import { FireFunctions } from 'fb';
 import { updateGameScores } from 'store/actions/gameScore.actions';
 import { setWaitingForLastScoresUpdate } from 'store/actions/gameSettings.actions';
+import { TypingStatus } from 'hooks/useInputSpeedTest/types';
 
 export interface UpdateReachedCursorProviderProps {
   render?: () => ReactElement;
@@ -18,14 +19,19 @@ export const ControlGameInputProvider: FC<UpdateReachedCursorProviderProps> = ({
     accuracy,
     startNewMultiplayerGame,
     gameStatus,
+    resetGameState,
   },
   roomId,
   render = () => null,
 }) => {
   const dispatch = useDispatch();
-  const { cursorPoints, startTimestamp, endTimestamp } = useSelector(
-    getGameSettings,
-  );
+  const {
+    cursorPoints,
+    startTimestamp,
+    endTimestamp,
+    usersByScores,
+    registeredUsers,
+  } = useSelector(getGameSettings);
 
   useEffect(() => {
     if (!cursorPoints || !cursor || gameStatus === 'BEGINING') return;
@@ -61,6 +67,18 @@ export const ControlGameInputProvider: FC<UpdateReachedCursorProviderProps> = ({
       startTimestamp,
     });
   }, [endTimestamp, startNewMultiplayerGame, startTimestamp]);
+  useEffect(() => {
+    if (gameStatus !== TypingStatus.TYPING) return;
+    const usersLength = Object.keys(registeredUsers).length;
+    if (usersLength < 2) {
+      resetGameState();
+    }
+  }, [gameStatus, registeredUsers, resetGameState]);
+  useEffect(() => {
+    if (gameStatus === TypingStatus.END && usersByScores === null) {
+      dispatch(setWaitingForLastScoresUpdate());
+    }
+  }, [dispatch, gameStatus, usersByScores]);
 
   return render();
 };

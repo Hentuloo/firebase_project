@@ -8,7 +8,7 @@ export const randomFirestoreDocument = async (collection: string) => {
   let data: null | TextForMesurementDoc = null;
 
   const snap = await ref
-    .where(firestoreDocumentId, '>', key)
+    .where(firestoreDocumentId, '>=', key)
     .limit(1)
     .get();
   if (snap.size > 0) {
@@ -17,7 +17,7 @@ export const randomFirestoreDocument = async (collection: string) => {
     });
   } else {
     const secondSnap = await ref
-      .where(firestoreDocumentId, '>', key)
+      .where(firestoreDocumentId, '<', key)
       .limit(1)
       .get();
     secondSnap.forEach(doc => {

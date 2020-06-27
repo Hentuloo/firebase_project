@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import WithMenuTemplate from 'templates/WithMenuTemplate';
 import {
@@ -20,6 +20,30 @@ const StyledWithBackgroundTemplate = styled(WithBackgroundTemplate)`
 export const NewRoomPage: FC = () => {
   const history = useHistory();
   const [isFetching, setIsFetching] = useState(false);
+
+  const redirectToNewRoom = useCallback(
+    ({
+      title,
+      withPassword,
+      roomId,
+    }: {
+      title: string;
+      withPassword: boolean;
+      roomId: string;
+    }) => {
+      const encodedTitle = encodeURI(title);
+      copyToClipBoard(
+        `${window.location.origin}${
+          Constants.paths.joinRoom.path
+        }/${roomId}/${encodedTitle}${withPassword ? '/pass' : ''}`,
+      );
+
+      toast.info('Skopiowano link do schowka');
+      history.push(`${Constants.paths.room.path}/${roomId}`);
+    },
+    [history],
+  );
+
   const handleCreateRoom = async (state: RoomSetingsState) => {
     try {
       const { title, players, password, withPassword } = state;
@@ -30,16 +54,8 @@ export const NewRoomPage: FC = () => {
         password: withPassword ? password : undefined,
       });
       if (!data) return;
-      const encodedTitle = encodeURI(title);
-      await copyToClipBoard(
-        `${window.location.origin}${Constants.paths.joinRoom.path}/${
-          data.roomId
-        }/${encodedTitle}${withPassword ? '/pass' : ''}`,
-      );
-
-      toast.info('Skopiowano link do schowka');
-      history.push(`${Constants.paths.room.path}/${data.roomId}`);
-    } catch ({ message, ...d }) {
+      redirectToNewRoom({ title, withPassword, roomId: data.roomId });
+    } catch ({ message }) {
       setIsFetching(false);
       toast.error(message);
     }

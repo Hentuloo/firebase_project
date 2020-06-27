@@ -62,8 +62,8 @@ export const updateGameSettings = (
       ...settings,
       timesOfLightChanges: [
         0,
+        timeToStart * 0.5,
         timeToStart * 0.75,
-        timeToStart * 0.85,
         timeToStart * 0.95,
         timeToStart,
       ],
