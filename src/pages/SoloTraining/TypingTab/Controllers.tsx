@@ -49,7 +49,9 @@ const StyledInputNumber = styled(InputNumber)`
     }
   }
 `;
-
+const ChartButtonWrapper = styled.div`
+  position: relative;
+`;
 const NewScoreAnimationImage = styled.img`
   position: absolute;
   display: block;
@@ -96,7 +98,7 @@ export const Controllers: FC<ControllersProps> = ({
   const newChartAnim = () => {
     const el = chartAttentionCircles.current;
     const tl = gsap.timeline();
-    tl.to(el, { opacity: 1, scale: 1.2 }, 1.9)
+    tl.to(el, { opacity: 1, scale: 1.25 }, 1.9)
       .to(el, {
         opacity: 0,
       })
@@ -135,7 +137,7 @@ export const Controllers: FC<ControllersProps> = ({
         alt="Zresetuj stan gry"
         src={repeatIcon}
       />
-      <div>
+      <ChartButtonWrapper>
         <CircledButtonWithImage
           disabled={
             disableCharts || gameStatus === TypingStatus.TYPING
@@ -149,7 +151,7 @@ export const Controllers: FC<ControllersProps> = ({
           ref={chartAttentionCircles}
           src={circles}
         />
-      </div>
+      </ChartButtonWrapper>
     </Wrapper>
   );
 };

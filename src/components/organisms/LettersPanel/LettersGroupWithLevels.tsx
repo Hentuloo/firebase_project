@@ -6,23 +6,28 @@ import { chunkArray } from 'utils';
 import firstLevel from 'assets/svg/levels/level1.svg';
 import secondLevel from 'assets/svg/levels/level2.svg';
 import ThirdLevel from 'assets/svg/levels/level3.svg';
+import Tippy from '@tippyjs/react';
 import { LettersButtons } from './LettersButtons';
 import { ToggleLetter, LetterWithStatusFlags } from './types';
 
 const ImageWrapper = styled.div`
   text-align: center;
-  overflow: hidden;
-  pointer-events: none;
 `;
 const Image = styled.img`
   max-width: 100%;
   max-height: 100%;
 `;
 
-const ImageComponent: FC<{ src: string }> = ({ src, ...props }) => (
-  <ImageWrapper {...props}>
-    <Image src={src} />
-  </ImageWrapper>
+const ImageComponent: FC<{ src: string; title?: string }> = ({
+  src,
+  title,
+  ...props
+}) => (
+  <Tippy {...props} content={title}>
+    <ImageWrapper>
+      <Image src={src} />
+    </ImageWrapper>
+  </Tippy>
 );
 
 export interface LettersPanelProps {
@@ -40,7 +45,7 @@ const LettersGroupWithLevels: Function = ({
     if (index === 2) {
       return (
         <Fragment key={LettersGroup[0].id}>
-          <ImageComponent src={firstLevel} />
+          <ImageComponent src={firstLevel} title="Pierwszy poziom" />
           <LettersButtons
             onClick={toggleLetter}
             lettersArray={LettersGroup}
@@ -52,7 +57,7 @@ const LettersGroupWithLevels: Function = ({
     if (index === 5) {
       return (
         <Fragment key={LettersGroup[0].id}>
-          <ImageComponent src={secondLevel} />
+          <ImageComponent src={secondLevel} title="Drugi poziom" />
           <LettersButtons
             onClick={toggleLetter}
             lettersArray={LettersGroup}
@@ -64,7 +69,7 @@ const LettersGroupWithLevels: Function = ({
     if (index === 8) {
       return (
         <Fragment key={LettersGroup[0].id}>
-          <ImageComponent src={ThirdLevel} />
+          <ImageComponent src={ThirdLevel} title="Trzeci poziom" />
           <LettersButtons
             onClick={toggleLetter}
             lettersArray={LettersGroup}

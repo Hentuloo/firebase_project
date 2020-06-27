@@ -99,17 +99,28 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
     useEffect(() => {
       // update-level
       const steps$ = timeSteps$.current.pipe(
-        filter((_, index) => index % 30 === 0),
-        skip(1),
+        filter((_, index) => index % 4 === 0),
+        skip(2),
       );
-      const sub = steps$.subscribe(([props, level]) => {
-        const { accuracy, speed, resetGameState } = props;
+      const sub = steps$.subscribe(([props]) => {
+        const { accuracy, resetGameState } = props;
 
         if (accuracy < 75) {
           history.push(Constants.paths.soloBadAccuracy.path);
           resetGameState();
-          return;
         }
+      });
+      return () => sub.unsubscribe();
+    }, [history, levelUp, timeSteps$]);
+
+    useEffect(() => {
+      // update-level
+      const steps$ = timeSteps$.current.pipe(
+        filter((_, index) => index % 30 === 0),
+        skip(1),
+      );
+      const sub = steps$.subscribe(([props, level]) => {
+        const { accuracy, speed } = props;
 
         if (level < 8 && (accuracy > 85 || speed > 30))
           return levelUp();

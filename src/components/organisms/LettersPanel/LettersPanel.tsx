@@ -1,11 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { PaginationArrows, stickyModal } from 'components/molecules';
 import { useCollapseAnimation } from 'hooks/useCollapseAnimation';
-
+import { UsePaginationProps } from 'hooks/usePagination';
 import LettersGroupWithLevels from './LettersGroupWithLevels';
-import PharsesExamples from './PharsesExamples';
-import NewPharse from './NewPharse';
 import { LetterObject, ToggleLetter } from './types';
 
 const Wrapper = styled.div`
@@ -28,7 +26,7 @@ const InnerWrapper = styled.div`
   overflow: hidden;
 `;
 
-const collapseInit = {
+const collapseInit: UsePaginationProps = {
   init: 0,
   defaultSkipCount: 5,
   activeCount: 5,
@@ -49,8 +47,24 @@ export const LettersPanel: FC<LettersPanelProps> = ({
   lastActiveIndex,
   toggleLetter,
 }) => {
-  const colapse = useCollapseAnimation<HTMLDivElement>(collapseInit);
-  const [ref, nextStep, prevStep] = colapse;
+  const [ref, nextStep, prevStep, { from }] = useCollapseAnimation<
+    HTMLDivElement
+  >(collapseInit);
+
+  useEffect(() => {
+    // 16 = words per page
+    const activePageByLastIndex = Math.floor(lastActiveIndex / 16);
+    const activePageInCollapseComponent = from / 5;
+    if (activePageByLastIndex === activePageInCollapseComponent)
+      return;
+
+    // TODO create possibility to jump into second page
+    if (activePageByLastIndex > 1) {
+      nextStep();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [from, lastActiveIndex]);
 
   return (
     <Wrapper>
@@ -64,8 +78,6 @@ export const LettersPanel: FC<LettersPanelProps> = ({
           }))}
           toggleLetter={toggleLetter}
         />
-        <PharsesExamples />
-        <NewPharse />
       </InnerWrapper>
       <PaginationArrows
         next={() => nextStep()}

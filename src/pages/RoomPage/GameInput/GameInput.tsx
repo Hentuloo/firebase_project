@@ -18,8 +18,8 @@ const StyledTypingInput = styled(TypingInput)`
 `;
 const StyledLoadingBar = styled(LoadingBar)`
   width: 80%;
-  height: 10px;
   max-width: 550px;
+  height: 10px;
   align-self: end;
   margin: 0px auto;
 `;
