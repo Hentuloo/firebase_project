@@ -103,7 +103,7 @@ const SoloTraining = () => {
   );
 
   const levelUp = useCallback(async () => {
-    if (!uid || firstBlockedLetterIndex !== lastActiveLetterIndex + 1)
+    if (!uid || firstBlockedLetterIndex === lastActiveLetterIndex + 1)
       return;
     try {
       await reduxDispatch(incrementLevelAction(uid));
@@ -122,10 +122,11 @@ const SoloTraining = () => {
     if (fetched && !fetchedSettings) {
       dispatch({
         type: types.SET_FETCHED_SETTINGS,
-        payload: level,
+        payload: (level || 5) - 1,
       });
     }
   }, [level, fetched, fetchedSettings, reduxDispatch, uid]);
+
   return (
     <WithMenuTemplate>
       <WithBackgroundTemplate>

@@ -1,34 +1,11 @@
-import React, { Fragment, FC } from 'react';
-import styled from 'styled-components';
-
+import React, { Fragment } from 'react';
 import { chunkArray } from 'utils';
-
 import firstLevel from 'assets/svg/levels/level1.svg';
 import secondLevel from 'assets/svg/levels/level2.svg';
 import ThirdLevel from 'assets/svg/levels/level3.svg';
-import Tippy from '@tippyjs/react';
 import { LettersButtons } from './LettersButtons';
 import { ToggleLetter, LetterWithStatusFlags } from './types';
-
-const ImageWrapper = styled.div`
-  text-align: center;
-`;
-const Image = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-`;
-
-const ImageComponent: FC<{ src: string; title?: string }> = ({
-  src,
-  title,
-  ...props
-}) => (
-  <Tippy {...props} content={title}>
-    <ImageWrapper>
-      <Image src={src} />
-    </ImageWrapper>
-  </Tippy>
-);
+import { LevelImageWithTippy } from './LevelImageWithTippy';
 
 export interface LettersPanelProps {
   activeIndex: number;
@@ -40,12 +17,20 @@ const LettersGroupWithLevels: Function = ({
   toggleLetter,
 }: LettersPanelProps): JSX.Element[] => {
   const chunkedArray = chunkArray<LetterWithStatusFlags>(letters, 4);
-
   return chunkedArray.map((LettersGroup, index) => {
     if (index === 2) {
       return (
         <Fragment key={LettersGroup[0].id}>
-          <ImageComponent src={firstLevel} title="Pierwszy poziom" />
+          <LevelImageWithTippy
+            src={firstLevel}
+            tippyContent={
+              <>
+                <span>Pierwszy poziom!</span>{' '}
+                <span>Minimalna prędkość: 30wpm</span>{' '}
+                <span>Minimalna celność: 85%</span>
+              </>
+            }
+          />
           <LettersButtons
             onClick={toggleLetter}
             lettersArray={LettersGroup}
@@ -57,7 +42,16 @@ const LettersGroupWithLevels: Function = ({
     if (index === 5) {
       return (
         <Fragment key={LettersGroup[0].id}>
-          <ImageComponent src={secondLevel} title="Drugi poziom" />
+          <LevelImageWithTippy
+            src={secondLevel}
+            tippyContent={
+              <>
+                <span>Drugi poziom!</span>{' '}
+                <span>Minimalna prędkość: 40wpm</span>{' '}
+                <span>Minimalna celność: 92%</span>
+              </>
+            }
+          />
           <LettersButtons
             onClick={toggleLetter}
             lettersArray={LettersGroup}
@@ -69,7 +63,16 @@ const LettersGroupWithLevels: Function = ({
     if (index === 8) {
       return (
         <Fragment key={LettersGroup[0].id}>
-          <ImageComponent src={ThirdLevel} title="Trzeci poziom" />
+          <LevelImageWithTippy
+            src={ThirdLevel}
+            tippyContent={
+              <>
+                <span>Trzeci poziom</span>{' '}
+                <span>Minimalna prędkość: 45wpm</span>{' '}
+                <span>Minimalna celność: 95%</span>
+              </>
+            }
+          />
           <LettersButtons
             onClick={toggleLetter}
             lettersArray={LettersGroup}

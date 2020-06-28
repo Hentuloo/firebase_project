@@ -128,7 +128,7 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
           return levelUp();
         if (level < 28 && (accuracy > 92 || speed > 40))
           return levelUp();
-        if (level < 34 && (accuracy > 95 || speed > 45))
+        if (level > 28 && (accuracy > 95 || speed > 45))
           return levelUp();
       });
 
