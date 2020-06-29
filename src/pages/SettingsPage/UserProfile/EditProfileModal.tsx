@@ -86,7 +86,11 @@ const EditProfileModal: FC<EditProfileModal> = ({ toggleActive }) => {
         const validation = validator(
           { nick: values.nick },
           {
-            nick: ['min:4', 'max:18', 'regex:/^[a-z0-9 ]+$/i'],
+            nick: [
+              'min:4',
+              'max:15',
+              '/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
+            ],
           },
         );
         if (validation.fails()) {

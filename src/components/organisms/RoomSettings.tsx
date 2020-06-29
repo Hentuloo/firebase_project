@@ -77,8 +77,8 @@ export const RoomSetings: FC<RoomSetingsProps> = ({
         title: [
           'required',
           'min:5',
-          'max:18',
-          'regex:/^[a-z0-9 ]+$/i',
+          'max:15',
+          'regex:/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
         ],
         players: 'required|integer|min:2|max:5',
         password: 'alpha_num|min:4|max:16',

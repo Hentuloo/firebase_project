@@ -70,12 +70,18 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
   const startTimestamp = useSelector(getGameStartTimestamp);
   const results = useSelector(getFinalResults);
 
-  const showStartButtonFlag = useMemo(() => {
-    const basicPermision = regiteredUsers.length > 1 && isCreator;
-    const beforeStartOrAfterGame = startTimestamp === null || results;
-
-    return basicPermision && beforeStartOrAfterGame;
-  }, [isCreator, results, startTimestamp, regiteredUsers.length]);
+  const showStartButtonFlag = useMemo(
+    () =>
+      (regiteredUsers.length > 1 &&
+        isCreator &&
+        startTimestamp === null) ||
+      results,
+    [isCreator, results, startTimestamp, regiteredUsers.length],
+  );
+  const showBeforeStartMessage = useMemo(
+    () => (startTimestamp === null || results) && !isCreator,
+    [isCreator, results, startTimestamp],
+  );
 
   return (
     <Wrapper {...props}>
@@ -86,6 +92,11 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
       {regiteredUsers.length === 1 && (
         <SmallText>
           Aby rozpocząć potrzeba minimum dwóch graczy.
+        </SmallText>
+      )}
+      {showBeforeStartMessage && (
+        <SmallText>
+          Grę może uruchomić tylko założyciel pokoju
         </SmallText>
       )}
       {showStartButtonFlag && (

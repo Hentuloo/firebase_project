@@ -45,7 +45,12 @@ interface CreateRoomData extends WithUserProfile {
 export class RoomsController {
   @use(
     useValidator({
-      title: ['required', 'min:5', 'max:18', 'regex:/^[a-z0-9 ]+$/i'],
+      title: [
+        'required',
+        'min:5',
+        'max:15',
+        '/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
+      ],
       password: 'alpha_num|min:4|max:16',
       maxPlayersNumber: 'required|integer|min:2|max:5',
     }),

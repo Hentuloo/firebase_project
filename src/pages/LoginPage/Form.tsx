@@ -136,7 +136,11 @@ const Form: FC<FormProps> = ({
     },
     onSubmit: values => {
       const validation = validator(values, {
-        displayName: ['min:5', 'max:18', 'regex:/^[a-z0-9 ]+$/i'],
+        displayName: [
+          'min:5',
+          'max:15',
+          '/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
+        ],
         email: 'required|email',
         password: 'required|alpha_num|min:4|max:16',
       });

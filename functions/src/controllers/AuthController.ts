@@ -84,9 +84,14 @@ export class AuthController {
 
     return { ok: true };
   }
+
   @use(
     useValidator({
-      displayName: ['min:4', 'max:18', 'regex:/^[a-z0-9 ]+$/i'],
+      displayName: [
+        'min:4',
+        'max:15',
+        '/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
+      ],
       photoURL: 'url',
     }),
   )
@@ -95,6 +100,7 @@ export class AuthController {
   async updateUser(data: UpdateUserProfile, context) {
     const { uid } = context.auth;
     const { displayName, photoURL } = data;
+
     const userReference = firestore().doc(`/users/${uid}`);
 
     let fieldsToUpdate = {} as {
