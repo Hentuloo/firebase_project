@@ -139,7 +139,7 @@ const Form: FC<FormProps> = ({
         displayName: [
           'min:5',
           'max:15',
-          '/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
+          'regex:/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
         ],
         email: 'required|email',
         password: 'required|alpha_num|min:4|max:16',

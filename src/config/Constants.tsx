@@ -61,6 +61,8 @@ export const Constants = {
     'auth/user-not-found': 'Nie znaleziono użytkownika',
     'auth/email-already-in-use': 'Email jest aktualnie już używany',
     'auth/wrong-password': 'Podane hasło jest niepoprawne',
+    'game already is runned':
+      'Gra już wystartowała, poczekaj aż użytkownicy skończą pisać',
     FirebaseError: 'Coś poszło nie tak',
   },
   default: {

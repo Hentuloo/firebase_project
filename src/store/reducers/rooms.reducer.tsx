@@ -17,7 +17,10 @@ export default (
 ): RoomsReducerState => {
   switch (action.type) {
     case types.UPDATE_AVAIABLE_ROOMS:
-      return { ...state, avaiableRooms: action.payload };
+      return {
+        ...state,
+        avaiableRooms: action.payload,
+      };
     case types.CLEAR_ROOM_FROM_AVAIABLE:
       return {
         ...state,

@@ -50,7 +50,7 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
           isFetching(false);
           toast.error('Podane hasło jest nieprawidłowe');
         } else {
-          toast.error(message);
+          toast.error(Constants.firebaseErrors[message] || message);
           redirect(Constants.paths.dashboard.path);
         }
       }

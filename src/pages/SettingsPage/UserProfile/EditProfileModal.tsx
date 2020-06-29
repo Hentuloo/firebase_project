@@ -89,7 +89,7 @@ const EditProfileModal: FC<EditProfileModal> = ({ toggleActive }) => {
             nick: [
               'min:4',
               'max:15',
-              '/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
+              'regex:/^[a-zA-Z0-9ęółśążźćńĘÓŁŚĄŻŹĆŃ ]{4,15}$/i',
             ],
           },
         );

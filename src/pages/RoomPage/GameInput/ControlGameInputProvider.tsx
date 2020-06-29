@@ -34,7 +34,22 @@ export const ControlGameInputProvider: FC<UpdateReachedCursorProviderProps> = ({
   } = useSelector(getGameSettings);
 
   useEffect(() => {
-    if (!cursorPoints || !cursor || gameStatus === 'BEGINING') return;
+    if (!cursorPoints || !cursor || gameStatus !== 'END') return;
+    const index = cursorPoints.findIndex(
+      cursorPosition => cursorPosition === cursor,
+    );
+
+    if (
+      index !== -1 &&
+      index === cursorPoints.length - 1 &&
+      gameStatus === 'END'
+    ) {
+      dispatch(setWaitingForLastScoresUpdate());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cursor, cursorPoints, dispatch, roomId]);
+  useEffect(() => {
+    if (!cursorPoints || !cursor || gameStatus !== 'TYPING') return;
     const index = cursorPoints.findIndex(
       cursorPosition => cursorPosition === cursor,
     );
@@ -48,22 +63,19 @@ export const ControlGameInputProvider: FC<UpdateReachedCursorProviderProps> = ({
           index,
         );
         dispatch(updateGameScores(scores));
-        if (
-          index === cursorPoints.length - 1 &&
-          gameStatus === 'END'
-        ) {
-          dispatch(setWaitingForLastScoresUpdate());
-        }
       };
       updateCursor();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cursor, cursorPoints, dispatch, roomId]);
   useEffect(() => {
-    if (!startTimestamp) return;
-
+    if (!endTimestamp || !startTimestamp) return;
+    const timeToEnd = Math.ceil(
+      endTimestamp - new Date().getTime() / 1000,
+    );
+    if (timeToEnd <= 0) return;
     startNewMultiplayerGame({
-      secondsToEnd: (endTimestamp || 0) - startTimestamp,
+      secondsToEnd: timeToEnd,
       startTimestamp,
     });
   }, [endTimestamp, startNewMultiplayerGame, startTimestamp]);

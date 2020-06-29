@@ -1,5 +1,5 @@
 export interface AvaiableRoomInterface {
-  password?: string;
+  password: boolean;
   title: string;
   gameKey: string;
   playersNumber: number;

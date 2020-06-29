@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import { TypingInput } from 'components/organisms';
 import { useSelector } from 'react-redux';
 import { getGameSettings } from 'store/selectors/gameSettings.selector';
 import { TypingMood } from 'hooks/useInputSpeedTest/types';
 import { LoadingBar } from 'components/atoms';
+import trainingPhrases from 'config/trainingPhrases';
 import { ControlGameInputProvider } from './ControlGameInputProvider';
 
 export interface GameInputProps {
@@ -26,9 +27,16 @@ const StyledLoadingBar = styled(LoadingBar)`
 export const GameInput: FC<GameInputProps> = ({ roomId }) => {
   const { text } = useSelector(getGameSettings);
 
+  const inputText = useMemo(() => {
+    if (text) return text;
+    return trainingPhrases[
+      Math.floor(Math.random() * trainingPhrases.length)
+    ];
+  }, [text]);
+
   return (
     <StyledTypingInput
-      text={text || 'Lorem ipsum something'}
+      text={inputText}
       gameType={TypingMood.MULTIPLAYER}
       withoutCounters
       render={state => (

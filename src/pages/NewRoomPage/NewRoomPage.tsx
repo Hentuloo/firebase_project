@@ -14,7 +14,13 @@ import { toast } from 'react-toastify';
 
 const StyledWithBackgroundTemplate = styled(WithBackgroundTemplate)`
   display: grid;
+  height: calc(100% - 60px);
+  margin: 40px auto;
   align-items: center;
+  ${({ theme }) => theme.mediaQuery.md} {
+    height: 100%;
+    margin: 0px auto;
+  }
 `;
 
 export const NewRoomPage: FC = () => {
@@ -55,7 +61,7 @@ export const NewRoomPage: FC = () => {
       });
       if (!data) return;
       redirectToNewRoom({ title, withPassword, roomId: data.roomId });
-    } catch ({ message }) {
+    } catch ({ message, ...sd }) {
       setIsFetching(false);
       toast.error(message);
     }

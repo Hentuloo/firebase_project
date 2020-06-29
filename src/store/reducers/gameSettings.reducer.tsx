@@ -15,8 +15,7 @@ export interface GameSettingsState
 
 const init: GameSettingsState = {
   registeredUsers: {},
-  text:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
+  text: null,
   changesLength: null,
   startTimestamp: null,
   endTimestamp: null,
@@ -89,8 +88,7 @@ export default (state = init, action: Action): GameSettingsState => {
       return {
         ...state,
         registeredUsers: {},
-        text:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla arcu diam, mollis eu lectus et, dignissim egestas odio.',
+        text: null,
         changesLength: null,
         startTimestamp: null,
         endTimestamp: null,

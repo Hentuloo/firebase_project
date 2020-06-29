@@ -25,6 +25,7 @@ export enum TypingMood {
 
 export enum TypingStatus {
   BEGINING = 'BEGINING',
+  BEFORE_SCHEDULED_GAME = 'BEFORE_SCHEDULED_GAME',
   TYPING = 'TYPING',
   END = 'END',
 }

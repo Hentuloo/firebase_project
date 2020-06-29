@@ -33,6 +33,8 @@ export const reducer = (
   state: StateType,
   action: Action,
 ): StateType => {
+  const isBeforeScheduledGame =
+    state.gameStatus === TypingStatus.BEFORE_SCHEDULED_GAME;
   const isBegining = state.gameStatus === TypingStatus.BEGINING;
   const isTyping = state.gameStatus === TypingStatus.TYPING;
   const isEnd = state.gameStatus === TypingStatus.END;
@@ -104,7 +106,7 @@ export const reducer = (
 
     case types.INPUT_NEW_LETTER: {
       if (isEnd) return state;
-      if (isMultiplayer && isBegining) return state;
+      if (isBeforeScheduledGame) return state;
 
       const {
         payload,
@@ -112,7 +114,11 @@ export const reducer = (
       } = action;
       const isLastLetter =
         inputValue.length === state.sourceText.length;
-
+      if (isMultiplayer && !isBeforeScheduledGame)
+        return {
+          ...state,
+          ...getStatePieceWithNewLetter(state, payload),
+        };
       return {
         ...state,
         ...getStatePieceWithNewLetter(state, payload),
@@ -124,7 +130,7 @@ export const reducer = (
 
     case types.INPUT_BACKSPACE: {
       if (isEnd) return state;
-      if (isBegining && isMultiplayer) return state;
+
       return {
         ...state,
         writtenWords: removeLeterFromLastWord(state.writtenWords),
@@ -234,8 +240,9 @@ export const reducer = (
         wrongLength: 0,
         goodLength: 0,
         cursor: 0,
-        gameStatus: TypingStatus.BEGINING,
+        gameStatus: TypingStatus.BEFORE_SCHEDULED_GAME,
         gameType: TypingMood.MULTIPLAYER,
+        initialTimeSteps: secondsToEnd,
         timeSteps: secondsToEnd,
         accuracy: 100,
         speed: 0,

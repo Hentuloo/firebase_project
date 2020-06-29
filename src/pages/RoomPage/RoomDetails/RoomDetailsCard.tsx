@@ -75,7 +75,7 @@ export const RoomDetailsCard: FC<RoomDetailsCardProps> = ({
       (regiteredUsers.length > 1 &&
         isCreator &&
         startTimestamp === null) ||
-      results,
+      (results && regiteredUsers.length > 1 && isCreator),
     [isCreator, results, startTimestamp, regiteredUsers.length],
   );
   const showBeforeStartMessage = useMemo(
