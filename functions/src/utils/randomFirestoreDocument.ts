@@ -1,7 +1,12 @@
 import { firestore } from 'firebase-admin';
 import { firestoreDocumentId } from './firebaseFieldValue';
-import { TextForMesurementDoc } from '../data';
+import { TextForMesurementDoc } from '../types/TextForMesasurmentsDocument';
 
+/**
+ * The promise return random document from firestore-collection
+ * @param collection simply path to a collection
+ *
+ */
 export const randomFirestoreDocument = async (collection: string) => {
   const ref = firestore().collection(collection);
   const key = ref.doc().id;

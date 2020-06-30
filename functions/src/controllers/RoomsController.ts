@@ -13,16 +13,17 @@ import {
   addPlayerToRoom,
 } from '../utils/rooms.utils';
 import { use } from '../decorators/use';
-import {
-  UpdateAvaiableRoomsCollection,
-  UpdateUserDocument,
-  GameSettingsDoc,
-  GameScoresDoc,
-  UpdateGameSettingsDoc,
-  UpdateGameScoresDoc,
-} from '../data';
-import Validator from 'validatorjs';
 import { deleteCloudTask } from '../utils/cloudTask.utils';
+import { UpdateAvaiableRoomsCollection } from '../types/AvaiableRoomsDocuments';
+import { UpdateUserDocument } from '../types/UserDocument';
+import {
+  GameSettingsDoc,
+  UpdateGameSettingsDoc,
+} from '../types/GameSettingsDocument';
+import {
+  GameScoresDoc,
+  UpdateGameScoresDoc,
+} from '../types/GameScorresDocument';
 
 interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;
@@ -84,8 +85,6 @@ export class RoomsController {
       },
       title,
       maxPlayersNumber,
-      textId: null,
-      changesLength: null,
       startTimestamp: null,
       endTimestamp: null,
       password: withPassword ? password : false,

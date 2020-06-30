@@ -1,7 +1,7 @@
 import { listenDatabase } from '../decorators/listenDatabase';
-import { TextForMesurementDoc } from '../data';
 import { getTextPropertiesForMeasurment } from '../utils/utils';
 import { firestore } from 'firebase-admin';
+import { TextForMesurementDoc } from '../types/TextForMesasurmentsDocument';
 
 export class TextsController {
   @listenDatabase({

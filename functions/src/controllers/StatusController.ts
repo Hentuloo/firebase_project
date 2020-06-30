@@ -4,11 +4,6 @@ import {
   callFunctionByCloudTask,
   deleteCloudTask,
 } from '../utils/cloudTask.utils';
-import {
-  UserDocument,
-  UpdateUserDocument,
-  UpdateGeneralStateUsers,
-} from '../data';
 import { listenDatabase } from '../decorators/listenDatabase';
 import { config } from 'firebase-functions';
 import { useBearerAuth } from '../middlewares/useAuth';
@@ -22,7 +17,11 @@ import {
   firestoreDecrementValue,
   firestoreIncrementValue,
 } from '../utils/firebaseFieldValue';
-import { useValidator } from '../middlewares/useValidator';
+import {
+  UserDocument,
+  UpdateUserDocument,
+} from '../types/UserDocument';
+import { UpdateGeneralStateUsers } from '../types/GeneralStateDocument';
 
 interface UserExitApplicationPayload {
   uid: string;

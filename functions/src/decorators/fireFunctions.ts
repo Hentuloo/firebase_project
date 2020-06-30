@@ -7,6 +7,20 @@ export type FireFunctionOptions = {
   type: FireFunctionsTypes;
 };
 
+/**
+ * Decorator
+ *
+ * Create cloud function
+ * @example
+ * class Sth {
+ * fireFunction({ region: 'europe-west1', type: 'onCall' })
+ * async webhook (data, context){}}
+ * }
+ *
+ * will be converted to:
+ *
+ * exports.webhook = functions.https.onCall((req, res) => {});
+ */
 export function fireFunction({
   region,
   type,

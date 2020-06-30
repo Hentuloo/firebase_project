@@ -1,6 +1,6 @@
 import { https } from 'firebase-functions';
 import { firestore } from 'firebase-admin';
-import { UserDocument } from '../data';
+import { UserDocument } from '../types/UserDocument';
 
 export interface WithUserProfile {
   user: UserDocument;

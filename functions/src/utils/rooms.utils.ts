@@ -1,16 +1,17 @@
 import { firestore } from 'firebase-admin';
-import {
-  UpdateGameScoresDoc,
-  UpdateGameSettingsDoc,
-  UpdateAvaiableRoomsCollection,
-  UserDocument,
-} from '../data';
+import { UpdateGameScoresDoc } from '../types/GameScorresDocument';
+import { UpdateGameSettingsDoc } from '../types/GameSettingsDocument';
+import { UpdateAvaiableRoomsCollection } from '../types/AvaiableRoomsDocuments';
+import { UserDocument } from '../types/UserDocument';
 
 export interface ExitRoomAsPlayerProps {
   roomId: string;
   uid: string;
 }
 
+/**
+ * exit room as player and clear dependencies
+ */
 export const exitRoomAsPlayer = ({
   roomId,
   uid,
@@ -35,6 +36,10 @@ export interface ExitRoomAsCreatorProps {
   roomId: string;
   uid: string;
 }
+
+/**
+ * exit room as creator and clear dependencies
+ */
 export const exitRoomAsCreator = ({
   roomId,
   uid,
@@ -65,6 +70,7 @@ export const exitRoomAsCreator = ({
     userPromise,
   ]);
 };
+
 export interface AddPlayerToRoomProps {
   roomId: string;
   uid: string;

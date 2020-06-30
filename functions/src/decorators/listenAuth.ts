@@ -4,7 +4,19 @@ import { MetadataT, ListenAuthTypes } from './types';
 export type ListenAuthOptions = {
   type: ListenAuthTypes;
 };
-
+/**
+ * Decorator
+ *
+ * Create auth trigger
+ * @example
+ * class AuthController {
+ * listenAuth({ type: 'onCreate' })
+ * async onCreateUser(userRecord, context) {}
+ *
+ * will be converted to:
+ *
+ * exports.listenAuth = functions.auth.user().onCreate((user,context) => {});
+ */
 export function listenAuth({
   type,
 }: ListenAuthOptions): MethodDecorator {

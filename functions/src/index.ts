@@ -20,6 +20,7 @@ const fireFunctions = bindFireControllers([
 ]);
 
 const keys = Object.keys(fireFunctions);
+// export all binded Cloud Function
 keys.forEach((key: string) => {
   exports[key] = fireFunctions[key];
 });

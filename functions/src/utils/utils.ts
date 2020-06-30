@@ -1,5 +1,11 @@
-import { GameScoresDoc, ScoreWithUid } from '../data';
+import { GameScoresDoc } from '../types/GameScorresDocument';
+import { ScoreWithUid } from '../types/GameSettingsDocument';
 
+/**
+ * @return {object} - Return sorted users by points
+ *
+ * first is winner
+ */
 export const sortUsersScores = (sc: GameScoresDoc) => {
   const users = Object.keys(sc.scores);
   const scoresWithUsers = users.map(
@@ -10,6 +16,13 @@ export const sortUsersScores = (sc: GameScoresDoc) => {
   );
 };
 
+/**
+ *
+ * @param text - usually it is long text prepared for typing measurement
+ *
+ * @returns cursorPoints - calculated checkpoints
+ * @returns writtenWordsByInterval - wirtten words related to calculated checkpoints
+ */
 export const getTextPropertiesForMeasurment = (text: string) => {
   const arrayedText = text.split(' ');
   const intervalsBetweenWords = Math.ceil(arrayedText.length * 0.15);

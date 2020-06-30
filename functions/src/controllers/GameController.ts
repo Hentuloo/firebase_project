@@ -5,20 +5,22 @@ import { useAuth, useBearerAuth } from '../middlewares/useAuth';
 import { useValidator } from '../middlewares/useValidator';
 import { use } from '../decorators/use';
 import {
-  GameScoresDoc,
-  UpdateGameScoresDoc,
-  UpdateGameSettingsDoc,
-  GameSettingsDoc,
-  UpdateGameScore,
-  UpdateUserDocument,
-} from '../data';
-import {
   callFunctionByCloudTask,
   deleteCloudTask,
 } from '../utils/cloudTask.utils';
 import { sortUsersScores } from '../utils/utils';
 import { randomFirestoreDocument } from '../utils/randomFirestoreDocument';
 import { firestoreIncrementValue } from '../utils/firebaseFieldValue';
+import {
+  GameScoresDoc,
+  UpdateGameScoresDoc,
+  UpdateGameScore,
+} from '../types/GameScorresDocument';
+import {
+  UpdateGameSettingsDoc,
+  GameSettingsDoc,
+} from '../types/GameSettingsDocument';
+import { UpdateUserDocument } from '../types/UserDocument';
 
 interface StartGameProps {
   roomId: string;

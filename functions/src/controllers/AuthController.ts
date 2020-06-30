@@ -5,7 +5,6 @@ import { fireFunction } from '../decorators/fireFunctions';
 import { defaultUser, defaultUserSolo } from '../config/defaults';
 import { use } from '../decorators/use';
 import { useAuth } from '../middlewares/useAuth';
-import { UserDocument, UpdateGeneralStateUsers } from '../data';
 import { useValidator } from '../middlewares/useValidator';
 import {
   exitRoomAsCreator,
@@ -15,6 +14,8 @@ import {
   firestoreIncrementValue,
   firestoreDecrementValue,
 } from '../utils/firebaseFieldValue';
+import { UserDocument } from '../types/UserDocument';
+import { UpdateGeneralStateUsers } from '../types/GeneralStateDocument';
 
 interface UpdateUserProfile {
   displayName: string;
