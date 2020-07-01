@@ -3,7 +3,7 @@ const { CloudTasksClient } = require('@google-cloud/tasks');
 export interface CreateCloudTaskProps {
   /**
    * name of the cloud function
-   * e.g. !!! export const yourfunctionName = firestore.region().https()
+   * e.g. export const yourfunctionName = firestore.region().https()
    */
   functionName: string;
   /**

@@ -8,6 +8,7 @@ import { types, Action } from '../actions/types';
 export type DarkMode = 'LIGHT' | 'DARK';
 export interface UserReducerState extends UserDocument {
   darkMode: DarkMode;
+  loggedRequest: boolean;
 }
 
 const init: UserReducerState = {
@@ -17,6 +18,7 @@ const init: UserReducerState = {
   photoURL: null,
   darkMode: getStoragedDarkModeTheme() || 'LIGHT',
   online: 'online',
+  onlineInApp: 'online',
   created: null,
   wins: 0,
 };

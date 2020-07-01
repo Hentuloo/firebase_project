@@ -18,7 +18,6 @@ export interface UserDocument {
    */
   online: OnlineStates;
   /**
-   * !!!
    * User persence: status is 'offline' when user is away longer time (e.g. 50sec)
    */
   onlineInApp: OnlineStates;

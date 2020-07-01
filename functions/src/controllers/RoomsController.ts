@@ -284,7 +284,6 @@ export class RoomsController {
         });
         gameRef.update({
           textId: null,
-          changesLength: null,
           startTimestamp: null,
           endTimestamp: null,
           usersByScores: null,

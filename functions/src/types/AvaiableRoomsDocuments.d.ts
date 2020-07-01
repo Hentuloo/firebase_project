@@ -6,7 +6,7 @@ export interface AvaiableRoomDocument {
   /**
    * Room title
    */
-  name: string;
+  title: string;
   /**
    * Room password flag (is there a password in this room)
    */
@@ -16,6 +16,7 @@ export interface AvaiableRoomDocument {
    */
   created: number;
 }
+
 export type UpdateAvaiableRoomDocument = Partial<
   AvaiableRoomDocument
 >;

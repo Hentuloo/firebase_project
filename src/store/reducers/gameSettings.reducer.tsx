@@ -16,7 +16,6 @@ export interface GameSettingsState
 const init: GameSettingsState = {
   registeredUsers: {},
   text: null,
-  changesLength: null,
   startTimestamp: null,
   endTimestamp: null,
   cursorPoints: [],
@@ -89,7 +88,6 @@ export default (state = init, action: Action): GameSettingsState => {
         ...state,
         registeredUsers: {},
         text: null,
-        changesLength: null,
         startTimestamp: null,
         endTimestamp: null,
         cursorPoints: [],

@@ -15,13 +15,25 @@ export interface GameSettingsDoc {
     };
   };
   /**
+   * Text for mesurment
+   * added after gameStart function
+   */
+  text: string | null;
+  /**
    * Start game time
+   * added after gameStart function
    */
   startTimestamp: number | null;
   /**
    * End game time
+   *  added after gameStart function
    */
   endTimestamp: number | null;
+  /**
+   * controll points
+   * added after gameStart function
+   */
+  cursorPoints: number[] | null;
   /**
    * Title of room
    */
@@ -44,7 +56,7 @@ export interface GameSettingsDoc {
    */
   created: number;
   /**
-   * After game end 'usersByScores' will represent the !!!
+   * After game end 'usersByScores' will represent the order of results
    */
   usersByScores: ScoreWithUid[] | null;
 }

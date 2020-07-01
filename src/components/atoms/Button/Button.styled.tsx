@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { BarDecoratorForLink } from '../BarDecorator.styled';
 
 export interface ButtonProps extends React.ComponentProps<any> {
+  /**
+   * Link url
+   */
   to?: string;
   disabled?: boolean;
 }

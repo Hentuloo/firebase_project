@@ -62,10 +62,7 @@ const Links: FC = () => {
   const multiplayerRef = usePerspectiveAnimation<HTMLAnchorElement>();
   return (
     <Wrapper>
-      <LinkWithImage
-        to={Constants.paths.dashboard.path}
-        ref={trainingRef}
-      >
+      <LinkWithImage to={Constants.paths.solo.path} ref={trainingRef}>
         <ImageWrapper>
           <LinkImage src={levelsImage} />
         </ImageWrapper>

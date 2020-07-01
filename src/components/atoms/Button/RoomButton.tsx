@@ -7,6 +7,9 @@ import dayjs from 'dayjs';
 import { RoundButton } from './Button.styled';
 
 interface WrapperProps {
+  /**
+   * Link url
+   */
   to?: string;
 }
 const Wrapper = styled(RoundButton)<WrapperProps>`
