@@ -47,7 +47,7 @@ export const DemoTyingInput: FC<DemoTyingInputProps> = ({
   return (
     <Wrapper {...props}>
       <StyledTypingInput
-        text="jak dobrze piszesz na klawiaturze? czy ten tekst nie sprawja ci problemów? Zaloguj się i sprawdź swoją prędkość"
+        text={`"Litwo! Ojczyzno moja! ty jesteś jak zdrowie. Ile cię trzeba cenić, ten tylko się dowie, Kto cię stracił." Zaloguj się i sprawdź swoją prędkość pisania`}
         withoutCounters
       />
       <ArrowWrapper>

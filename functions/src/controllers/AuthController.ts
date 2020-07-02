@@ -63,9 +63,6 @@ export class AuthController {
     const userReference = firestore().doc(`/users/${uid}`);
     const userTrainingRef = firestore().doc(`usersSolo/${uid}`);
     const userStatusRef = database().ref(`status/${uid}`);
-    const generalStateUsersRef = firestore().doc(
-      `generalState/users`,
-    );
 
     const userSnap = await userReference.get();
     const {
@@ -79,9 +76,6 @@ export class AuthController {
     userReference.delete();
     userTrainingRef.delete();
     userStatusRef.remove();
-    generalStateUsersRef.update({
-      online: firestoreDecrementValue(),
-    } as UpdateGeneralStateUsers);
 
     return { ok: true };
   }
