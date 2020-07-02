@@ -61,7 +61,7 @@ const LevelsSection: FC = () => {
             patrzeć na klawiaturę.
           </GroupTitle>
           <GroupDescription>
-            ~<TipBold>40</TipBold>słów/minute
+            ~<TipBold>40</TipBold>słów/minutę
           </GroupDescription>
         </GroupItem>
         <GroupItem>
@@ -74,7 +74,7 @@ const LevelsSection: FC = () => {
             zastanowienia.
           </GroupTitle>
           <GroupDescription>
-            ~<TipBold>80</TipBold>słów/minute
+            ~<TipBold>80</TipBold>słów/minutę
           </GroupDescription>
         </GroupItem>
         <GroupItem>
@@ -87,7 +87,7 @@ const LevelsSection: FC = () => {
             rywalizacji!
           </GroupTitle>
           <GroupDescription>
-            ~<TipBold>120</TipBold>słów/minute
+            ~<TipBold>120</TipBold>słów/minutę
           </GroupDescription>
         </GroupItem>
       </GroupWrapper>
