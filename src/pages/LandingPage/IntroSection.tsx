@@ -21,7 +21,7 @@ const Wrapper = styled.section`
   width: 100%;
   height: 100vh;
   grid-template-columns: 80px 150px 1fr;
-  grid-template-rows: 90px 170px 1fr 170px;
+  grid-template-rows: 90px 190px 1fr 170px;
   overflow: hidden;
   ${({ theme }) => theme.mediaQuery.md} {
     grid-template-columns: 100px 80px 150px 40px 1fr 200px;
@@ -134,9 +134,11 @@ const NewAccountButtonContent = styled.span`
 const RaceImage = styled.img`
   position: absolute;
   bottom: 12%;
-  left: 5%;
+  left: 22%;
   transform: rotate(-35deg);
+  z-index: -1;
   ${({ theme }) => theme.mediaQuery.md} {
+    left: 5%;
     position: relative;
     max-width: 120vw;
     grid-column: -1 / -3;
