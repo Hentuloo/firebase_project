@@ -5,6 +5,7 @@
     "airbnb",
     "prettier/react",
     "prettier/@typescript-eslint",
+    "plugin:cypress/recommended",
     "plugin:prettier/recommended"
   ],
 
