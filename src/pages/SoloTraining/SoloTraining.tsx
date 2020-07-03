@@ -103,7 +103,7 @@ const SoloTraining = () => {
   );
 
   const levelUp = useCallback(async () => {
-    if (!uid || firstBlockedLetterIndex === lastActiveLetterIndex + 1)
+    if (!uid || letters.length === firstBlockedLetterIndex + 1)
       return;
     try {
       await reduxDispatch(incrementLevelAction(uid));
@@ -111,12 +111,7 @@ const SoloTraining = () => {
     } catch {
       toast.error(`Nie udało się zwiększyć poziomu(błąd serwera)`);
     }
-  }, [
-    firstBlockedLetterIndex,
-    lastActiveLetterIndex,
-    reduxDispatch,
-    uid,
-  ]);
+  }, [firstBlockedLetterIndex, letters.length, reduxDispatch, uid]);
 
   useEffect(() => {
     if (fetched && !fetchedSettings) {

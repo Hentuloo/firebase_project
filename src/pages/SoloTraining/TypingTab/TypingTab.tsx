@@ -122,9 +122,9 @@ const TypingTab = forwardRef<HTMLDivElement, TypingTabProps>(
       const sub = steps$.subscribe(([props, level]) => {
         const { accuracy, speed } = props;
 
-        if (level < 8 && (accuracy > 85 || speed > 30))
+        if (level < 8 && (accuracy > 85 || speed > 22))
           return levelUp();
-        if (level < 15 && (accuracy > 85 || speed > 35))
+        if (level < 15 && (accuracy > 85 || speed > 30))
           return levelUp();
         if (level < 28 && (accuracy > 92 || speed > 40))
           return levelUp();
