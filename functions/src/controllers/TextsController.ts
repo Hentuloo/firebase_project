@@ -1,4 +1,4 @@
-import { listenDatabase } from '../decorators/listenDatabase';
+import { listenDatabase } from 'firestore-decorators';
 import { getTextPropertiesForMeasurment } from '../utils/utils';
 import { firestore } from 'firebase-admin';
 import { TextForMesurementDoc } from '../types/TextForMesasurmentsDocument';

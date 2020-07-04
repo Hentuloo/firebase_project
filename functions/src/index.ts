@@ -2,11 +2,11 @@ import * as functions from 'firebase-functions';
 import { initializeApp } from 'firebase-admin';
 import { RoomsController } from './controllers/RoomsController';
 
-import { bindFireControllers } from './decorators/bindFireControllers';
 import { StatusController } from './controllers/StatusController';
 import { GameController } from './controllers/GameController';
 import { AuthController } from './controllers/AuthController';
 import { TextsController } from './controllers/TextsController';
+import { bindFireControllers } from 'firestore-decorators';
 
 initializeApp(functions.config().firebase);
 

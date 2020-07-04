@@ -1,19 +1,14 @@
 import firebase from 'firebase';
 import { firestore, database } from 'firebase-admin';
-import { listenAuth } from '../decorators/listenAuth';
-import { fireFunction } from '../decorators/fireFunctions';
 import { defaultUser, defaultUserSolo } from '../config/defaults';
-import { use } from '../decorators/use';
+import { use, fireFunction, listenAuth } from 'firestore-decorators';
 import { useAuth } from '../middlewares/useAuth';
 import { useValidator } from '../middlewares/useValidator';
 import {
   exitRoomAsCreator,
   exitRoomAsPlayer,
 } from '../utils/rooms.utils';
-import {
-  firestoreIncrementValue,
-  firestoreDecrementValue,
-} from '../utils/firebaseFieldValue';
+import { firestoreIncrementValue } from '../utils/firebaseFieldValue';
 import { UserDocument } from '../types/UserDocument';
 import { UpdateGeneralStateUsers } from '../types/GeneralStateDocument';
 

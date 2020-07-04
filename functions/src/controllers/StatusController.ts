@@ -4,15 +4,17 @@ import {
   callFunctionByCloudTask,
   deleteCloudTask,
 } from '../utils/cloudTask.utils';
-import { listenDatabase } from '../decorators/listenDatabase';
 import { config } from 'firebase-functions';
 import { useBearerAuth } from '../middlewares/useAuth';
-import { fireFunction } from '../decorators/fireFunctions';
+import {
+  use,
+  fireFunction,
+  listenDatabase,
+} from 'firestore-decorators';
 import {
   exitRoomAsCreator,
   exitRoomAsPlayer,
 } from '../utils/rooms.utils';
-import { use } from '../decorators/use';
 import {
   firestoreDecrementValue,
   firestoreIncrementValue,

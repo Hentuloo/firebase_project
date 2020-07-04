@@ -1,6 +1,5 @@
 import { firestore } from 'firebase-admin';
 import { https } from 'firebase-functions';
-import { fireFunction } from '../decorators/fireFunctions';
 import { useAuth } from '../middlewares/useAuth';
 import { useValidator } from '../middlewares/useValidator';
 import {
@@ -12,7 +11,7 @@ import {
   exitRoomAsPlayer,
   addPlayerToRoom,
 } from '../utils/rooms.utils';
-import { use } from '../decorators/use';
+import { use, fireFunction } from 'firestore-decorators';
 import { deleteCloudTask } from '../utils/cloudTask.utils';
 import { UpdateAvaiableRoomsCollection } from '../types/AvaiableRoomsDocuments';
 import { UpdateUserDocument } from '../types/UserDocument';
@@ -24,6 +23,24 @@ import {
   GameScoresDoc,
   UpdateGameScoresDoc,
 } from '../types/GameScorresDocument';
+
+interface JoinToOpenRoomData extends WithUserProfile {
+  roomId: string;
+  password?: string;
+}
+
+interface LeaveFromOpenRoomData {
+  roomId: string;
+}
+interface GetAvaiableRoomsData {
+  page?: number;
+  perPage?: number;
+}
+interface CreateRoomData extends WithUserProfile {
+  title: string;
+  maxPlayersNumber: number;
+  password?: string;
+}
 
 interface JoinToOpenRoomData extends WithUserProfile {
   roomId: string;

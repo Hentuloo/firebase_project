@@ -1,9 +1,8 @@
 import { firestore } from 'firebase-admin';
 import { https, Response } from 'firebase-functions';
-import { fireFunction } from '../decorators/fireFunctions';
 import { useAuth, useBearerAuth } from '../middlewares/useAuth';
 import { useValidator } from '../middlewares/useValidator';
-import { use } from '../decorators/use';
+import { use, fireFunction } from 'firestore-decorators';
 import {
   callFunctionByCloudTask,
   deleteCloudTask,
