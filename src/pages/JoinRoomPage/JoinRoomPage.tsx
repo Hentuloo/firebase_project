@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 
 export interface JoinRoomPageProps {}
 
-export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
+const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
   const redirect = useRedirect();
   const [fetching, isFetching] = useState(false);
   const { roomId, title, withPassword } = useParams();
@@ -96,3 +96,5 @@ export const JoinRoomPage: FC<JoinRoomPageProps> = ({ ...props }) => {
     </WithBackgroundTemplate>
   );
 };
+
+export default JoinRoomPage;

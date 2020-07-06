@@ -23,7 +23,7 @@ const StyledWithBackgroundTemplate = styled(WithBackgroundTemplate)`
   }
 `;
 
-export const NewRoomPage: FC = () => {
+const NewRoomPage: FC = () => {
   const history = useHistory();
   const [isFetching, setIsFetching] = useState(false);
 
@@ -77,3 +77,5 @@ export const NewRoomPage: FC = () => {
     </WithMenuTemplate>
   );
 };
+
+export default NewRoomPage;
